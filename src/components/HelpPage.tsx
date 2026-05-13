@@ -5,11 +5,17 @@ type Props = { onClose: () => void };
 
 type Example = { input: string; result: string };
 
+type AliasRow = { english: string; spanish?: string; description: string };
+
+type AliasGroup = { heading: string; rows: AliasRow[] };
+
 type Section = {
   title: string;
   description?: string;
   examples?: Example[];
+  useCases?: Example[];
   notes?: string[];
+  aliasGroups?: AliasGroup[];
 };
 
 const SECTIONS: Section[] = [
@@ -32,6 +38,11 @@ const SECTIONS: Section[] = [
       { input: '2 ^ 10', result: '1024' },
       { input: '10 % 3', result: '1' },
     ],
+    useCases: [
+      { input: '100 * 1.21', result: '121' },
+      { input: '50 - 50 * 0.15', result: '42,5' },
+      { input: '120 / 4', result: '30' },
+    ],
     notes: ['^ = potencia · % = módulo (resto de la división).'],
   },
   {
@@ -45,6 +56,11 @@ const SECTIONS: Section[] = [
       { input: 'floor(2.9)   ·   suelo(2.9)', result: '2' },
       { input: 'sign(-3)   ·   signo(-3)', result: '-1' },
     ],
+    useCases: [
+      { input: 'sqrt(3^2 + 4^2)', result: '5' },
+      { input: 'abs(120 - 145)', result: '25' },
+      { input: 'round(19.99 * 1.21)', result: '24' },
+    ],
   },
   {
     title: 'Trigonometría',
@@ -57,6 +73,58 @@ const SECTIONS: Section[] = [
       { input: 'acos(0)   ·   arcocoseno(0)', result: '90' },
       { input: 'atan(1)   ·   arcotangente(1)', result: '45' },
     ],
+    useCases: [
+      { input: '50 * tan(30)', result: '28,87' },
+      { input: '10 * sin(45)', result: '7,07' },
+      { input: 'atan(5 / 12)', result: '22,62' },
+    ],
+    notes: [
+      'Altura de un objeto a 50 m con ángulo 30° → 50 · tan(30).',
+      'Ángulo de una rampa que sube 5 m en 12 m → atan(5 / 12).',
+    ],
+  },
+  {
+    title: 'Logaritmos y exponencial',
+    description: 'log usa base 10 por defecto. Pasa una segunda base como segundo argumento.',
+    examples: [
+      { input: 'log(100)', result: '2' },
+      { input: 'log(1000)', result: '3' },
+      { input: 'log(8, 2)', result: '3' },
+      { input: 'ln(e)', result: '1' },
+      { input: 'exp(1)', result: '2,718282' },
+    ],
+    useCases: [
+      { input: '-log(0.0001)', result: '4' },
+      { input: '10 * log(1000)', result: '30' },
+      { input: '1000 * exp(0.05 * 10)', result: '1.648,72' },
+    ],
+    notes: [
+      'ln = logaritmo natural (base e) · exp(x) = e^x.',
+      'pH de una concentración 1e-4 mol/L → -log(0.0001).',
+      'Decibelios de una potencia relativa de 1000 → 10 · log(1000).',
+      'Interés compuesto continuo (1.000 € al 5 % durante 10 años) → 1000 · exp(0.05 · 10).',
+    ],
+  },
+  {
+    title: 'Estadística',
+    description: 'Acepta cualquier número de argumentos separados por comas.',
+    examples: [
+      { input: 'min(1, 2, 3)', result: '1' },
+      { input: 'max(1, 2, 3)', result: '3' },
+      { input: 'mean(2, 4, 6)', result: '4' },
+      { input: 'median(1, 5, 3)', result: '3' },
+      { input: 'std(2, 4, 4, 4, 5, 5, 7, 9)', result: '2,14' },
+    ],
+    useCases: [
+      { input: 'mean(7, 8.5, 9, 6.5)', result: '7,75' },
+      { input: 'max(120, 145, 98, 132) - min(120, 145, 98, 132)', result: '47' },
+      { input: 'median(1200, 1500, 1350, 4800, 1450)', result: '1.450' },
+    ],
+    notes: [
+      'Nota media de un trimestre → mean(7, 8.5, 9, 6.5).',
+      'Rango de temperaturas semanales → max(...) - min(...).',
+      'Salario representativo cuando hay valores atípicos → median en lugar de mean.',
+    ],
   },
   {
     title: 'Constantes',
@@ -64,6 +132,111 @@ const SECTIONS: Section[] = [
       { input: 'pi', result: '3,141593' },
       { input: 'e', result: '2,718282' },
       { input: 'tau', result: '6,283185' },
+    ],
+    useCases: [
+      { input: 'pi * 5^2', result: '78,54' },
+      { input: '2 * pi * 5', result: '31,42' },
+      { input: '(4 / 3) * pi * 5^3', result: '523,6' },
+    ],
+    notes: [
+      'Área de un círculo de radio 5 → pi · 5².',
+      'Longitud de la circunferencia → 2 · pi · r.',
+      'Volumen de una esfera → (4/3) · pi · r³.',
+    ],
+  },
+  {
+    title: 'Abreviaturas numéricas',
+    description: 'Sufijos k (miles) y M (millones) pegados a un número.',
+    examples: [
+      { input: '100k', result: '100.000' },
+      { input: '2.5M', result: '2.500.000' },
+      { input: '3M + 100k', result: '3.100.000' },
+    ],
+    useCases: [
+      { input: '12 * 3.5k', result: '42.000' },
+      { input: '1.2M / 12', result: '100.000' },
+      { input: '250k * 0.03', result: '7.500' },
+    ],
+    notes: [
+      'Solo se reemplazan cuando son sufijos numéricos: km a millas sigue siendo una conversión de unidades, no 1000 m.',
+      'Ingresos anuales con sueldo de 3.500 €/mes → 12 · 3.5k.',
+      'Cuota mensual de un préstamo de 1,2 M repartido en 12 meses → 1.2M / 12.',
+    ],
+  },
+  {
+    title: 'Porcentajes y regla de tres',
+    description: 'Frases en español natural que SmartCalc reconoce sin necesidad de operadores.',
+    examples: [
+      { input: '50 + 10% de impuestos', result: '55' },
+      { input: '120 - 30% de descuento', result: '84' },
+      { input: '20% de 300', result: '60' },
+      { input: '50 es qué % de 200', result: '25' },
+      { input: 'si 3 kg son 6€, 5 kg son ?', result: '10' },
+    ],
+    useCases: [
+      { input: '90 + 21% de IVA', result: '108,9' },
+      { input: '1500 - 15% de descuento', result: '1.275' },
+      { input: 'si 100 km son 5h, 250 km son ?', result: '12,5' },
+    ],
+    notes: [
+      'El texto tras "de" es libre: 10% de propina, 21% de IVA, 30% de descuento… SmartCalc ignora la etiqueta.',
+      'Regla de tres directa: las unidades junto a los números son decorativas, solo se usan los valores numéricos.',
+    ],
+  },
+  {
+    title: 'Glosario de funciones (español ↔ inglés)',
+    description:
+      'Todas las funciones aceptan su nombre en inglés. Las marcadas también admiten su alias en español. Las que solo aparecen en inglés todavía no tienen alias traducido.',
+    aliasGroups: [
+      {
+        heading: 'Aritméticas',
+        rows: [
+          { english: 'sqrt(x)', spanish: 'raiz(x)', description: 'Raíz cuadrada' },
+          { english: 'abs(x)', description: 'Valor absoluto' },
+          { english: 'round(x)', spanish: 'redondear(x)', description: 'Redondeo al entero más cercano' },
+          { english: 'ceil(x)', spanish: 'techo(x)', description: 'Redondeo hacia arriba' },
+          { english: 'floor(x)', spanish: 'suelo(x)', description: 'Redondeo hacia abajo' },
+          { english: 'sign(x)', spanish: 'signo(x)', description: 'Signo: -1, 0 o 1' },
+        ],
+      },
+      {
+        heading: 'Trigonometría (grados)',
+        rows: [
+          { english: 'sin(x)', spanish: 'seno(x)', description: 'Seno' },
+          { english: 'cos(x)', spanish: 'coseno(x)', description: 'Coseno' },
+          { english: 'tan(x)', spanish: 'tangente(x)', description: 'Tangente' },
+          { english: 'asin(x)', spanish: 'arcoseno(x)', description: 'Arcoseno' },
+          { english: 'acos(x)', spanish: 'arcocoseno(x)', description: 'Arcocoseno' },
+          { english: 'atan(x)', spanish: 'arcotangente(x)', description: 'Arcotangente' },
+        ],
+      },
+      {
+        heading: 'Logaritmos y exponencial',
+        rows: [
+          { english: 'log(x)', description: 'Logaritmo base 10' },
+          { english: 'log(x, b)', description: 'Logaritmo en base b' },
+          { english: 'ln(x)', description: 'Logaritmo natural (base e)' },
+          { english: 'exp(x)', description: 'Exponencial: e^x' },
+        ],
+      },
+      {
+        heading: 'Estadística',
+        rows: [
+          { english: 'min(...)', description: 'Mínimo de los argumentos' },
+          { english: 'max(...)', description: 'Máximo de los argumentos' },
+          { english: 'mean(...)', description: 'Media aritmética' },
+          { english: 'median(...)', description: 'Mediana' },
+          { english: 'std(...)', description: 'Desviación típica (muestral)' },
+        ],
+      },
+      {
+        heading: 'Constantes',
+        rows: [
+          { english: 'pi', description: '3,141592…' },
+          { english: 'e', description: '2,718281…' },
+          { english: 'tau', description: '2π — 6,283185…' },
+        ],
+      },
     ],
   },
   {
@@ -125,6 +298,50 @@ export function HelpPage({ onClose }: Props) {
                 ))}
               </div>
             )}
+            {sec.useCases && (
+              <>
+                <h3 className="help-subsection-title">Ejemplos en contexto</h3>
+                <div className="help-examples">
+                  {sec.useCases.map((ex, i) => (
+                    <div key={i} className="help-example">
+                      <code className="help-input">{ex.input}</code>
+                      <span className="help-arrow">=</span>
+                      <code className="help-result">{ex.result}</code>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+            {sec.aliasGroups &&
+              sec.aliasGroups.map((group) => (
+                <div key={group.heading} className="help-alias-group">
+                  <h3 className="help-subsection-title">{group.heading}</h3>
+                  <table className="help-alias-table">
+                    <thead>
+                      <tr>
+                        <th>Inglés</th>
+                        <th>Español</th>
+                        <th>Descripción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.rows.map((row) => (
+                        <tr key={row.english}>
+                          <td><code className="help-alias-name">{row.english}</code></td>
+                          <td>
+                            {row.spanish ? (
+                              <code className="help-alias-name">{row.spanish}</code>
+                            ) : (
+                              <span className="help-alias-missing">—</span>
+                            )}
+                          </td>
+                          <td>{row.description}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ))}
             {sec.notes && (
               <ul className="help-notes">
                 {sec.notes.map((n, i) => (
