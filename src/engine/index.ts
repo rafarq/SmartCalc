@@ -59,6 +59,9 @@ math.import(
     arcoseno: asinDeg,
     arcocoseno: acosDeg,
     arcotangente: atanDeg,
+    // Estadística
+    media: math.mean,
+    mediana: math.median,
   },
   { override: false },
 );

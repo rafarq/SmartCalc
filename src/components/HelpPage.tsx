@@ -111,8 +111,8 @@ const SECTIONS: Section[] = [
     examples: [
       { input: 'min(1, 2, 3)', result: '1' },
       { input: 'max(1, 2, 3)', result: '3' },
-      { input: 'mean(2, 4, 6)', result: '4' },
-      { input: 'median(1, 5, 3)', result: '3' },
+      { input: 'mean(2, 4, 6)   ·   media(2, 4, 6)', result: '4' },
+      { input: 'median(1, 5, 3)   ·   mediana(1, 5, 3)', result: '3' },
       { input: 'std(2, 4, 4, 4, 5, 5, 7, 9)', result: '2,14' },
     ],
     useCases: [
@@ -224,8 +224,8 @@ const SECTIONS: Section[] = [
         rows: [
           { english: 'min(...)', description: 'Mínimo de los argumentos' },
           { english: 'max(...)', description: 'Máximo de los argumentos' },
-          { english: 'mean(...)', description: 'Media aritmética' },
-          { english: 'median(...)', description: 'Mediana' },
+          { english: 'mean(...)', spanish: 'media(...)', description: 'Media aritmética' },
+          { english: 'median(...)', spanish: 'mediana(...)', description: 'Mediana' },
           { english: 'std(...)', description: 'Desviación típica (muestral)' },
         ],
       },

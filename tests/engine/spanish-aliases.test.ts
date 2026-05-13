@@ -29,7 +29,14 @@ describe('alias en español: trigonometría (grados)', () => {
   it('arcotangente(1) = 45', () => expect(ev('arcotangente(1)')).toBeCloseTo(45));
 });
 
+describe('alias en español: estadística', () => {
+  it('media(2, 4, 6) = 4', () => expect(ev('media(2, 4, 6)')).toBe(4));
+  it('mediana(1, 5, 3) = 3', () => expect(ev('mediana(1, 5, 3)')).toBe(3));
+});
+
 describe('alias en inglés siguen funcionando', () => {
   it('sqrt(25) = 5', () => expect(ev('sqrt(25)')).toBe(5));
   it('sin(90) = 1', () => expect(ev('sin(90)')).toBeCloseTo(1));
+  it('mean(2, 4, 6) = 4', () => expect(ev('mean(2, 4, 6)')).toBe(4));
+  it('median(1, 5, 3) = 3', () => expect(ev('median(1, 5, 3)')).toBe(3));
 });
