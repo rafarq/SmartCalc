@@ -205,6 +205,26 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    title: 'Cálculo inverso',
+    description:
+      'Para cuando conoces el resultado y quieres averiguar el valor original que lo produce.',
+    examples: [
+      { input: '20 es el 10% de qué', result: '200' },
+      { input: '90 tiene un 20% de descuento en qué', result: '112,5' },
+      { input: '150 tiene un 15% de aumento en qué', result: '130,43' },
+    ],
+    useCases: [
+      { input: '80 tiene un 20% de descuento en qué', result: '100' },
+      { input: '121 tiene un 21% de aumento en qué', result: '100' },
+      { input: '12 es el 4% de qué', result: '300' },
+    ],
+    notes: [
+      'Útil para deshacer rebajas: 80 € es el precio rebajado, ¿cuál era el original? → 80 tiene un 20% de descuento en qué.',
+      'Útil para deshacer un IVA o recargo: 121 € incluye un 21% de IVA, ¿cuál era la base? → 121 tiene un 21% de aumento en qué.',
+      'Útil para extraer la base de una comisión: 12 € es el 4% de la venta total, ¿cuánto se vendió? → 12 es el 4% de qué.',
+    ],
+  },
+  {
     title: 'Glosario de funciones (español ↔ inglés)',
     description:
       'Todas las funciones aceptan su nombre en inglés. Las marcadas también admiten su alias en español. Las que solo aparecen en inglés todavía no tienen alias traducido.',
