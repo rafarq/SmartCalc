@@ -12,12 +12,12 @@
   background: #fff;
   gap: 12px;
 }
-.header-brand {
-  font-size: 13px;
-  font-weight: 600;
-  color: #888;
-  letter-spacing: 0.02em;
+.header-brand-logo {
+  height: 22px;
+  width: auto;
   justify-self: start;
+  display: block;
+  user-select: none;
 }
 .doc-title {
   font-size: 15px;

@@ -29,7 +29,7 @@ export function Header({ title, onTitleChange, onSave, onLoad, onHelp }: Props) 
 
   return (
     <header className="header">
-      <span className="header-brand">SmartCalc</span>
+      <img className="header-brand-logo" src="/SmartCalc-logo.png" alt="SmartCalc" />
       <EditableTitle value={title} onChange={onTitleChange} />
       <input
         ref={fileRef}
