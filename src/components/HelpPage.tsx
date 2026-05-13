@@ -179,7 +179,7 @@ const SECTIONS: Section[] = [
     ],
     notes: [
       'El nombre puede empezar por letra (incluidas á, é, í, ó, ú, ü, ñ) o "_" y seguir con letras, números o guiones bajos.',
-      'Cuando la línea pierde el foco, las variables conocidas se muestran como chips verdes (los chips azules son referencias a líneas).',
+      'Las variables conocidas se resaltan con un pill verde para distinguirlas de las palabras sueltas (los pills azules son referencias a líneas). El resaltado es solo visual: puedes seguir escribiendo, borrar y mover el cursor dentro de la variable como en texto normal.',
       'Una nueva asignación con el mismo nombre sobrescribe el valor previo.',
       'Si la expresión a la derecha da error, la variable conserva su valor anterior.',
     ],
