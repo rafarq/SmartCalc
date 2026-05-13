@@ -80,6 +80,22 @@ export function useDocument() {
     setFocusedLineId(id);
   }, []);
 
+  const focusPrevLine = useCallback((id: string) => {
+    setDoc((d) => {
+      const idx = d.lines.findIndex((l) => l.id === id);
+      if (idx > 0) setFocusedLineId(d.lines[idx - 1].id);
+      return d;
+    });
+  }, []);
+
+  const focusNextLine = useCallback((id: string) => {
+    setDoc((d) => {
+      const idx = d.lines.findIndex((l) => l.id === id);
+      if (idx >= 0 && idx < d.lines.length - 1) setFocusedLineId(d.lines[idx + 1].id);
+      return d;
+    });
+  }, []);
+
   const appendRefToFocused = useCallback((targetId: string) => {
     const focusedId = focusedLineIdRef.current;
     if (!focusedId || focusedId === targetId) return;
@@ -113,6 +129,8 @@ export function useDocument() {
     insertLineAfter,
     removeLine,
     focusLine,
+    focusPrevLine,
+    focusNextLine,
     appendRefToFocused,
     replaceDocument,
     setTitle,

@@ -13,6 +13,8 @@ type Props = {
   onEnter: () => void;
   onBackspaceEmpty?: () => void;
   onFocus?: () => void;
+  onArrowUp?: () => void;
+  onArrowDown?: () => void;
   onResultClick?: () => void;
 };
 
@@ -28,6 +30,8 @@ export function LineRow({
   onEnter,
   onBackspaceEmpty,
   onFocus,
+  onArrowUp,
+  onArrowDown,
   onResultClick,
 }: Props) {
   const inputRef = useRef<HTMLDivElement>(null);
@@ -105,6 +109,16 @@ export function LineRow({
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             onEnter();
+            return;
+          }
+          if (e.key === 'ArrowUp' && onArrowUp) {
+            e.preventDefault();
+            onArrowUp();
+            return;
+          }
+          if (e.key === 'ArrowDown' && onArrowDown) {
+            e.preventDefault();
+            onArrowDown();
             return;
           }
           if (e.key === 'Backspace') {

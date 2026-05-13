@@ -23,7 +23,9 @@ const SECTIONS: Section[] = [
     title: 'Atajos de teclado',
     notes: [
       'Enter — inserta una nueva línea debajo y mueve el cursor a ella.',
+      '↑ / ↓ — salta a la línea anterior o siguiente, manteniendo el cursor al final del texto de destino.',
       'Backspace en línea vacía — elimina la línea y vuelve al final de la anterior.',
+      'Click en cualquier punto de una fila — enfoca esa línea directamente, sin tener que recorrer todas las anteriores.',
       'Esc (con la ayuda abierta) — cierra esta página.',
     ],
   },

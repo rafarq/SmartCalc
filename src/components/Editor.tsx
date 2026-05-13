@@ -16,6 +16,8 @@ export function Editor({
   insertLineAfter,
   removeLine,
   focusLine,
+  focusPrevLine,
+  focusNextLine,
   appendRefToFocused,
 }: EditorProps) {
   return (
@@ -38,6 +40,8 @@ export function Editor({
             onEnter={() => insertLineAfter(i)}
             onBackspaceEmpty={() => removeLine(line.id)}
             onFocus={() => focusLine(line.id)}
+            onArrowUp={() => focusPrevLine(line.id)}
+            onArrowDown={() => focusNextLine(line.id)}
             onResultClick={() => appendRefToFocused(line.id)}
           />
         );
