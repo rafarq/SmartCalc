@@ -1,14 +1,24 @@
+import { useEffect, useRef } from 'react';
+
 type Props = {
   value: string;
   result: string;
+  autoFocus?: boolean;
   onChange: (text: string) => void;
   onEnter: () => void;
 };
 
-export function LineRow({ value, result, onChange, onEnter }: Props) {
+export function LineRow({ value, result, autoFocus, onChange, onEnter }: Props) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (autoFocus) inputRef.current?.focus();
+  }, [autoFocus]);
+
   return (
     <div className="line-row">
       <input
+        ref={inputRef}
         className="line-input"
         type="text"
         value={value}

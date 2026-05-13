@@ -10,8 +10,9 @@ describe('document model', () => {
 
   it('adds a new line after the given index', () => {
     const doc = createEmptyDocument();
-    const updated = addLine(doc, 0);
+    const { doc: updated, newId } = addLine(doc, 0);
     expect(updated.lines).toHaveLength(2);
+    expect(updated.lines[1].id).toBe(newId);
   });
 
   it('updates the text of a line by id', () => {

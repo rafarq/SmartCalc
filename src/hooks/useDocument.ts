@@ -4,6 +4,7 @@ import { createEmptyDocument, addLine, updateLine, type DocumentModel } from '..
 
 export function useDocument() {
   const [doc, setDoc] = useState<DocumentModel>(() => createEmptyDocument());
+  const [focusedLineId, setFocusedLineId] = useState<string | null>(null);
 
   const results = useMemo<Result[]>(() => {
     const prev: Array<{ value: unknown; formatted: string }> = [];
@@ -21,8 +22,12 @@ export function useDocument() {
   }, []);
 
   const insertLineAfter = useCallback((index: number) => {
-    setDoc((d) => addLine(d, index));
+    setDoc((d) => {
+      const { doc: next, newId } = addLine(d, index);
+      setFocusedLineId(newId);
+      return next;
+    });
   }, []);
 
-  return { doc, results, setLineText, insertLineAfter };
+  return { doc, results, focusedLineId, setLineText, insertLineAfter };
 }

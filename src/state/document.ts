@@ -7,10 +7,14 @@ export const createEmptyDocument = (): DocumentModel => ({
   lines: [{ id: newId(), text: '' }],
 });
 
-export const addLine = (doc: DocumentModel, afterIndex: number): DocumentModel => {
+export const addLine = (
+  doc: DocumentModel,
+  afterIndex: number,
+): { doc: DocumentModel; newId: string } => {
+  const id = newId();
   const lines = [...doc.lines];
-  lines.splice(afterIndex + 1, 0, { id: newId(), text: '' });
-  return { lines };
+  lines.splice(afterIndex + 1, 0, { id, text: '' });
+  return { doc: { lines }, newId: id };
 };
 
 export const updateLine = (doc: DocumentModel, id: string, text: string): DocumentModel => ({
