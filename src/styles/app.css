@@ -1,0 +1,33 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.editor {
+  flex: 1;
+  padding: 24px 40px;
+  overflow-y: auto;
+}
+.line-row {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 24px;
+  padding: 4px 0;
+  align-items: baseline;
+}
+.line-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  padding: 4px 0;
+  width: 100%;
+}
+.line-input:focus {
+  background: #f5f5f7;
+}
+.line-result {
+  text-align: right;
+  color: #444;
+  font-variant-numeric: tabular-nums;
+}
