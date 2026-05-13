@@ -3,6 +3,7 @@ import { formatNumber } from '../utils/numberFormat';
 import { expandRefs } from '../utils/refs';
 import { preprocess } from './preprocess';
 import { tryPercentages } from './percentages';
+import { tryAssignment } from './variables';
 
 export type EvalContext = {
   vars: Record<string, number>;
@@ -69,6 +70,13 @@ math.import(
 export function evaluate(line: string, ctx: EvalContext): Result {
   const trimmed = line.trim();
   if (!trimmed) return { ok: true, value: null, formatted: '' };
+  const assign = tryAssignment(trimmed);
+  if (assign) {
+    const inner = evaluate(assign.expr, ctx);
+    if (!inner.ok) return inner;
+    if (typeof inner.value === 'number') ctx.vars[assign.name] = inner.value;
+    return { ok: true, value: inner.value, formatted: inner.formatted };
+  }
   const expanded = expandRefs(trimmed, ctx.lineValues ?? {});
   const expr = preprocess(expanded);
   const pct = tryPercentages(expr);

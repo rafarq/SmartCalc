@@ -164,6 +164,26 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    title: 'Variables',
+    description:
+      'Asigna un valor a un nombre con = y úsalo en líneas posteriores. La variable se recuerda mientras la hoja esté abierta.',
+    examples: [
+      { input: 'coche = 4', result: '4' },
+      { input: 'coche', result: '4' },
+      { input: 'coche * 10', result: '40' },
+    ],
+    useCases: [
+      { input: 'precio = 1200', result: '1.200' },
+      { input: 'iva = 0.21', result: '0,21' },
+      { input: 'precio + precio * iva', result: '1.452' },
+    ],
+    notes: [
+      'El nombre puede empezar por letra (incluidas á, é, í, ó, ú, ü, ñ) o "_" y seguir con letras, números o guiones bajos.',
+      'Una nueva asignación con el mismo nombre sobrescribe el valor previo.',
+      'Si la expresión a la derecha da error, la variable conserva su valor anterior.',
+    ],
+  },
+  {
     title: 'Porcentajes y regla de tres',
     description: 'Frases en español natural que SmartCalc reconoce sin necesidad de operadores.',
     examples: [
