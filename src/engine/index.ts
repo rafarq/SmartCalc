@@ -15,6 +15,21 @@ export type Result =
 const math: MathJsInstance = create(all, { number: 'number' });
 // pi, e, tau ya están en mathjs por defecto.
 
+// Trigonometría en grados (más natural para uso de calculadora).
+const toRad = (deg: number) => (deg * Math.PI) / 180;
+const toDeg = (rad: number) => (rad * 180) / Math.PI;
+math.import(
+  {
+    sin: (x: number) => Math.sin(toRad(x)),
+    cos: (x: number) => Math.cos(toRad(x)),
+    tan: (x: number) => Math.tan(toRad(x)),
+    asin: (x: number) => toDeg(Math.asin(x)),
+    acos: (x: number) => toDeg(Math.acos(x)),
+    atan: (x: number) => toDeg(Math.atan(x)),
+  },
+  { override: true },
+);
+
 export function evaluate(line: string, ctx: EvalContext): Result {
   const trimmed = line.trim();
   if (!trimmed) return { ok: true, value: null, formatted: '' };
