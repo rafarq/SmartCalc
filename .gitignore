@@ -4,3 +4,7 @@ dist
 *.local
 coverage
 .vite
+
+# Script de despliegue con credenciales SFTP
+subir.sh
+.version
