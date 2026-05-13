@@ -2,6 +2,7 @@ import { create, all, type MathJsInstance } from 'mathjs';
 import { formatNumber } from '../utils/numberFormat';
 import { expandRefs } from '../utils/refs';
 import { preprocess } from './preprocess';
+import { tryPercentages } from './percentages';
 
 export type EvalContext = {
   vars: Record<string, number>;
@@ -67,6 +68,8 @@ export function evaluate(line: string, ctx: EvalContext): Result {
   if (!trimmed) return { ok: true, value: null, formatted: '' };
   const expanded = expandRefs(trimmed, ctx.lineValues ?? {});
   const expr = preprocess(expanded);
+  const pct = tryPercentages(expr);
+  if (pct) return { ok: true, value: pct.value, formatted: formatNumber(pct.value) };
   try {
     const value = math.evaluate(expr, { ...ctx.vars });
     return { ok: true, value, formatted: formatNumber(value) };
