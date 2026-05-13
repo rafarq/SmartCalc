@@ -33,6 +33,10 @@ math.import(
     asin: asinDeg,
     acos: acosDeg,
     atan: atanDeg,
+    log: (x: number, base?: number) =>
+      base === undefined ? Math.log10(x) : Math.log(x) / Math.log(base),
+    ln: (x: number) => Math.log(x),
+    exp: (x: number) => Math.exp(x),
   },
   { override: true },
 );
