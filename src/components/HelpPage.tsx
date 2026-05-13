@@ -17,13 +17,13 @@ const SECTIONS: Section[] = [
     title: 'Atajos de teclado',
     notes: [
       'Enter — inserta una nueva línea debajo y mueve el cursor a ella.',
-      'Backspace en línea vacía — borra la línea y vuelve a la anterior.',
-      'Click en un resultado — inserta una referencia a esa línea en la línea actual.',
+      'Backspace en línea vacía — elimina la línea y vuelve al final de la anterior.',
+      'Esc (con la ayuda abierta) — cierra esta página.',
     ],
   },
   {
     title: 'Operaciones básicas',
-    description: 'Usa los operadores como en una calculadora estándar.',
+    description: 'Escribe los cálculos como en una calculadora estándar.',
     examples: [
       { input: '2 + 3', result: '5' },
       { input: '25 - 5', result: '20' },
@@ -32,11 +32,11 @@ const SECTIONS: Section[] = [
       { input: '2 ^ 10', result: '1024' },
       { input: '10 % 3', result: '1' },
     ],
-    notes: ['^ = potencia, % = módulo (resto de la división).'],
+    notes: ['^ = potencia · % = módulo (resto de la división).'],
   },
   {
     title: 'Funciones matemáticas',
-    description: 'Disponibles con nombre en inglés o español.',
+    description: 'Disponibles con nombre en inglés o español. Cualquiera de los dos funciona.',
     examples: [
       { input: 'sqrt(16)   ·   raiz(16)', result: '4' },
       { input: 'abs(-7)', result: '7' },
@@ -48,7 +48,7 @@ const SECTIONS: Section[] = [
   },
   {
     title: 'Trigonometría',
-    description: 'Funciones trigonométricas en grados (no radianes). Disponibles en inglés y español.',
+    description: 'Funciones trigonométricas en grados (no radianes). Inglés y español equivalentes.',
     examples: [
       { input: 'sin(90)   ·   seno(90)', result: '1' },
       { input: 'cos(180)   ·   coseno(180)', result: '-1' },
@@ -69,12 +69,26 @@ const SECTIONS: Section[] = [
   {
     title: 'Referencias entre líneas',
     description:
-      'Haz click en cualquier resultado para insertarlo como referencia (chip azul) en la línea donde tienes el cursor. Si la línea origen cambia, la referencia se actualiza automáticamente.',
+      'Haz click sobre el resultado de cualquier línea (a la derecha) para insertarlo como referencia en la línea donde tienes el cursor. La referencia se muestra como un chip azul con el valor actual.',
     examples: [
       { input: '2000 + 3', result: '2003' },
       { input: '[2003] × 2', result: '4006' },
     ],
-    notes: ['El chip [valor] representa una referencia viva: cambia con su línea origen.'],
+    notes: [
+      'El chip [valor] es una referencia viva: si cambias la línea origen, el chip y el resultado se actualizan automáticamente.',
+      'No puedes referenciar la misma línea desde sí misma.',
+      'El chip se borra con Backspace como una sola unidad.',
+    ],
+  },
+  {
+    title: 'Documento y guardado',
+    description: 'Tu trabajo se guarda solo y puedes exportarlo o reabrirlo cuando quieras.',
+    notes: [
+      'Autoguardado — cada cambio se guarda automáticamente en el navegador. Recarga la página y verás tu hoja intacta.',
+      'Título de la hoja — click sobre el título centrado en la cabecera para renombrar (Enter guarda, Esc cancela).',
+      'Guardar (icono ↓) — descarga la hoja como archivo .syscalc con el nombre del título.',
+      'Cargar (icono carpeta) — abre un archivo .syscalc previamente guardado, sustituyendo la hoja actual.',
+    ],
   },
 ];
 
