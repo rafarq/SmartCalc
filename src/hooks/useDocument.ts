@@ -69,7 +69,7 @@ export function useDocument() {
       const newLines = d.lines.filter((l) => l.id !== id);
       const focusTargetId = idx === 0 ? newLines[0].id : d.lines[idx - 1].id;
       setFocusedLineId(focusTargetId);
-      return { lines: newLines };
+      return { ...d, lines: newLines };
     });
   }, []);
 

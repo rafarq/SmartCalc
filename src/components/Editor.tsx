@@ -1,7 +1,10 @@
 import type { useDocument } from '../hooks/useDocument';
 import { LineRow } from './LineRow';
 
-type EditorProps = Omit<ReturnType<typeof useDocument>, 'lineValues' | 'replaceDocument'>;
+type EditorProps = Omit<
+  ReturnType<typeof useDocument>,
+  'lineValues' | 'replaceDocument' | 'setTitle'
+>;
 
 export function Editor({
   doc,
