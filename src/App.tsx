@@ -1,3 +1,4 @@
+import { Header } from './components/Header';
 import { Editor } from './components/Editor';
 import './styles/global.css';
 import './styles/app.css';
@@ -5,6 +6,7 @@ import './styles/app.css';
 export default function App() {
   return (
     <div className="app">
+      <Header onSave={() => {}} onLoad={() => {}} />
       <Editor />
     </div>
   );
