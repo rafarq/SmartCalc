@@ -53,10 +53,15 @@ export function LineRow({
   }, [value, lineValues, varNames, autoFocus, isFocused]);
 
   useEffect(() => {
-    if (autoFocus && inputRef.current) {
-      inputRef.current.focus();
-      placeCursorAtEnd(inputRef.current);
-    }
+    const el = inputRef.current;
+    if (!autoFocus || !el) return;
+    // Si el elemento ya está enfocado (p. ej. el usuario acaba de hacer click en
+    // medio del texto), respetamos su posición de cursor. Solo forzamos foco +
+    // cursor al final cuando el cambio de foco viene de un evento programático
+    // (Enter para crear línea, borrado, carga de documento…).
+    if (document.activeElement === el) return;
+    el.focus();
+    placeCursorAtEnd(el);
   }, [autoFocus]);
 
   const handleInput = () => {
