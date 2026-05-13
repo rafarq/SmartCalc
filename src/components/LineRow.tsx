@@ -71,7 +71,22 @@ export function LineRow({
   };
 
   return (
-    <div className="line-row">
+    <div
+      className="line-row"
+      onMouseDown={(e) => {
+        const el = inputRef.current;
+        if (!el) return;
+        const target = e.target as HTMLElement;
+        // Si el click ya cae dentro del editor o sobre el resultado (con su propio
+        // handler), dejamos que el navegador o el handler específico haga su trabajo.
+        if (el.contains(target) || target.closest('.line-result')) return;
+        // En cualquier otra zona de la fila (número de línea, padding, hueco vacío)
+        // redirigimos el foco al editor para que el usuario pueda editar siempre.
+        e.preventDefault();
+        el.focus();
+        placeCursorAtEnd(el);
+      }}
+    >
       {lineNumber !== undefined && <span className="line-number">{lineNumber}</span>}
       <div
         ref={inputRef}
