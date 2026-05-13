@@ -10,6 +10,7 @@ type Props = {
   resultClickable?: boolean;
   onChange: (text: string) => void;
   onEnter: () => void;
+  onBackspaceEmpty?: () => void;
   onFocus?: () => void;
   onResultClick?: () => void;
 };
@@ -23,6 +24,7 @@ export function LineRow({
   resultClickable,
   onChange,
   onEnter,
+  onBackspaceEmpty,
   onFocus,
   onResultClick,
 }: Props) {
@@ -75,6 +77,14 @@ export function LineRow({
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             onEnter();
+            return;
+          }
+          if (e.key === 'Backspace') {
+            const el = inputRef.current;
+            if (el && extractText(el) === '' && onBackspaceEmpty) {
+              e.preventDefault();
+              onBackspaceEmpty();
+            }
           }
         }}
       />

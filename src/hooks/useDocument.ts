@@ -43,6 +43,18 @@ export function useDocument() {
     });
   }, []);
 
+  const removeLine = useCallback((id: string) => {
+    setDoc((d) => {
+      if (d.lines.length <= 1) return d; // siempre debe haber al menos una línea
+      const idx = d.lines.findIndex((l) => l.id === id);
+      if (idx === -1) return d;
+      const newLines = d.lines.filter((l) => l.id !== id);
+      const focusTargetId = idx === 0 ? newLines[0].id : d.lines[idx - 1].id;
+      setFocusedLineId(focusTargetId);
+      return { lines: newLines };
+    });
+  }, []);
+
   const focusLine = useCallback((id: string) => {
     setFocusedLineId(id);
   }, []);
@@ -68,6 +80,7 @@ export function useDocument() {
     focusedLineId,
     setLineText,
     insertLineAfter,
+    removeLine,
     focusLine,
     appendRefToFocused,
   };

@@ -9,6 +9,7 @@ export function Editor() {
     focusedLineId,
     setLineText,
     insertLineAfter,
+    removeLine,
     focusLine,
     appendRefToFocused,
   } = useDocument();
@@ -30,6 +31,7 @@ export function Editor() {
             resultClickable={hasValue && line.id !== focusedLineId}
             onChange={(t) => setLineText(line.id, t)}
             onEnter={() => insertLineAfter(i)}
+            onBackspaceEmpty={() => removeLine(line.id)}
             onFocus={() => focusLine(line.id)}
             onResultClick={() => appendRefToFocused(line.id)}
           />
