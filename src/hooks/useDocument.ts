@@ -1,12 +1,24 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { evaluate, type Result } from '../engine';
 import { createEmptyDocument, addLine, updateLine, type DocumentModel } from '../state/document';
+import { loadLocal, saveLocal } from '../state/storage';
+
+function initialDoc(): DocumentModel {
+  const loaded = loadLocal();
+  if (loaded && loaded.lines.length > 0) return loaded;
+  return createEmptyDocument();
+}
 
 export function useDocument() {
-  const [doc, setDoc] = useState<DocumentModel>(() => createEmptyDocument());
+  const [doc, setDoc] = useState<DocumentModel>(initialDoc);
   const [focusedLineId, setFocusedLineId] = useState<string | null>(null);
   const focusedLineIdRef = useRef<string | null>(null);
   focusedLineIdRef.current = focusedLineId;
+
+  // Autoguardado en localStorage cada vez que cambia el documento.
+  useEffect(() => {
+    saveLocal(doc);
+  }, [doc]);
 
   const { results, lineValues, formattedById } = useMemo(() => {
     const prev: Array<{ value: unknown; formatted: string }> = [];
@@ -45,7 +57,7 @@ export function useDocument() {
 
   const removeLine = useCallback((id: string) => {
     setDoc((d) => {
-      if (d.lines.length <= 1) return d; // siempre debe haber al menos una línea
+      if (d.lines.length <= 1) return d;
       const idx = d.lines.findIndex((l) => l.id === id);
       if (idx === -1) return d;
       const newLines = d.lines.filter((l) => l.id !== id);
@@ -59,10 +71,9 @@ export function useDocument() {
     setFocusedLineId(id);
   }, []);
 
-  // Inserta una referencia (@{targetId}) al final del texto de la línea actualmente enfocada.
   const appendRefToFocused = useCallback((targetId: string) => {
     const focusedId = focusedLineIdRef.current;
-    if (!focusedId || focusedId === targetId) return; // evita auto-referencia
+    if (!focusedId || focusedId === targetId) return;
     setDoc((d) => {
       const line = d.lines.find((l) => l.id === focusedId);
       if (!line) return d;
@@ -70,6 +81,12 @@ export function useDocument() {
       const newText = `${line.text}${sep}@{${targetId}} `;
       return updateLine(d, focusedId, newText);
     });
+  }, []);
+
+  const replaceDocument = useCallback((next: DocumentModel) => {
+    if (!next.lines || next.lines.length === 0) return;
+    setDoc(next);
+    setFocusedLineId(next.lines[0].id);
   }, []);
 
   return {
@@ -83,5 +100,6 @@ export function useDocument() {
     removeLine,
     focusLine,
     appendRefToFocused,
+    replaceDocument,
   };
 }

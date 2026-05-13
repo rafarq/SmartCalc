@@ -1,19 +1,19 @@
-import { useDocument } from '../hooks/useDocument';
+import type { useDocument } from '../hooks/useDocument';
 import { LineRow } from './LineRow';
 
-export function Editor() {
-  const {
-    doc,
-    results,
-    formattedById,
-    focusedLineId,
-    setLineText,
-    insertLineAfter,
-    removeLine,
-    focusLine,
-    appendRefToFocused,
-  } = useDocument();
+type EditorProps = Omit<ReturnType<typeof useDocument>, 'lineValues' | 'replaceDocument'>;
 
+export function Editor({
+  doc,
+  results,
+  formattedById,
+  focusedLineId,
+  setLineText,
+  insertLineAfter,
+  removeLine,
+  focusLine,
+  appendRefToFocused,
+}: EditorProps) {
   return (
     <div className="editor">
       {doc.lines.map((line, i) => {
