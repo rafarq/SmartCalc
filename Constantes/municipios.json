@@ -1,0 +1,604 @@
+{
+    "madrid": {
+        "subdivision": "ES-MD",
+        "holidays": [
+            "2026-05-15",
+            "2026-11-09"
+        ]
+    },
+    "barcelona": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-05-25",
+            "2026-06-24"
+        ]
+    },
+    "valencia": {
+        "subdivision": "ES-VC",
+        "holidays": [
+            "2026-01-22",
+            "2026-04-13"
+        ]
+    },
+    "sevilla": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-04-22",
+            "2026-06-04"
+        ]
+    },
+    "malaga": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-08-19",
+            "2026-09-08"
+        ]
+    },
+    "zaragoza": {
+        "subdivision": "ES-AR",
+        "holidays": [
+            "2026-01-29",
+            "2026-03-05"
+        ]
+    },
+    "murcia": {
+        "subdivision": "ES-MC",
+        "holidays": [
+            "2026-04-07",
+            "2026-09-15"
+        ]
+    },
+    "palma": {
+        "subdivision": "ES-IB",
+        "holidays": [
+            "2026-01-20",
+            "2026-06-24"
+        ]
+    },
+    "las palmas": {
+        "subdivision": "ES-CN",
+        "holidays": [
+            "2026-02-17",
+            "2026-06-24"
+        ]
+    },
+    "bilbao": {
+        "subdivision": "ES-PV",
+        "holidays": [
+            "2026-07-31",
+            "2026-08-28"
+        ]
+    },
+    "alicante": {
+        "subdivision": "ES-VC",
+        "holidays": [
+            "2026-04-16",
+            "2026-06-24"
+        ]
+    },
+    "cordoba": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-09-08",
+            "2026-10-24"
+        ]
+    },
+    "valladolid": {
+        "subdivision": "ES-CL",
+        "holidays": [
+            "2026-05-13",
+            "2026-09-08"
+        ]
+    },
+    "vigo": {
+        "subdivision": "ES-GA",
+        "holidays": [
+            "2026-03-28",
+            "2026-08-16"
+        ]
+    },
+    "gijon": {
+        "subdivision": "ES-AS",
+        "holidays": [
+            "2026-02-17",
+            "2026-06-29"
+        ]
+    },
+    "hospitalet": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-05-25",
+            "2026-09-24"
+        ]
+    },
+    "vitoria": {
+        "subdivision": "ES-PV",
+        "holidays": [
+            "2026-04-28",
+            "2026-08-05"
+        ]
+    },
+    "la coruña": {
+        "subdivision": "ES-GA",
+        "holidays": [
+            "2026-02-17",
+            "2026-06-24"
+        ]
+    },
+    "granada": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-01-02",
+            "2026-06-04"
+        ]
+    },
+    "elche": {
+        "subdivision": "ES-VC",
+        "holidays": [
+            "2026-04-13",
+            "2026-12-29"
+        ]
+    },
+    "oviedo": {
+        "subdivision": "ES-AS",
+        "holidays": [
+            "2026-05-26",
+            "2026-09-21"
+        ]
+    },
+    "badalona": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-05-11",
+            "2026-05-25"
+        ]
+    },
+    "terrassa": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-07-06",
+            "2026-05-25"
+        ]
+    },
+    "cartagena": {
+        "subdivision": "ES-MC",
+        "holidays": [
+            "2026-03-27",
+            "2026-09-25"
+        ]
+    },
+    "jerez": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-05-11",
+            "2026-09-24"
+        ]
+    },
+    "sabadell": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-05-11",
+            "2026-05-25"
+        ]
+    },
+    "móstoles": {
+        "subdivision": "ES-MD",
+        "holidays": [
+            "2026-05-02",
+            "2026-09-12"
+        ]
+    },
+    "santa cruz de tenerife": {
+        "subdivision": "ES-CN",
+        "holidays": [
+            "2026-02-17",
+            "2026-05-03"
+        ]
+    },
+    "pamplona": {
+        "subdivision": "ES-NC",
+        "holidays": [
+            "2026-07-07",
+            "2026-11-29"
+        ]
+    },
+    "almería": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-01-02",
+            "2026-08-29"
+        ]
+    },
+    "alcalá de henares": {
+        "subdivision": "ES-MD",
+        "holidays": [
+            "2026-08-06",
+            "2026-10-09"
+        ]
+    },
+    "fuenlabrada": {
+        "subdivision": "ES-MD",
+        "holidays": [
+            "2026-09-14",
+            "2026-12-26"
+        ]
+    },
+    "leganés": {
+        "subdivision": "ES-MD",
+        "holidays": [
+            "2026-08-14",
+            "2026-10-11"
+        ]
+    },
+    "san sebastián": {
+        "subdivision": "ES-PV",
+        "holidays": [
+            "2026-01-20",
+            "2026-07-31"
+        ]
+    },
+    "getafe": {
+        "subdivision": "ES-MD",
+        "holidays": [
+            "2026-05-21",
+            "2026-06-01"
+        ]
+    },
+    "burgos": {
+        "subdivision": "ES-CL",
+        "holidays": [
+            "2026-06-12",
+            "2026-06-29"
+        ]
+    },
+    "albacete": {
+        "subdivision": "ES-CM",
+        "holidays": [
+            "2026-06-24",
+            "2026-09-08"
+        ]
+    },
+    "castellón": {
+        "subdivision": "ES-VC",
+        "holidays": [
+            "2026-03-09",
+            "2026-06-29"
+        ]
+    },
+    "santander": {
+        "subdivision": "ES-CB",
+        "holidays": [
+            "2026-08-30",
+            "2026-09-15"
+        ]
+    },
+    "alcorcón": {
+        "subdivision": "ES-MD",
+        "holidays": [
+            "2026-04-13",
+            "2026-09-08"
+        ]
+    },
+    "san Cristóbal de la Laguna": {
+        "subdivision": "ES-CN",
+        "holidays": [
+            "2026-02-17",
+            "2026-09-14"
+        ]
+    },
+    "logroño": {
+        "subdivision": "ES-RI",
+        "holidays": [
+            "2026-06-11",
+            "2026-09-21"
+        ]
+    },
+    "badajoz": {
+        "subdivision": "ES-EX",
+        "holidays": [
+            "2026-02-17",
+            "2026-06-24"
+        ]
+    },
+    "huelva": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-01-19",
+            "2026-09-08"
+        ]
+    },
+    "salamanca": {
+        "subdivision": "ES-CL",
+        "holidays": [
+            "2026-06-12",
+            "2026-09-08"
+        ]
+    },
+    "marbella": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-06-11",
+            "2026-10-19"
+        ]
+    },
+    "lleida": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-05-11",
+            "2026-09-29"
+        ]
+    },
+    "tarragona": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-08-19",
+            "2026-09-23"
+        ]
+    },
+    "dos hermanas": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-04-22",
+            "2026-07-26"
+        ]
+    },
+    "torrejón de ardoz": {
+        "subdivision": "ES-MD",
+        "holidays": [
+            "2026-06-22",
+            "2026-06-23"
+        ]
+    },
+    "parla": {
+        "subdivision": "ES-MD",
+        "holidays": [
+            "2026-06-15",
+            "2026-09-14"
+        ]
+    },
+    "mataró": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-05-25",
+            "2026-07-27"
+        ]
+    },
+    "león": {
+        "subdivision": "ES-CL",
+        "holidays": [
+            "2026-06-24",
+            "2026-10-05"
+        ]
+    },
+    "algeciras": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-06-24",
+            "2026-07-16"
+        ]
+    },
+    "santa coloma de gramenet": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-05-25",
+            "2026-09-07"
+        ]
+    },
+    "alcobendas": {
+        "subdivision": "ES-MD",
+        "holidays": [
+            "2026-01-24",
+            "2026-05-15"
+        ]
+    },
+    "cádiz": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-02-16",
+            "2026-10-07"
+        ]
+    },
+    "jaén": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-06-11",
+            "2026-10-18"
+        ]
+    },
+    "ourense": {
+        "subdivision": "ES-GA",
+        "holidays": [
+            "2026-02-17",
+            "2026-11-11"
+        ]
+    },
+    "reus": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-06-29",
+            "2026-09-25"
+        ]
+    },
+    "telde": {
+        "subdivision": "ES-CN",
+        "holidays": [
+            "2026-06-24",
+            "2026-09-14"
+        ]
+    },
+    "barakaldo": {
+        "subdivision": "ES-PV",
+        "holidays": [
+            "2026-02-17",
+            "2026-07-16"
+        ]
+    },
+    "lugo": {
+        "subdivision": "ES-GA",
+        "holidays": [
+            "2026-02-17",
+            "2026-10-05"
+        ]
+    },
+    "girona": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-05-25",
+            "2026-10-29"
+        ]
+    },
+    "cáceres": {
+        "subdivision": "ES-EX",
+        "holidays": [
+            "2026-04-23",
+            "2026-05-27"
+        ]
+    },
+    "santiago de compostela": {
+        "subdivision": "ES-GA",
+        "holidays": [
+            "2026-05-21",
+            "2026-08-16"
+        ]
+    },
+    "las rozas de madrid": {
+        "subdivision": "ES-MD",
+        "holidays": [
+            "2026-05-04",
+            "2026-09-29"
+        ]
+    },
+    "san fernando": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-05-30",
+            "2026-09-24"
+        ]
+    },
+    "lorca": {
+        "subdivision": "ES-MC",
+        "holidays": [
+            "2026-09-08",
+            "2026-11-23"
+        ]
+    },
+    "roquetas de mar": {
+        "subdivision": "ES-AN",
+        "holidays": [
+            "2026-07-26",
+            "2026-12-29"
+        ]
+    },
+    "sant cugat del vallès": {
+        "subdivision": "ES-CT",
+        "holidays": [
+            "2026-03-03",
+            "2026-06-29"
+        ]
+    },
+    "guadalajara": {
+        "subdivision": "ES-CM",
+        "holidays": [
+            "2026-09-08",
+            "2026-09-18"
+        ]
+    },
+    "toledo": {
+        "subdivision": "ES-CM",
+        "holidays": [
+            "2026-01-23",
+            "2026-06-04"
+        ]
+    },
+    "ceuta": {
+        "subdivision": "ES-CE",
+        "holidays": [
+            "2026-06-13",
+            "2026-09-02"
+        ]
+    },
+    "melilla": {
+        "subdivision": "ES-ML",
+        "holidays": [
+            "2026-09-08",
+            "2026-09-17"
+        ]
+    },
+    "teruel": {
+        "subdivision": "ES-AR",
+        "holidays": [
+            "2026-04-13",
+            "2026-07-13"
+        ]
+    },
+    "huesca": {
+        "subdivision": "ES-AR",
+        "holidays": [
+            "2026-01-22",
+            "2026-08-10"
+        ]
+    },
+    "soria": {
+        "subdivision": "ES-CL",
+        "holidays": [
+            "2026-06-24",
+            "2026-10-02"
+        ]
+    },
+    "segovia": {
+        "subdivision": "ES-CL",
+        "holidays": [
+            "2026-06-24",
+            "2026-10-25"
+        ]
+    },
+    "avila": {
+        "subdivision": "ES-CL",
+        "holidays": [
+            "2026-05-02",
+            "2026-10-15"
+        ]
+    },
+    "ávila": {
+        "subdivision": "ES-CL",
+        "holidays": [
+            "2026-05-02",
+            "2026-10-15"
+        ]
+    },
+    "cuenca": {
+        "subdivision": "ES-CM",
+        "holidays": [
+            "2026-01-28",
+            "2026-09-21"
+        ]
+    },
+    "ciudad real": {
+        "subdivision": "ES-CM",
+        "holidays": [
+            "2026-06-01",
+            "2026-08-22"
+        ]
+    },
+    "zamora": {
+        "subdivision": "ES-CL",
+        "holidays": [
+            "2026-06-01",
+            "2026-06-29"
+        ]
+    },
+    "palencia": {
+        "subdivision": "ES-CL",
+        "holidays": [
+            "2026-02-02",
+            "2026-09-02"
+        ]
+    },
+    "pontevedra": {
+        "subdivision": "ES-GA",
+        "holidays": [
+            "2026-02-18",
+            "2026-07-11"
+        ]
+    }
+}
