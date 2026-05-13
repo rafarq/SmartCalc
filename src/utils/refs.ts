@@ -36,7 +36,7 @@ function renderTextWithVars(seg: string, varSet: Set<string>): string {
       while (j < seg.length && VAR_WORD_CHAR.test(seg[j])) j++;
       const word = seg.slice(i, j);
       if (varSet.has(word)) {
-        out += `<span class="var-chip" data-var="${escapeHtml(word)}" contenteditable="false">${escapeHtml(word)}</span>`;
+        out += `<span class="var-chip" data-var="${escapeHtml(word)}">${escapeHtml(word)}</span>`;
       } else {
         out += escapeHtml(word);
       }
