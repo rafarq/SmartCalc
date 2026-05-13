@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { CloseIcon } from './icons';
 
 type Props = { onClose: () => void };
 
@@ -91,7 +92,7 @@ export function HelpPage({ onClose }: Props) {
       <header className="help-header">
         <h1 id="help-title" className="help-title">Ayuda · SmartCalc</h1>
         <button className="help-close" onClick={onClose} aria-label="Cerrar ayuda">
-          ✕
+          <CloseIcon size={20} />
         </button>
       </header>
       <div className="help-content">
@@ -120,7 +121,7 @@ export function HelpPage({ onClose }: Props) {
           </section>
         ))}
         <footer className="help-footer">
-          Pulsa <kbd>Esc</kbd> o el botón ✕ para volver a la calculadora.
+          Pulsa <kbd>Esc</kbd> o el botón de cerrar para volver a la calculadora.
         </footer>
       </div>
     </div>
