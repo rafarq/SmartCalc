@@ -4,16 +4,43 @@ import userEvent from '@testing-library/user-event';
 import { LineRow } from '../../src/components/LineRow';
 
 describe('LineRow', () => {
-  it('renders the input value', () => {
-    render(<LineRow value="2 + 2" result="4" onChange={() => {}} onEnter={() => {}} />);
-    expect(screen.getByDisplayValue('2 + 2')).toBeInTheDocument();
+  it('renders the value as text content', () => {
+    render(
+      <LineRow
+        value="2 + 2"
+        result="4"
+        lineValues={{}}
+        onChange={() => {}}
+        onEnter={() => {}}
+      />,
+    );
+    expect(screen.getByRole('textbox')).toHaveTextContent('2 + 2');
     expect(screen.getByText('4')).toBeInTheDocument();
   });
 
   it('calls onChange when typing', async () => {
     const onChange = vi.fn();
-    render(<LineRow value="" result="" onChange={onChange} onEnter={() => {}} />);
+    render(
+      <LineRow value="" result="" lineValues={{}} onChange={onChange} onEnter={() => {}} />,
+    );
     await userEvent.type(screen.getByRole('textbox'), 'a');
-    expect(onChange).toHaveBeenCalledWith('a');
+    expect(onChange).toHaveBeenCalled();
+    const last = onChange.mock.calls.at(-1)?.[0];
+    expect(last).toContain('a');
+  });
+
+  it('renders a chip for @{id} references', () => {
+    render(
+      <LineRow
+        value="@{abc} * 2"
+        result="4006"
+        lineValues={{ abc: '2003' }}
+        onChange={() => {}}
+        onEnter={() => {}}
+      />,
+    );
+    const chip = screen.getByText('2003');
+    expect(chip).toHaveClass('ref-chip');
+    expect(chip).toHaveAttribute('data-ref', 'abc');
   });
 });

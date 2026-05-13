@@ -37,3 +37,21 @@ describe('evaluate basics', () => {
     expect((evaluate('tau', ctx) as { ok: true; value: number }).value).toBeCloseTo(2 * Math.PI);
   });
 });
+
+describe('evaluate with references', () => {
+  it('substitutes @{id} with the line value', () => {
+    const r = evaluate('@{abc} * 2', {
+      vars: {},
+      prev: [],
+      lineValues: { abc: 2003 },
+    });
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value).toBe(4006);
+  });
+
+  it('unknown ref evaluates as 0', () => {
+    const r = evaluate('@{missing} + 5', { vars: {}, prev: [], lineValues: {} });
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value).toBe(5);
+  });
+});

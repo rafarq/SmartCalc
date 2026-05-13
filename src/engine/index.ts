@@ -1,9 +1,11 @@
 import { create, all, type MathJsInstance } from 'mathjs';
 import { formatNumber } from '../utils/numberFormat';
+import { expandRefs } from '../utils/refs';
 
 export type EvalContext = {
   vars: Record<string, number>;
   prev: Array<{ value: unknown; formatted: string }>;
+  lineValues?: Record<string, number>;
 };
 
 export type Result =
@@ -16,8 +18,9 @@ const math: MathJsInstance = create(all, { number: 'number' });
 export function evaluate(line: string, ctx: EvalContext): Result {
   const trimmed = line.trim();
   if (!trimmed) return { ok: true, value: null, formatted: '' };
+  const expanded = expandRefs(trimmed, ctx.lineValues ?? {});
   try {
-    const value = math.evaluate(trimmed, { ...ctx.vars });
+    const value = math.evaluate(expanded, { ...ctx.vars });
     return { ok: true, value, formatted: formatNumber(value) };
   } catch (e) {
     return { ok: false, error: (e as Error).message };
