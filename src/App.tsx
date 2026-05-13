@@ -10,11 +10,13 @@ import './styles/app.css';
 export default function App() {
   const [helpOpen, setHelpOpen] = useState(false);
   const docState = useDocument();
-  const { doc, replaceDocument, ...editorProps } = docState;
+  const { doc, replaceDocument, setTitle, ...editorProps } = docState;
 
   return (
     <div className="app">
       <Header
+        title={doc.title}
+        onTitleChange={setTitle}
         onSave={() => exportSyscalc(doc)}
         onLoad={(loaded) => replaceDocument(loaded)}
         onHelp={() => setHelpOpen(true)}

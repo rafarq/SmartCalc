@@ -1,15 +1,18 @@
 import { useRef } from 'react';
 import type { DocumentModel } from '../state/document';
 import { importSyscalc } from '../state/storage';
+import { EditableTitle } from './EditableTitle';
 import { HelpIcon, LoadIcon, SaveIcon } from './icons';
 
 type Props = {
+  title: string;
+  onTitleChange: (next: string) => void;
   onSave: () => void;
   onLoad: (doc: DocumentModel) => void;
   onHelp: () => void;
 };
 
-export function Header({ onSave, onLoad, onHelp }: Props) {
+export function Header({ title, onTitleChange, onSave, onLoad, onHelp }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,13 +24,13 @@ export function Header({ onSave, onLoad, onHelp }: Props) {
     } catch (err) {
       alert(`No se pudo cargar el archivo: ${(err as Error).message}`);
     }
-    // Resetea el valor para que cargar el mismo archivo dos veces dispare onChange.
     e.target.value = '';
   };
 
   return (
     <header className="header">
-      <h1 className="header-title">SmartCalc</h1>
+      <span className="header-brand">SmartCalc</span>
+      <EditableTitle value={title} onChange={onTitleChange} />
       <input
         ref={fileRef}
         type="file"

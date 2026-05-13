@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { evaluate, type Result } from '../engine';
-import { createEmptyDocument, addLine, updateLine, type DocumentModel } from '../state/document';
+import {
+  createEmptyDocument,
+  addLine,
+  updateLine,
+  setTitle as docSetTitle,
+  type DocumentModel,
+} from '../state/document';
 import { loadLocal, saveLocal } from '../state/storage';
 
 function initialDoc(): DocumentModel {
@@ -89,6 +95,10 @@ export function useDocument() {
     setFocusedLineId(next.lines[0].id);
   }, []);
 
+  const setTitle = useCallback((title: string) => {
+    setDoc((d) => docSetTitle(d, title));
+  }, []);
+
   return {
     doc,
     results,
@@ -101,5 +111,6 @@ export function useDocument() {
     focusLine,
     appendRefToFocused,
     replaceDocument,
+    setTitle,
   };
 }
