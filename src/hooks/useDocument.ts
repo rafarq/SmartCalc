@@ -26,7 +26,7 @@ export function useDocument() {
     saveLocal(doc);
   }, [doc]);
 
-  const { results, lineValues, formattedById } = useMemo(() => {
+  const { results, lineValues, formattedById, varNamesRaw } = useMemo(() => {
     const prev: Array<{ value: unknown; formatted: string }> = [];
     const vars: Record<string, number> = {};
     const lv: Record<string, number> = {};
@@ -46,8 +46,11 @@ export function useDocument() {
       return r;
     });
 
-    return { results: out, lineValues: lv, formattedById: fmt };
+    return { results: out, lineValues: lv, formattedById: fmt, varNamesRaw: Object.keys(vars) };
   }, [doc]);
+
+  const varNamesKey = varNamesRaw.slice().sort().join('|');
+  const varNames = useMemo(() => varNamesRaw.slice().sort(), [varNamesKey]);
 
   const setLineText = useCallback((id: string, text: string) => {
     setDoc((d) => updateLine(d, id, text));
@@ -104,6 +107,7 @@ export function useDocument() {
     results,
     lineValues,
     formattedById,
+    varNames,
     focusedLineId,
     setLineText,
     insertLineAfter,

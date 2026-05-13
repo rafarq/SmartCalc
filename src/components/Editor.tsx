@@ -10,6 +10,7 @@ export function Editor({
   doc,
   results,
   formattedById,
+  varNames,
   focusedLineId,
   setLineText,
   insertLineAfter,
@@ -30,6 +31,7 @@ export function Editor({
             value={line.text}
             result={text}
             lineValues={formattedById}
+            varNames={varNames}
             autoFocus={line.id === focusedLineId}
             resultClickable={hasValue && line.id !== focusedLineId}
             onChange={(t) => setLineText(line.id, t)}

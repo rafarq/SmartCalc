@@ -24,10 +24,40 @@ function escapeHtml(s: string): string {
     .replace(/"/g, '&quot;');
 }
 
-export function renderTokensToHTML(text: string, lineValues: Record<string, string>): string {
+const VAR_WORD_CHAR = /[\wáéíóúüñÁÉÍÓÚÜÑ]/;
+
+function renderTextWithVars(seg: string, varSet: Set<string>): string {
+  if (varSet.size === 0) return escapeHtml(seg);
+  let out = '';
+  let i = 0;
+  while (i < seg.length) {
+    if (VAR_WORD_CHAR.test(seg[i])) {
+      let j = i;
+      while (j < seg.length && VAR_WORD_CHAR.test(seg[j])) j++;
+      const word = seg.slice(i, j);
+      if (varSet.has(word)) {
+        out += `<span class="var-chip" data-var="${escapeHtml(word)}" contenteditable="false">${escapeHtml(word)}</span>`;
+      } else {
+        out += escapeHtml(word);
+      }
+      i = j;
+    } else {
+      out += escapeHtml(seg[i]);
+      i++;
+    }
+  }
+  return out;
+}
+
+export function renderTokensToHTML(
+  text: string,
+  lineValues: Record<string, string>,
+  varNames: string[] = [],
+): string {
+  const varSet = new Set(varNames);
   return tokenize(text)
     .map((t) => {
-      if (t.type === 'text') return escapeHtml(t.value);
+      if (t.type === 'text') return renderTextWithVars(t.value, varSet);
       const display = lineValues[t.id] ?? '?';
       return `<span class="ref-chip" data-ref="${escapeHtml(t.id)}" contenteditable="false">${escapeHtml(
         display,

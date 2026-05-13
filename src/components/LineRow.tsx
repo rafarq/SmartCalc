@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { extractText, placeCursorAtEnd, renderTokensToHTML } from '../utils/refs';
 
 type Props = {
@@ -6,6 +6,7 @@ type Props = {
   result: string;
   lineNumber?: number;
   lineValues: Record<string, string>;
+  varNames?: string[];
   autoFocus?: boolean;
   resultClickable?: boolean;
   onChange: (text: string) => void;
@@ -20,6 +21,7 @@ export function LineRow({
   result,
   lineNumber,
   lineValues,
+  varNames,
   autoFocus,
   resultClickable,
   onChange,
@@ -29,12 +31,15 @@ export function LineRow({
   onResultClick,
 }: Props) {
   const inputRef = useRef<HTMLDivElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     const el = inputRef.current;
     if (!el) return;
-    if (extractText(el) === value) {
-      // Texto coincide; actualizar el display de los chips si lineValues cambió.
+    const focused = isFocused || document.activeElement === el;
+    if (focused && extractText(el) === value) {
+      // El usuario está escribiendo: no reescribir el HTML para preservar el cursor.
+      // Solo refrescamos el texto mostrado en los chips existentes.
       el.querySelectorAll<HTMLElement>('.ref-chip').forEach((chip) => {
         const id = chip.dataset.ref;
         if (!id) return;
@@ -43,10 +48,9 @@ export function LineRow({
       });
       return;
     }
-    const isFocused = document.activeElement === el;
-    el.innerHTML = renderTokensToHTML(value, lineValues);
-    if (isFocused || autoFocus) placeCursorAtEnd(el);
-  }, [value, lineValues, autoFocus]);
+    el.innerHTML = renderTokensToHTML(value, lineValues, varNames ?? []);
+    if (focused || autoFocus) placeCursorAtEnd(el);
+  }, [value, lineValues, varNames, autoFocus, isFocused]);
 
   useEffect(() => {
     if (autoFocus && inputRef.current) {
@@ -72,7 +76,11 @@ export function LineRow({
         role="textbox"
         spellCheck={false}
         onInput={handleInput}
-        onFocus={onFocus}
+        onFocus={() => {
+          setIsFocused(true);
+          onFocus?.();
+        }}
+        onBlur={() => setIsFocused(false)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
