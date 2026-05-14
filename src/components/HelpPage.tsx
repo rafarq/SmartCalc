@@ -297,6 +297,16 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    title: 'Total de la hoja',
+    description:
+      'Bajo la última línea aparece automáticamente la suma de todos los resultados numéricos válidos del documento. Entre paréntesis se indica cuántas líneas se han contado.',
+    notes: [
+      'Se suman todas las líneas que producen un número finito: cálculos, porcentajes, conversiones, asignaciones de variables…',
+      'Las líneas vacías o con error se ignoran (no rompen el total).',
+      'Si no hay ninguna línea con resultado numérico, el total no se muestra.',
+    ],
+  },
+  {
     title: 'Documento y guardado',
     description: 'Tu trabajo se guarda solo y puedes exportarlo o reabrirlo cuando quieras.',
     notes: [

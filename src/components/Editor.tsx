@@ -1,4 +1,5 @@
 import type { useDocument } from '../hooks/useDocument';
+import { formatNumber } from '../utils/numberFormat';
 import { LineRow } from './LineRow';
 
 type EditorProps = Omit<
@@ -20,6 +21,14 @@ export function Editor({
   focusNextLine,
   appendRefToFocused,
 }: EditorProps) {
+  let total = 0;
+  let count = 0;
+  for (const r of results) {
+    if (r.ok && typeof r.value === 'number' && Number.isFinite(r.value)) {
+      total += r.value;
+      count += 1;
+    }
+  }
   return (
     <div className="editor">
       {doc.lines.map((line, i) => {
@@ -46,6 +55,13 @@ export function Editor({
           />
         );
       })}
+      {count > 0 && (
+        <div className="line-row line-total" aria-label="Suma de los resultados">
+          <span className="line-number" aria-hidden="true" />
+          <span className="line-total-label">Total ({count})</span>
+          <span className="line-total-value">{formatNumber(total)}</span>
+        </div>
+      )}
     </div>
   );
 }
