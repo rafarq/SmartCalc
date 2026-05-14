@@ -447,6 +447,7 @@ const SECTIONS: Section[] = [
       'Solo se cuentan líneas que producen un número finito: cálculos, porcentajes, conversiones, asignaciones de variables… Las líneas vacías o con error se ignoran.',
       'Si no hay ninguna línea con resultado numérico, el resumen no aparece.',
       'Al pasar el ratón sobre la fila del resumen aparece un icono de copia junto al valor: pulsa para llevártelo al portapapeles tal y como se muestra.',
+      'Control de decimales (− N +) junto al desplegable: ajusta de 0 a 10 el máximo de decimales mostrados en todos los resultados (líneas y total). Los valores enteros se siguen mostrando sin decimales innecesarios. Tu elección se recuerda entre sesiones.',
     ],
   },
   {

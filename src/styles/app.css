@@ -251,6 +251,47 @@
   min-width: 120px;
   text-align: right;
 }
+.decimals-control {
+  display: inline-flex;
+  align-items: center;
+  background: #f6f7f9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.decimals-btn {
+  width: 22px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #444;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1;
+}
+.decimals-btn:hover:not(:disabled) {
+  background: #e9ebef;
+  color: #1a1a1a;
+}
+.decimals-btn:disabled {
+  color: #c5c8cc;
+  cursor: not-allowed;
+}
+.decimals-btn:focus-visible {
+  outline: 2px solid #2563eb33;
+  outline-offset: -2px;
+}
+.decimals-value {
+  min-width: 16px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #666;
+  padding: 0 2px;
+  user-select: none;
+}
 .ref-chip {
   display: inline-block;
   background: #2563eb;

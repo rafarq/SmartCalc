@@ -155,7 +155,11 @@ function formatDate(d: Date): string {
   return format(d, 'dd/MM/yyyy', { locale: es });
 }
 
-export type DateExpressionResult = { value: Date | number; formatted: string };
+export type DateExpressionResult = {
+  value: Date | number;
+  formatted: string;
+  unit?: string;
+};
 
 export function tryDateExpression(
   line: string,
@@ -186,7 +190,7 @@ export function tryDateExpression(
     const b = parseSpanishDate(m[2], ref);
     if (!a || !b) return null;
     const days = differenceInDays(b, a);
-    return { value: days, formatted: `${days} días` };
+    return { value: days, unit: 'días', formatted: `${days} días` };
   }
   if ((m = t.match(RE_LAB_PLUS))) {
     const base = parseSpanishDate(m[1], ref);
@@ -203,7 +207,7 @@ export function tryDateExpression(
     const cityKey = m[3]?.trim().toLowerCase();
     const region = cityKey ? REGION_MAP[cityKey] : undefined;
     const n = workingDaysBetween(a, b, region, cityKey);
-    return { value: n, formatted: `${n} d. laborables` };
+    return { value: n, unit: 'd. laborables', formatted: `${n} d. laborables` };
   }
   if ((m = t.match(RE_SEM_DIAS))) {
     const a = parseSpanishDate(m[1], ref);
