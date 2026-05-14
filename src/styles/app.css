@@ -818,3 +818,134 @@
     text-align: center;
   }
 }
+
+/* ───────── Modo oscuro mínimo ─────────
+   Variables principales en :root (global.css). Aquí solo sobrescribimos las
+   superficies y colores que no se adaptan automáticamente. Los acentos
+   (azul, verde de chips, naranja/amarillo del calendario) se mantienen. */
+@media (prefers-color-scheme: dark) {
+  .header {
+    background: var(--bg-elev);
+    border-bottom-color: var(--border);
+  }
+  .doc-title { color: var(--text); }
+  .doc-title:hover { background: var(--hover-bg); }
+  .doc-title-input {
+    background: var(--bg-sunken);
+    color: var(--text);
+  }
+  .doc-title-input:focus { background: var(--accent-soft); }
+  .icon-btn { color: var(--text-secondary); }
+  .icon-btn:hover { background: var(--hover-bg); color: var(--text); }
+
+  .line-input:focus { background: var(--focus-bg); }
+  .line-number { color: var(--text-faint); }
+  .line-result { color: var(--text-secondary); }
+  .line-result.clickable:hover { background: var(--hover-bg); color: var(--text); }
+  .line-result.error { color: var(--text-faint); }
+  .line-total { border-top-color: var(--border); }
+  .line-total-value { color: var(--text); }
+  .line-total-select { color: var(--text-muted); }
+  .line-total-select:hover { background: var(--hover-bg); color: var(--text); }
+
+  .editor-toolbar { border-top-color: var(--border-soft); }
+  .editor-toolbar-top { border-bottom-color: var(--border-soft); }
+  .editor-toolbar-label { color: var(--text-muted); }
+  .decimals-control {
+    background: var(--bg-sunken);
+    border-color: var(--border);
+  }
+  .decimals-btn { color: var(--text-secondary); }
+  .decimals-btn:hover:not(:disabled) { background: var(--hover-bg); color: var(--text); }
+  .decimals-btn:disabled { color: var(--text-faint); }
+  .decimals-value { color: var(--text-muted); }
+
+  .line-copy-btn { color: var(--text-faint); }
+  .line-copy-btn:hover { background: var(--hover-bg); color: var(--text); }
+
+  /* Página de ayuda */
+  .help-page { background: var(--bg); }
+  .help-header { border-bottom-color: var(--border); }
+  .help-title { color: var(--text); }
+  .help-close { color: var(--text-secondary); }
+  .help-close:hover { background: var(--hover-bg); color: var(--text); }
+  .help-section-title { color: var(--text-muted); }
+  .help-subsection-title { color: var(--text-muted); }
+  .help-section-desc { color: var(--text-secondary); }
+  .help-example { background: var(--bg-sunken); }
+  .help-input { color: var(--text); }
+  .help-arrow { color: var(--text-muted); }
+  .help-result { color: var(--text-secondary); }
+  .help-notes { color: var(--text-secondary); }
+  .help-footer { color: var(--text-muted); }
+  .help-footer kbd {
+    background: var(--bg-sunken);
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .help-alias-table th { color: var(--text-muted); border-bottom-color: var(--border); }
+  .help-alias-table td {
+    color: var(--text-secondary);
+    border-bottom-color: var(--border-soft);
+  }
+  .help-alias-name {
+    background: var(--bg-sunken);
+    color: var(--text);
+  }
+  .help-alias-missing { color: var(--text-faint); }
+  .help-toc-link { color: var(--text-secondary); }
+  .help-toc-link:hover { background: var(--hover-bg); color: var(--text); }
+  .help-toc-link.active {
+    background: var(--accent-soft);
+    color: var(--text);
+    border-left-color: var(--accent);
+  }
+
+  /* Calendario laboral */
+  .cal-month {
+    background: var(--bg-elev);
+    border-color: var(--border);
+  }
+  .cal-month-title { color: var(--text); }
+  .cal-dow { color: var(--text-faint); }
+  .cal-day { color: var(--text-secondary); }
+  .cal-day.regional { color: #1a1a1a; } /* amarillo necesita texto oscuro */
+  .cal-controls { border-bottom-color: var(--border); }
+  .cal-control { color: var(--text-muted); }
+  .cal-control select {
+    background-color: var(--bg-sunken);
+    color: var(--text);
+  }
+  .cal-control select:hover { background-color: var(--hover-bg); }
+  .cal-legend { color: var(--text-secondary); }
+  .cal-list-title { color: var(--text-muted); }
+  .cal-list-note { color: var(--text-muted); }
+  .cal-list-item { background: var(--bg-sunken); }
+  .cal-list-name { color: var(--text); }
+  .cal-list-scope { color: var(--text-muted); }
+  .cal-disclaimer { color: var(--text-muted); }
+  .cal-empty { color: var(--text-muted); }
+
+  /* Autocompletado de geometría */
+  .autocomplete {
+    background: var(--bg-elev);
+    border-color: var(--border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+  .autocomplete-item { color: var(--text-secondary); }
+  .autocomplete-item:hover { background: var(--hover-bg); color: var(--text); }
+  .autocomplete-item.selected { background: var(--accent-soft); color: var(--text); }
+
+  /* Chips: el verde y el azul se mantienen pero ajustamos el azul para
+     mejor contraste sobre fondo oscuro. */
+  .ref-chip { background: var(--accent); }
+  .var-chip { background: #15803d; }
+}
+
+/* ───────── Touch targets en móvil (mínimo 44×44 px) ───────── */
+@media (max-width: 640px) {
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+}

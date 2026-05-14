@@ -2715,11 +2715,11 @@ git add -A && git commit -m "feat: importar archivos .syscalc"
 
 ### Tarea 14.1: Diseño minimalista refinado
 
-- [ ] Tipografía: probar `Inter` o `JetBrains Mono` para inputs/resultados; mantener tamaños suaves.
-- [ ] Espaciado vertical entre líneas: 6–8px.
-- [ ] Color de resultado: `#666` para legibilidad sin ruido.
-- [ ] Microanimación: fade-in del resultado (opcional, `transition: opacity 0.12s`).
-- [ ] Modo oscuro mínimo con `@media (prefers-color-scheme: dark)`.
+- [x] Tipografía: probar `Inter` o `JetBrains Mono` para inputs/resultados; mantener tamaños suaves.
+- [x] Espaciado vertical entre líneas: 6–8px.
+- [x] Color de resultado: `#666` para legibilidad sin ruido.
+- [x] Microanimación: fade-in del resultado (opcional, `transition: opacity 0.12s`).
+- [x] Modo oscuro mínimo con `@media (prefers-color-scheme: dark)`.
 
 ```bash
 git add -A && git commit -m "style: refinar diseño minimalista"
@@ -2727,8 +2727,8 @@ git add -A && git commit -m "style: refinar diseño minimalista"
 
 ### Tarea 14.2: Responsive móvil
 
-- [ ] En móvil, columna de resultado pasa debajo del input (no a la derecha) o ancho fijo más pequeño.
-- [ ] Botones de cabecera táctiles (mínimo 44px de altura).
+- [x] En móvil, columna de resultado pasa debajo del input (no a la derecha) o ancho fijo más pequeño.
+- [x] Botones de cabecera táctiles (mínimo 44px de altura).
 
 ```bash
 git add -A && git commit -m "style: layout responsive"
@@ -2787,6 +2787,6 @@ git add -A && git commit -m "docs: README inicial"
 | 11 | §13 | Geometría con autocompletado (desktop+móvil) | 🟡 11.1-11.3 ✅ · 11.4 (móvil) ⏳ |
 | 12 | §14 | Variables, referencias, operador implícito, multilínea | ✅ |
 | 13 | §14 (persistencia) | localStorage + .syscalc | ✅ |
-| 14 | — | Pulido, responsive, README | 🟡 14.3-14.5 ✅ · 14.1 (modo oscuro) y 14.2 (touch targets) ⏳ |
+| 14 | — | Pulido, responsive, README | ✅ |
 
 Cada fase deja la aplicación en estado funcional y publicable; las fases posteriores añaden capacidades sin romper las anteriores.
