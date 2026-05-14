@@ -7,6 +7,7 @@ import { CheckIcon, CopyIcon } from './icons';
 type Props = {
   value: string;
   result: string;
+  resultError?: string;
   lineNumber?: number;
   lineValues: Record<string, string>;
   varNames?: string[];
@@ -25,6 +26,7 @@ type Props = {
 export function LineRow({
   value,
   result,
+  resultError,
   lineNumber,
   lineValues,
   varNames,
@@ -50,7 +52,7 @@ export function LineRow({
     ac.reset();
   };
 
-  const hasValue = result !== '' && result !== '⚠';
+  const hasValue = result !== '' && result !== '—' && !resultError;
 
   const handleCopy = async () => {
     try {
@@ -201,9 +203,11 @@ export function LineRow({
           </button>
         )}
         <span
-          className={`line-result${resultClickable ? ' clickable' : ''}`}
+          className={`line-result${resultClickable ? ' clickable' : ''}${resultError ? ' error' : ''}`}
           role={resultClickable ? 'button' : undefined}
-          title={resultClickable ? 'Click para insertar referencia' : undefined}
+          title={
+            resultError ? resultError : resultClickable ? 'Click para insertar referencia' : undefined
+          }
           onMouseDown={(e) => {
             if (!resultClickable) return;
             e.preventDefault();

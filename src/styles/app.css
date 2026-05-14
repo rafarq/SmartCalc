@@ -163,6 +163,10 @@
   background: #f1f3f5;
   color: #1a1a1a;
 }
+.line-result.error {
+  color: #bbb;
+  cursor: help;
+}
 .line-result-cell {
   display: flex;
   align-items: center;

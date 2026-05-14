@@ -2736,8 +2736,8 @@ git add -A && git commit -m "style: layout responsive"
 
 ### Tarea 14.3: Manejo de errores en UI
 
-- [ ] Cuando `result.ok = false`, mostrar un sutil "—" gris en lugar de mensaje técnico.
-- [ ] Tooltip opcional con el error real al pasar el ratón.
+- [x] Cuando `result.ok = false`, mostrar un sutil "—" gris en lugar de mensaje técnico.
+- [x] Tooltip opcional con el error real al pasar el ratón.
 
 ```bash
 git add -A && git commit -m "feat(ui): errores discretos en columna de resultados"
@@ -2745,9 +2745,9 @@ git add -A && git commit -m "feat(ui): errores discretos en columna de resultado
 
 ### Tarea 14.4: Cobertura final y limpieza
 
-- [ ] Ejecutar `npm run test:coverage` y verificar > 80% en `src/engine/`.
-- [ ] Borrar archivos `*.smoke.test.ts` si ya están cubiertos por tests específicos.
-- [ ] Lanzar `npm run build` para verificar que compila sin errores TS.
+- [x] Ejecutar `npm run test:coverage` y verificar > 80% en `src/engine/`.
+- [x] Borrar archivos `*.smoke.test.ts` si ya están cubiertos por tests específicos.
+- [x] Lanzar `npm run build` para verificar que compila sin errores TS.
 
 ```bash
 npm run test:coverage
@@ -2757,7 +2757,7 @@ git add -A && git commit -m "test: cobertura final + limpieza"
 
 ### Tarea 14.5: README de uso
 
-- [ ] Crear `README.md` con:
+- [x] Crear `README.md` con:
   - Cómo arrancar (`npm install && npm run dev`)
   - Sintaxis principal (ejemplos de cada sección de specs.md)
   - Atajos: Enter (nueva línea abajo), Shift+Enter (al final), click en resultado (insertar referencia)
@@ -2787,6 +2787,6 @@ git add -A && git commit -m "docs: README inicial"
 | 11 | §13 | Geometría con autocompletado (desktop+móvil) | 🟡 11.1-11.3 ✅ · 11.4 (móvil) ⏳ |
 | 12 | §14 | Variables, referencias, operador implícito, multilínea | ✅ |
 | 13 | §14 (persistencia) | localStorage + .syscalc | ✅ |
-| 14 | — | Pulido, responsive, README | ⏳ |
+| 14 | — | Pulido, responsive, README | 🟡 14.3-14.5 ✅ · 14.1 (modo oscuro) y 14.2 (touch targets) ⏳ |
 
 Cada fase deja la aplicación en estado funcional y publicable; las fases posteriores añaden capacidades sin romper las anteriores.

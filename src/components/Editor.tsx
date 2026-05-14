@@ -23,7 +23,7 @@ function loadDecimals(): number {
 }
 
 function displayResult(r: Result, decimals: number, compact: boolean): string {
-  if (!r.ok) return '⚠';
+  if (!r.ok) return '—';
   if (typeof r.value === 'number' && Number.isFinite(r.value)) {
     const fmt = compact ? formatNumberCompact : formatNumber;
     return fmt(r.value, decimals) + (r.unit ? ` ${r.unit}` : '');
@@ -140,12 +140,14 @@ export function Editor({
         const r = results[i];
         const text = displayResult(r, decimals, isMobile);
         const hasValue = r.ok && r.formatted !== '';
+        const resultError = !r.ok ? r.error : undefined;
         return (
           <LineRow
             key={line.id}
             lineNumber={i + 1}
             value={line.text}
             result={text}
+            resultError={resultError}
             lineValues={formattedById}
             varNames={varNames}
             autoFocus={line.id === focusedLineId}
