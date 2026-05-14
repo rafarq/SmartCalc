@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { useDocument } from '../hooks/useDocument';
 import type { Result } from '../engine';
-import { formatNumber } from '../utils/numberFormat';
+import { formatNumber, formatNumberCompact } from '../utils/numberFormat';
+import { useIsMobile } from '../hooks/useIsMobile';
 import { LineRow } from './LineRow';
 import { CheckIcon, CopyIcon } from './icons';
 
@@ -21,10 +22,11 @@ function loadDecimals(): number {
   return DEFAULT_DECIMALS;
 }
 
-function displayResult(r: Result, decimals: number): string {
+function displayResult(r: Result, decimals: number, compact: boolean): string {
   if (!r.ok) return '⚠';
   if (typeof r.value === 'number' && Number.isFinite(r.value)) {
-    return formatNumber(r.value, decimals) + (r.unit ? ` ${r.unit}` : '');
+    const fmt = compact ? formatNumberCompact : formatNumber;
+    return fmt(r.value, decimals) + (r.unit ? ` ${r.unit}` : '');
   }
   return r.formatted;
 }
@@ -70,6 +72,7 @@ export function Editor({
   const [agg, setAgg] = useState<Aggregate>('sum');
   const [totalCopied, setTotalCopied] = useState(false);
   const [decimals, setDecimals] = useState<number>(() => loadDecimals());
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     try {
@@ -85,8 +88,9 @@ export function Editor({
     }
   }
   const aggValue = numericValues.length > 0 ? aggregateValue(numericValues, agg) : 0;
+  const aggFormatter = isMobile ? formatNumberCompact : formatNumber;
   const aggDisplay =
-    agg === 'count' ? String(numericValues.length) : formatNumber(aggValue, decimals);
+    agg === 'count' ? String(numericValues.length) : aggFormatter(aggValue, decimals);
 
   const handleTotalCopy = async () => {
     try {
@@ -133,7 +137,7 @@ export function Editor({
       </div>
       {doc.lines.map((line, i) => {
         const r = results[i];
-        const text = displayResult(r, decimals);
+        const text = displayResult(r, decimals, isMobile);
         const hasValue = r.ok && r.formatted !== '';
         return (
           <LineRow

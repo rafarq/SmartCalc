@@ -82,6 +82,31 @@
   padding: 24px 40px;
   overflow-y: auto;
 }
+@media (max-width: 640px) {
+  .editor {
+    /* Quitamos casi todo el margen lateral en móvil para dar el ancho máximo
+       a la zona de escritura. */
+    padding: 12px 6px 24px;
+  }
+  .line-row {
+    grid-template-columns: 20px 1fr 130px;
+    gap: 8px;
+  }
+  .line-total .line-total-value {
+    min-width: auto;
+  }
+  .line-total-select {
+    min-width: auto;
+  }
+  .line-result {
+    padding: 4px 4px;
+  }
+  .editor-toolbar,
+  .editor-toolbar-top {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
 .line-row {
   display: grid;
   grid-template-columns: 24px 1fr 200px;

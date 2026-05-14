@@ -448,7 +448,8 @@ const SECTIONS: Section[] = [
       'Solo se cuentan líneas que producen un número finito: cálculos, porcentajes, conversiones, asignaciones de variables… Las líneas vacías o con error se ignoran.',
       'Si no hay ninguna línea con resultado numérico, el resumen no aparece.',
       'Al pasar el ratón sobre la fila del resumen aparece un icono de copia junto al valor: pulsa para llevártelo al portapapeles tal y como se muestra.',
-      'Control de decimales (− N +) junto al desplegable: ajusta de 0 a 10 el máximo de decimales mostrados en todos los resultados (líneas y total). Los valores enteros se siguen mostrando sin decimales innecesarios. Tu elección se recuerda entre sesiones.',
+      'Control de decimales (− N +) al inicio del editor: ajusta de 0 a 10 los decimales mostrados en todos los resultados (líneas y total). Tu elección se recuerda entre sesiones.',
+      'En pantallas pequeñas, los resultados que no caben en su hueco se compactan automáticamente: «1.234.567» pasa a «1,23 M», «0,00012» pasa a «1,2·10⁻⁴». En la versión desktop se siguen mostrando con el formato completo.',
     ],
   },
   {
