@@ -825,6 +825,11 @@
    El selector [data-theme='dark'] permite alternar manualmente con el botón
    de la cabecera. */
 [data-theme='dark'] {
+  .header-brand-logo {
+    /* El logo es texto oscuro sobre transparente; en modo oscuro lo invertimos
+       para que se lea sobre fondo oscuro. */
+    filter: invert(1);
+  }
   .header {
     background: var(--bg-elev);
     border-bottom-color: var(--border);
