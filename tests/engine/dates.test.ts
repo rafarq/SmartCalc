@@ -33,6 +33,69 @@ describe('parseSpanishDate', () => {
     expect(parseSpanishDate('hola mundo')).toBeNull());
 });
 
+describe('parseSpanishDate — artículo opcional', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 4, 13)); // mié 13 mayo 2026
+  });
+  afterEach(() => vi.useRealTimers());
+
+  it('el miércoles que viene', () =>
+    expect(parseSpanishDate('el miércoles que viene')).toEqual(new Date(2026, 4, 20)));
+  it('el próximo lunes', () =>
+    expect(parseSpanishDate('el próximo lunes')).toEqual(new Date(2026, 4, 18)));
+  it('la próximo … (artículo no debe importar)', () =>
+    expect(parseSpanishDate('la próximo lunes')).toEqual(new Date(2026, 4, 18)));
+});
+
+describe('parseSpanishDate — ordinales por mes', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 4, 13)); // mié 13 mayo 2026
+  });
+  afterEach(() => vi.useRealTimers());
+
+  it('el primer lunes del mes que viene (junio 2026) = 1 jun (lunes)', () =>
+    expect(parseSpanishDate('el primer lunes del mes que viene')).toEqual(new Date(2026, 5, 1)));
+  it('el segundo martes del mes (mayo 2026) = 12 may', () =>
+    expect(parseSpanishDate('el segundo martes del mes')).toEqual(new Date(2026, 4, 12)));
+  it('el último viernes de enero de 2027 = 29 ene 2027', () =>
+    expect(parseSpanishDate('el último viernes de enero de 2027')).toEqual(new Date(2027, 0, 29)));
+  it('el tercer domingo de diciembre = 20 dic 2026', () =>
+    expect(parseSpanishDate('el tercer domingo de diciembre')).toEqual(new Date(2026, 11, 20)));
+  it('quinto lunes inexistente devuelve null', () =>
+    // Mayo 2026 tiene lunes 4, 11, 18, 25 → no hay quinto.
+    expect(parseSpanishDate('el quinto lunes del mes')).toBeNull());
+});
+
+describe('tryDateExpression — "cuántos días hay entre"', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 4, 13));
+  });
+  afterEach(() => vi.useRealTimers());
+
+  it('cuántos días hay entre hoy y el miércoles que viene = 7', () => {
+    const r = tryDateExpression('cuántos días hay entre hoy y el miércoles que viene');
+    expect(r?.value).toBe(7);
+  });
+  it('cuantos días entre 1/1 y 1/2 (sin acento ni "hay") = 31', () => {
+    const r = tryDateExpression('cuantos días entre 1/1 y 1/2');
+    expect(r?.value).toBe(31);
+  });
+  it('días hay entre 1/1 y 1/2 = 31', () => {
+    const r = tryDateExpression('días hay entre 1/1 y 1/2');
+    expect(r?.value).toBe(31);
+  });
+  it('cuántos días laborables hay entre hoy y el primer lunes del mes que viene', () => {
+    const r = tryDateExpression(
+      'cuántos días laborables hay entre hoy y el primer lunes del mes que viene',
+    );
+    expect(typeof r?.value).toBe('number');
+    expect(r?.formatted).toMatch(/d\. laborables$/);
+  });
+});
+
 describe('aritmética de fechas', () => {
   beforeEach(() => {
     vi.useFakeTimers();

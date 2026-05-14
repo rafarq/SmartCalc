@@ -26,10 +26,63 @@ const DIAS_SEMANA: Record<string, number> = {
   sábado: 6, sabado: 6,
 };
 
+const ORDINALES: Record<string, number> = {
+  primer: 1, primero: 1, primera: 1,
+  segundo: 2, segunda: 2,
+  tercer: 3, tercero: 3, tercera: 3,
+  cuarto: 4, cuarta: 4,
+  quinto: 5, quinta: 5,
+  último: -1, ultimo: -1, última: -1, ultima: -1,
+};
+const ORDINAL_KEYS = Object.keys(ORDINALES).join('|');
+
 const RE_DDMMYYYY = /^(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?$/;
 const RE_DD_DE_MES = /^(\d{1,2})\s+de\s+([a-záéíóúñ]+)(?:\s+de\s+(\d{4}))?$/i;
 const RE_NEXT_DAY = /^(?:próximo|proximo|siguiente)\s+([a-záéíóú]+)$/i;
 const RE_DAY_QUE_VIENE = /^([a-záéíóú]+)\s+que\s+viene$/i;
+const RE_ORDINAL_DAY = new RegExp(
+  String.raw`^(${ORDINAL_KEYS})\s+([a-záéíóú]+)\s+de(?:l)?\s+(.+)$`,
+  'i',
+);
+
+function parseMonthSpec(spec: string, ref: Date): { year: number; month: number } | null {
+  const t = spec.trim().toLowerCase();
+  const now = ref;
+  if (t === 'mes' || t === 'este mes') {
+    return { year: now.getFullYear(), month: now.getMonth() };
+  }
+  if (
+    /^(?:mes\s+que\s+viene|próximo\s+mes|proximo\s+mes|mes\s+próximo|mes\s+proximo|siguiente\s+mes)$/.test(t)
+  ) {
+    const d = addMonths(now, 1);
+    return { year: d.getFullYear(), month: d.getMonth() };
+  }
+  if (/^(?:mes\s+pasado|mes\s+anterior|mes\s+previo)$/.test(t)) {
+    const d = addMonths(now, -1);
+    return { year: d.getFullYear(), month: d.getMonth() };
+  }
+  const m = t.match(/^([a-záéíóúñ]+)(?:\s+de\s+(\d{4}))?$/);
+  if (m) {
+    const mo = MESES[m[1]];
+    if (mo === undefined) return null;
+    return { year: m[2] ? parseInt(m[2], 10) : now.getFullYear(), month: mo };
+  }
+  return null;
+}
+
+function nthDayOfMonth(year: number, month: number, dow: number, n: number): Date | null {
+  if (n === -1) {
+    const lastDay = new Date(year, month + 1, 0);
+    const diff = (lastDay.getDay() - dow + 7) % 7;
+    return new Date(year, month, lastDay.getDate() - diff);
+  }
+  const first = new Date(year, month, 1);
+  const diff = (dow - first.getDay() + 7) % 7;
+  const day = 1 + diff + (n - 1) * 7;
+  const candidate = new Date(year, month, day);
+  if (candidate.getMonth() !== month) return null; // p. ej. quinto lunes inexistente
+  return candidate;
+}
 
 function normalizeYear(y: number): number {
   if (y < 100) return y + 2000;
@@ -38,7 +91,8 @@ function normalizeYear(y: number): number {
 
 export function parseSpanishDate(input: string, ref: Date = new Date()): Date | null {
   const today = startOfDay(ref);
-  const t = input.trim().toLowerCase();
+  // Admite artículo opcional al inicio: "el miércoles que viene", "la próxima semana"…
+  const t = input.trim().toLowerCase().replace(/^(?:el|la|los|las)\s+/, '');
 
   if (t === 'hoy') return today;
   if (t === 'ayer') return addDays(today, -1);
@@ -58,6 +112,14 @@ export function parseSpanishDate(input: string, ref: Date = new Date()): Date | 
     const y = m[3] ? parseInt(m[3], 10) : today.getFullYear();
     return new Date(y, mo, d);
   }
+  if ((m = t.match(RE_ORDINAL_DAY))) {
+    const n = ORDINALES[m[1]];
+    const dow = DIAS_SEMANA[m[2]];
+    if (n === undefined || dow === undefined) return null;
+    const mspec = parseMonthSpec(m[3], today);
+    if (!mspec) return null;
+    return nthDayOfMonth(mspec.year, mspec.month, dow, n);
+  }
   if ((m = t.match(RE_NEXT_DAY)) || (m = t.match(RE_DAY_QUE_VIENE))) {
     const target = DIAS_SEMANA[m[1]];
     if (target === undefined) return null;
@@ -74,11 +136,11 @@ const RE_OP_FECHA = new RegExp(
   String.raw`^(.+?)\s+([+-])\s+(\d+)\s+(${UNIT_RE})$`,
   'i',
 );
-const RE_ENTRE = /^d[ií]as\s+entre\s+(.+?)\s+y\s+(.+?)$/i;
+const RE_ENTRE = /^(?:cu[aá]ntos\s+)?d[ií]as\s+(?:hay\s+)?entre\s+(.+?)\s+y\s+(.+?)$/i;
 const RE_LAB_PLUS = /^(.+?)\s+\+\s+(\d+)\s+d[ií]as?\s+laborables?(?:\s+en\s+([a-záéíóúñ\s-]+))?$/i;
-const RE_LAB_ENTRE = /^d[ií]as\s+laborables?\s+entre\s+(.+?)\s+y\s+(.+?)(?:\s+en\s+([a-záéíóúñ\s-]+))?$/i;
-const RE_SEM_DIAS = /^semanas\s+y\s+d[ií]as\s+entre\s+(.+?)\s+y\s+(.+?)$/i;
-const RE_MES_DIAS = /^meses\s+y\s+d[ií]as\s+entre\s+(.+?)\s+y\s+(.+?)$/i;
+const RE_LAB_ENTRE = /^(?:cu[aá]ntos\s+)?d[ií]as\s+laborables?\s+(?:hay\s+)?entre\s+(.+?)\s+y\s+(.+?)(?:\s+en\s+([a-záéíóúñ\s-]+))?$/i;
+const RE_SEM_DIAS = /^(?:cu[aá]ntas?\s+)?semanas\s+y\s+d[ií]as\s+(?:hay\s+)?entre\s+(.+?)\s+y\s+(.+?)$/i;
+const RE_MES_DIAS = /^(?:cu[aá]ntos\s+)?meses\s+y\s+d[ií]as\s+(?:hay\s+)?entre\s+(.+?)\s+y\s+(.+?)$/i;
 
 function addUnit(date: Date, n: number, unit: string): Date {
   const u = unit.toLowerCase();
