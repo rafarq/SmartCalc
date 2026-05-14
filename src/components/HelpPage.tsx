@@ -429,6 +429,7 @@ const SECTIONS: Section[] = [
       'Guardar (icono ↓) — descarga la hoja como archivo .syscalc con el nombre del título.',
       'Cargar (icono carpeta) — abre un archivo .syscalc previamente guardado, sustituyendo la hoja actual.',
       'Limpiar (icono papelera) — borra todas las líneas y el título, dejando la hoja en blanco para empezar de cero. Pide confirmación si hay contenido.',
+      'Calendario (icono de calendario) — abre un visor por año con los festivos de la ciudad elegida, coloreados por ámbito (nacional / autonómico / local) y con leyenda.',
     ],
   },
 ];

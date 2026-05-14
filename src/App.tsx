@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Header } from './components/Header';
 import { Editor } from './components/Editor';
 import { HelpPage } from './components/HelpPage';
+import { HolidaysCalendar } from './components/HolidaysCalendar';
 import { useDocument } from './hooks/useDocument';
 import { exportSyscalc } from './state/storage';
 import './styles/global.css';
@@ -9,6 +10,7 @@ import './styles/app.css';
 
 export default function App() {
   const [helpOpen, setHelpOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const docState = useDocument();
   const { doc, replaceDocument, clearDocument, setTitle, ...editorProps } = docState;
 
@@ -30,9 +32,11 @@ export default function App() {
         onLoad={(loaded) => replaceDocument(loaded)}
         onClear={handleClear}
         onHelp={() => setHelpOpen(true)}
+        onCalendar={() => setCalendarOpen(true)}
       />
       <Editor doc={doc} {...editorProps} />
       {helpOpen && <HelpPage onClose={() => setHelpOpen(false)} />}
+      {calendarOpen && <HolidaysCalendar onClose={() => setCalendarOpen(false)} />}
     </div>
   );
 }

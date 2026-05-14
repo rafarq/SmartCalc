@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import type { DocumentModel } from '../state/document';
 import { importSyscalc } from '../state/storage';
 import { EditableTitle } from './EditableTitle';
-import { HelpIcon, LoadIcon, SaveIcon, TrashIcon } from './icons';
+import { CalendarIcon, HelpIcon, LoadIcon, SaveIcon, TrashIcon } from './icons';
 
 type Props = {
   title: string;
@@ -11,9 +11,10 @@ type Props = {
   onLoad: (doc: DocumentModel) => void;
   onClear: () => void;
   onHelp: () => void;
+  onCalendar: () => void;
 };
 
-export function Header({ title, onTitleChange, onSave, onLoad, onClear, onHelp }: Props) {
+export function Header({ title, onTitleChange, onSave, onLoad, onClear, onHelp, onCalendar }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +41,14 @@ export function Header({ title, onTitleChange, onSave, onLoad, onClear, onHelp }
         onChange={handleFileChange}
       />
       <div className="header-actions">
+        <button
+          className="icon-btn"
+          onClick={onCalendar}
+          title="Calendario laboral por ciudad"
+          aria-label="Calendario laboral"
+        >
+          <CalendarIcon />
+        </button>
         <button className="icon-btn" onClick={onHelp} title="Ayuda" aria-label="Ayuda">
           <HelpIcon />
         </button>
