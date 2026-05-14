@@ -100,6 +100,12 @@ export function LineRow({
         role="textbox"
         spellCheck={false}
         onInput={handleInput}
+        onMouseDown={() => {
+          // Safety net: aseguramos que el documento conoce esta línea como activa
+          // aunque el evento focus nativo no se dispare en algún flujo (chips,
+          // selección previa en otra zona…).
+          onFocus?.();
+        }}
         onFocus={() => {
           setIsFocused(true);
           onFocus?.();
