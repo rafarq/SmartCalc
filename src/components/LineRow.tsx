@@ -14,6 +14,7 @@ type Props = {
   resultClickable?: boolean;
   onChange: (text: string) => void;
   onEnter: () => void;
+  onShiftEnter?: () => void;
   onBackspaceEmpty?: () => void;
   onFocus?: () => void;
   onArrowUp?: () => void;
@@ -31,6 +32,7 @@ export function LineRow({
   resultClickable,
   onChange,
   onEnter,
+  onShiftEnter,
   onBackspaceEmpty,
   onFocus,
   onArrowUp,
@@ -147,6 +149,11 @@ export function LineRow({
               return;
             }
             if (e.key === 'Escape') { e.preventDefault(); ac.reset(); return; }
+          }
+          if (e.key === 'Enter' && e.shiftKey && onShiftEnter) {
+            e.preventDefault();
+            onShiftEnter();
+            return;
           }
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();

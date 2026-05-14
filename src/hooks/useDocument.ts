@@ -64,6 +64,14 @@ export function useDocument() {
     });
   }, []);
 
+  const insertLineAtEnd = useCallback(() => {
+    setDoc((d) => {
+      const { doc: next, newId } = addLine(d, d.lines.length - 1);
+      setFocusedLineId(newId);
+      return next;
+    });
+  }, []);
+
   const removeLine = useCallback((id: string) => {
     setDoc((d) => {
       if (d.lines.length <= 1) return d;
@@ -133,6 +141,7 @@ export function useDocument() {
     focusedLineId,
     setLineText,
     insertLineAfter,
+    insertLineAtEnd,
     removeLine,
     focusLine,
     focusPrevLine,

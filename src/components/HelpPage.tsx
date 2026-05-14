@@ -32,6 +32,7 @@ const SECTIONS: Section[] = [
     title: 'Atajos de teclado',
     notes: [
       'Enter — inserta una nueva línea debajo y mueve el cursor a ella.',
+      'Shift + Enter — inserta una línea al final del documento, sin importar dónde tengas el cursor.',
       '↑ / ↓ — salta a la línea anterior o siguiente, manteniendo el cursor al final del texto de destino.',
       'Backspace en línea vacía — elimina la línea y vuelve al final de la anterior.',
       'Click en cualquier punto de una fila — enfoca esa línea directamente, sin tener que recorrer todas las anteriores.',
@@ -172,6 +173,21 @@ const SECTIONS: Section[] = [
       'Solo se reemplazan cuando son sufijos numéricos: km a millas sigue siendo una conversión de unidades, no 1000 m.',
       'Ingresos anuales con sueldo de 3.500 €/mes → 12 · 3.5k.',
       'Cuota mensual de un préstamo de 1,2 M repartido en 12 meses → 1.2M / 12.',
+    ],
+  },
+  {
+    title: 'Operador implícito',
+    description:
+      'Una línea que empieza por un operador binario (+, −, *, /, ^, %) toma automáticamente el valor de la línea anterior como operando izquierdo. Cómodo para encadenar cálculos.',
+    examples: [
+      { input: '100', result: '100' },
+      { input: '+50', result: '150' },
+      { input: '*2', result: '300' },
+      { input: '/4', result: '75' },
+    ],
+    notes: [
+      'Solo se activa si la línea anterior produce un número. Si la previa es una fecha o texto, «-5» se interpreta literalmente como el número negativo −5.',
+      'Funciona también con espacio: «+ 50», «/ 4», «^ 2»…',
     ],
   },
   {

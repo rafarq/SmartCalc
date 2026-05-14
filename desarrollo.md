@@ -2495,7 +2495,7 @@ git add -A && git commit -m "feat(engine,ui): referencias a resultados previos"
 **Files:**
 - Modify: `src/engine/index.ts`, `tests/engine/index.test.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 it('+50 después de 100 → 150', () => {
@@ -2511,7 +2511,7 @@ it('*2 después de 7 → 14', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 En `engine/index.ts`, antes de cualquier otro módulo, después de trim:
 
@@ -2526,7 +2526,7 @@ if (lastPrev && typeof lastPrev.value === 'number') {
 }
 ```
 
-- [ ] **Paso 3: Verificar y commit**
+- [x] **Paso 3: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -2538,13 +2538,13 @@ git add -A && git commit -m "feat(engine): operador implícito"
 **Files:**
 - Modify: `src/components/LineRow.tsx`
 
-- [ ] **Paso 1: Comportamiento**
+- [x] **Paso 1: Comportamiento**
 
 Si `e.shiftKey && e.key === 'Enter'`: insertar línea al final del documento.
 
 Refactor: añadir `onShiftEnter` prop y manejarlo en `Editor` → `insertLineAtEnd()`.
 
-- [ ] **Paso 2: Implementar en `useDocument`**
+- [x] **Paso 2: Implementar en `useDocument`**
 
 ```ts
 const insertLineAtEnd = useCallback(() => {
@@ -2552,7 +2552,7 @@ const insertLineAtEnd = useCallback(() => {
 }, []);
 ```
 
-- [ ] **Paso 3: Tests + commit**
+- [x] **Paso 3: Tests + commit**
 
 ```bash
 git add -A && git commit -m "feat(ui): Shift+Enter inserta línea al final"
@@ -2785,7 +2785,7 @@ git add -A && git commit -m "docs: README inicial"
 | 9 | §12 (parcial) | Conversiones naturales temporales | ✅ |
 | 10 | §12 (fechas) | Fechas y calendario laboral con festivos | ✅ |
 | 11 | §13 | Geometría con autocompletado (desktop+móvil) | 🟡 11.1-11.3 ✅ · 11.4 (móvil) ⏳ |
-| 12 | §14 | Variables, referencias, operador implícito, multilínea | 🟡 12.1 y 12.2 ✅ · 12.3 y 12.4 ⏳ |
+| 12 | §14 | Variables, referencias, operador implícito, multilínea | ✅ |
 | 13 | §14 (persistencia) | localStorage + .syscalc | ✅ |
 | 14 | — | Pulido, responsive, README | ⏳ |
 

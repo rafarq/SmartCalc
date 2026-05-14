@@ -63,6 +63,7 @@ export function Editor({
   focusedLineId,
   setLineText,
   insertLineAfter,
+  insertLineAtEnd,
   removeLine,
   focusLine,
   focusPrevLine,
@@ -151,6 +152,7 @@ export function Editor({
             resultClickable={hasValue && line.id !== focusedLineId}
             onChange={(t) => setLineText(line.id, t)}
             onEnter={() => insertLineAfter(i)}
+            onShiftEnter={() => insertLineAtEnd()}
             onBackspaceEmpty={() => removeLine(line.id)}
             onFocus={() => focusLine(line.id)}
             onArrowUp={() => focusPrevLine(line.id)}
