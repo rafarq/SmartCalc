@@ -72,9 +72,20 @@ math.import(
   { override: false },
 );
 
+// Línea que empieza por un operador binario: si la línea anterior dio un
+// número, prepende su valor de forma transparente ("+50" tras 100 → 150).
+const IMPLICIT_OP_RE = /^([+\-*/^%])\s*(.+)$/;
+
 export function evaluate(line: string, ctx: EvalContext): Result {
   const trimmed = line.trim();
   if (!trimmed) return { ok: true, value: null, formatted: '' };
+  const lastPrev = ctx.prev[ctx.prev.length - 1];
+  if (lastPrev && typeof lastPrev.value === 'number' && Number.isFinite(lastPrev.value)) {
+    const im = trimmed.match(IMPLICIT_OP_RE);
+    if (im) {
+      return evaluate(`(${lastPrev.value}) ${im[1]} ${im[2]}`, ctx);
+    }
+  }
   const assign = tryAssignment(trimmed);
   if (assign) {
     const inner = evaluate(assign.expr, ctx);

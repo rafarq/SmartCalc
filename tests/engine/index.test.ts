@@ -38,6 +38,43 @@ describe('evaluate basics', () => {
   });
 });
 
+describe('evaluate — operador implícito', () => {
+  it('+50 después de 100 → 150', () => {
+    const ctx = { vars: {}, prev: [{ value: 100, formatted: '100' }] };
+    const r = evaluate('+50', ctx);
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value).toBe(150);
+  });
+
+  it('*2 después de 7 → 14', () => {
+    const ctx = { vars: {}, prev: [{ value: 7, formatted: '7' }] };
+    const r = evaluate('*2', ctx);
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value).toBe(14);
+  });
+
+  it('/ 4 después de 100 → 25 (con espacio)', () => {
+    const ctx = { vars: {}, prev: [{ value: 100, formatted: '100' }] };
+    const r = evaluate('/ 4', ctx);
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value).toBe(25);
+  });
+
+  it('sin línea previa numérica → -5 es un literal', () => {
+    const ctx = { vars: {}, prev: [] };
+    const r = evaluate('-5', ctx);
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value).toBe(-5);
+  });
+
+  it('prev no numérico (fecha) → -5 es literal', () => {
+    const ctx = { vars: {}, prev: [{ value: new Date(), formatted: '13/05/2026' }] };
+    const r = evaluate('-5', ctx);
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value).toBe(-5);
+  });
+});
+
 describe('evaluate with references', () => {
   it('substitutes @{id} with the line value', () => {
     const r = evaluate('@{abc} * 2', {
