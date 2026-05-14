@@ -88,3 +88,20 @@ describe('expresiones laborables', () => {
     expect(r?.formatted).toMatch(/d\. laborables$/);
   });
 });
+
+describe('diferencias compuestas', () => {
+  it('semanas y días entre 1/5/2026 y 15/5/2026 → 2 sem. y 0 d.', () => {
+    const r = tryDateExpression('semanas y días entre 1/5/2026 y 15/5/2026');
+    expect(r?.formatted).toMatch(/2 sem\./);
+  });
+
+  it('semanas y días entre 1/5/2026 y 17/5/2026 → 2 sem. y 2 d.', () => {
+    const r = tryDateExpression('semanas y días entre 1/5/2026 y 17/5/2026');
+    expect(r?.formatted).toBe('2 sem. y 2 d.');
+  });
+
+  it('meses y días entre 3/1/2023 y 4/2/2026 ≈ 37 meses y 1 d.', () => {
+    const r = tryDateExpression('meses y días entre 3/1/2023 y 4/2/2026');
+    expect(r?.formatted).toMatch(/37 meses/);
+  });
+});

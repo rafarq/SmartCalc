@@ -1538,7 +1538,7 @@ Esta es la fase más compleja. Recomendamos elegir librería de festivos antes d
 
 ### Tarea 10.1: Decisión y instalación de librería de festivos
 
-- [ ] **Paso 1: Investigar opciones**
+- [x] **Paso 1: Investigar opciones**
 
 Comparar:
 - `date-holidays` (cubre España, incluye festivos autonómicos y algunos locales)
@@ -1546,7 +1546,7 @@ Comparar:
 
 **Decisión recomendada:** usar `date-holidays` para nacionales + autonómicos, y mantener un JSON local pequeño para los festivos locales de las 52 capitales que no cubra.
 
-- [ ] **Paso 2: Instalar**
+- [x] **Paso 2: Instalar**
 
 ```bash
 npm install date-holidays
@@ -1555,7 +1555,7 @@ npm install -D @types/date-holidays
 
 (Si `@types/date-holidays` no existe, crear `src/types/date-holidays.d.ts` con `declare module 'date-holidays';`.)
 
-- [ ] **Paso 3: Smoke test**
+- [x] **Paso 3: Smoke test**
 
 ```ts
 // tests/engine/holidays.smoke.test.ts
@@ -1571,7 +1571,7 @@ describe('date-holidays smoke', () => {
 });
 ```
 
-- [ ] **Paso 4: Commit**
+- [x] **Paso 4: Commit**
 
 ```bash
 git add -A && git commit -m "chore: add date-holidays dependency"
@@ -1582,7 +1582,7 @@ git add -A && git commit -m "chore: add date-holidays dependency"
 **Files:**
 - Create: `src/engine/dates.ts`, `tests/engine/dates.test.ts`
 
-- [ ] **Paso 1: Tests de parsing**
+- [x] **Paso 1: Tests de parsing**
 
 ```ts
 import { describe, it, expect, beforeEach, vi } from 'vitest';
@@ -1604,7 +1604,7 @@ describe('parseSpanishDate', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/engine/dates.ts`:
 
@@ -1663,7 +1663,7 @@ function normalizeYear(y: number) {
 }
 ```
 
-- [ ] **Paso 3: Verificar y commit**
+- [x] **Paso 3: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -1676,7 +1676,7 @@ git add -A && git commit -m "feat(engine): parseSpanishDate"
 - Modify: `src/engine/dates.ts`, `tests/engine/dates.test.ts`
 - Modify: `src/engine/index.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 describe('aritmética de fechas', () => {
@@ -1712,7 +1712,7 @@ describe('aritmética de fechas', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 Añadir a `dates.ts`:
 
@@ -1778,7 +1778,7 @@ function formatDate(d: Date): string {
 }
 ```
 
-- [ ] **Paso 3: Integrar en orquestador**
+- [x] **Paso 3: Integrar en orquestador**
 
 En `src/engine/index.ts`, antes de mathjs:
 
@@ -1789,7 +1789,7 @@ const de = tryDateExpression(trimmed);
 if (de) return { ok: true, value: de.value, formatted: de.formatted };
 ```
 
-- [ ] **Paso 4: Verificar y commit**
+- [x] **Paso 4: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -1802,7 +1802,7 @@ git add -A && git commit -m "feat(engine): aritmética de fechas"
 - Create: `src/engine/holidays.ts`, `tests/engine/holidays.test.ts`
 - Modify: `src/engine/dates.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -1831,7 +1831,7 @@ describe('días laborables', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/engine/holidays.ts`:
 
@@ -1879,7 +1879,7 @@ export function workingDaysBetween(a: Date, b: Date, region?: string): number {
 }
 ```
 
-- [ ] **Paso 3: Region matching (mapa capital→código autonómico)**
+- [x] **Paso 3: Region matching (mapa capital→código autonómico)**
 
 Añadir `REGION_MAP` con las 52 capitales mapeadas a sus códigos ISO autonómicos (`MD` Madrid, `AN` Andalucía, etc.). Para `Málaga` → región `AN` (Andalucía). `date-holidays` cubre festivos nacionales y autonómicos; los locales municipales que falten se documentan como limitación en MVP.
 
@@ -1933,7 +1933,7 @@ Importarlo desde `holidays.ts` en lugar de redefinirlo allí.
 
 > **Limitación conocida del MVP:** `date-holidays` cubre festivos nacionales y autonómicos, pero no todos los locales municipales. Los festivos locales específicos de una ciudad (p. ej. la feria patronal) pueden no estar incluidos y deberían añadirse en una fase posterior con un JSON propio si el usuario los necesita.
 
-- [ ] **Paso 4: Extender `tryDateExpression` con expresiones laborables**
+- [x] **Paso 4: Extender `tryDateExpression` con expresiones laborables**
 
 Añadir a `src/engine/dates.ts`:
 
@@ -1961,7 +1961,7 @@ if ((m = t.match(RE_LAB_ENTRE))) {
 }
 ```
 
-- [ ] **Paso 5: Verificar y commit**
+- [x] **Paso 5: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -1973,7 +1973,7 @@ git add -A && git commit -m "feat(engine): días laborables y festivos"
 **Files:**
 - Modify: `src/engine/dates.ts`, `tests/engine/dates.test.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 it('semanas y días entre 1/5/2026 y 15/5/2026 = 2 semanas', () => {
@@ -1987,7 +1987,7 @@ it('meses y días entre 3/1/23 y 4/2/26', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 Añadir a `dates.ts` con `differenceInMonths`, `differenceInYears`. Formatear en partes (`Xa Ym Zd` o `Xs Yd`).
 
@@ -2016,7 +2016,7 @@ if ((m = t.match(RE_MES_DIAS))) {
 }
 ```
 
-- [ ] **Paso 3: Verificar y commit**
+- [x] **Paso 3: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -2783,7 +2783,7 @@ git add -A && git commit -m "docs: README inicial"
 | 7 | §9 | Cálculo inverso | ✅ |
 | 8 | §10 | Conversión de unidades | ✅ |
 | 9 | §12 (parcial) | Conversiones naturales temporales | ✅ |
-| 10 | §12 (fechas) | Fechas y calendario laboral con festivos | ⏳ |
+| 10 | §12 (fechas) | Fechas y calendario laboral con festivos | ✅ |
 | 11 | §13 | Geometría con autocompletado (desktop+móvil) | ⏳ |
 | 12 | §14 | Variables, referencias, operador implícito, multilínea | 🟡 12.1 y 12.2 ✅ · 12.3 y 12.4 ⏳ |
 | 13 | §14 (persistencia) | localStorage + .syscalc | ✅ |

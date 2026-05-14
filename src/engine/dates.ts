@@ -4,6 +4,7 @@ import {
   addMonths,
   addYears,
   differenceInDays,
+  differenceInMonths,
   format,
   startOfDay,
 } from 'date-fns';
@@ -76,6 +77,8 @@ const RE_OP_FECHA = new RegExp(
 const RE_ENTRE = /^d[ií]as\s+entre\s+(.+?)\s+y\s+(.+?)$/i;
 const RE_LAB_PLUS = /^(.+?)\s+\+\s+(\d+)\s+d[ií]as?\s+laborables?(?:\s+en\s+([a-záéíóúñ\s-]+))?$/i;
 const RE_LAB_ENTRE = /^d[ií]as\s+laborables?\s+entre\s+(.+?)\s+y\s+(.+?)(?:\s+en\s+([a-záéíóúñ\s-]+))?$/i;
+const RE_SEM_DIAS = /^semanas\s+y\s+d[ií]as\s+entre\s+(.+?)\s+y\s+(.+?)$/i;
+const RE_MES_DIAS = /^meses\s+y\s+d[ií]as\s+entre\s+(.+?)\s+y\s+(.+?)$/i;
 
 function addUnit(date: Date, n: number, unit: string): Date {
   const u = unit.toLowerCase();
@@ -137,6 +140,29 @@ export function tryDateExpression(
     const region = m[3] ? REGION_MAP[m[3].trim().toLowerCase()] : undefined;
     const n = workingDaysBetween(a, b, region);
     return { value: n, formatted: `${n} d. laborables` };
+  }
+  if ((m = t.match(RE_SEM_DIAS))) {
+    const a = parseSpanishDate(m[1], ref);
+    const b = parseSpanishDate(m[2], ref);
+    if (!a || !b) return null;
+    const total = differenceInDays(b, a);
+    const sign = total < 0 ? -1 : 1;
+    const abs = Math.abs(total);
+    const weeks = Math.floor(abs / 7);
+    const days = abs % 7;
+    return {
+      value: total,
+      formatted: `${sign < 0 ? '-' : ''}${weeks} sem. y ${days} d.`,
+    };
+  }
+  if ((m = t.match(RE_MES_DIAS))) {
+    const a = parseSpanishDate(m[1], ref);
+    const b = parseSpanishDate(m[2], ref);
+    if (!a || !b) return null;
+    const months = differenceInMonths(b, a);
+    const tail = addMonths(a, months);
+    const days = differenceInDays(b, tail);
+    return { value: months, formatted: `${months} meses y ${days} d.` };
   }
   const single = parseSpanishDate(t, ref);
   if (single) return { value: single, formatted: formatDate(single) };

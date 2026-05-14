@@ -253,6 +253,35 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    title: 'Fechas y calendario',
+    description:
+      'Reconoce fechas en español, hace aritmética con ellas y calcula diferencias. Trabaja con el calendario laboral español (festivos nacionales + autonómicos) cuando se trata de días laborables.',
+    examples: [
+      { input: 'hoy', result: '13/05/2026' },
+      { input: 'mañana', result: '14/05/2026' },
+      { input: 'próximo lunes', result: '18/05/2026' },
+      { input: '10 de febrero de 2027', result: '10/02/2027' },
+      { input: 'hoy + 3 semanas', result: '03/06/2026' },
+      { input: 'hace 10 días', result: '03/05/2026' },
+      { input: 'dentro de 1 mes', result: '13/06/2026' },
+      { input: 'días entre 1/1/2026 y 1/2/2026', result: '31 días' },
+      { input: '15/5/2026 + 3 días laborables', result: '20/05/2026' },
+      { input: 'días laborables entre 1/1/2026 y 1/2/2026 en madrid', result: '21 d. laborables' },
+      { input: 'semanas y días entre 1/5/2026 y 17/5/2026', result: '2 sem. y 2 d.' },
+      { input: 'meses y días entre 3/1/2023 y 4/2/2026', result: '37 meses y 1 d.' },
+    ],
+    notes: [
+      'Formatos de entrada admitidos: «hoy / ayer / mañana», «dd/mm/yyyy» (también con año corto «dd/mm/yy» o sin año «dd/mm»), «dd de <mes>» (con o sin año), «próximo <día>» y «<día> que viene».',
+      'Días de la semana: lunes, martes, miércoles, jueves, viernes, sábado, domingo (con o sin acento).',
+      'Aritmética: «<fecha> + N días/semanas/meses/años», «<fecha> - N …», «hace N …», «dentro de N …».',
+      'Diferencias: «días entre <fecha> y <fecha>» (entero), «semanas y días entre …» y «meses y días entre …» con formato compuesto.',
+      'Laborables: «<fecha> + N días laborables» salta fines de semana y festivos. «días laborables entre <fecha> y <fecha>» cuenta solo los hábiles.',
+      'Festivos por región: añade «en <capital de provincia>» (p. ej. «en madrid», «en barcelona», «en valencia») para usar el calendario autonómico correspondiente. Si no se especifica, solo se aplican los festivos nacionales.',
+      'Limitación: los festivos locales municipales (fiestas patronales de una ciudad concreta) pueden no estar incluidos en el calendario base.',
+      'El resultado se formatea como «dd/MM/yyyy» y los conteos como «N días», «N sem. y M d.» o «N meses y M d.» según el caso.',
+    ],
+  },
+  {
     title: 'Conversiones naturales temporales',
     description:
       'Frases en español natural para tiempo: «12 horas en minutos», «minutos en 4 días». También permite saber cuántos días tiene un mes.',
