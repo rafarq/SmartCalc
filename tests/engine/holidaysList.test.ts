@@ -2,14 +2,23 @@ import { describe, it, expect } from 'vitest';
 import { getCityHolidays, cityList } from '../../src/engine/holidaysList';
 
 describe('getCityHolidays', () => {
-  it('Madrid 2026: incluye nacionales y autonómicos, sin locales', () => {
+  it('Madrid 2026: incluye nacionales, autonómicos y los locales conocidos', () => {
     const r = getCityHolidays('madrid', 2026)!;
     expect(r).not.toBeNull();
     expect(r.ccaa).toBe('MD');
-    expect(r.hasLocal).toBe(false);
+    expect(r.hasLocal).toBe(true);
     expect(r.holidays.some((h) => h.scope === 'national')).toBe(true);
     expect(r.holidays.some((h) => h.scope === 'regional')).toBe(true);
-    expect(r.holidays.every((h) => h.scope !== 'local')).toBe(true);
+    const isidro = r.holidays.find((h) => h.date === '2026-05-15');
+    expect(isidro?.scope).toBe('local');
+    const almudena = r.holidays.find((h) => h.date === '2026-11-09');
+    expect(almudena?.scope).toBe('local');
+  });
+  it('Pamplona 2026: San Fermín 7 jul como local', () => {
+    const r = getCityHolidays('pamplona', 2026)!;
+    expect(r.hasLocal).toBe(true);
+    const fermin = r.holidays.find((h) => h.date === '2026-07-07');
+    expect(fermin?.scope).toBe('local');
   });
 
   it('Barcelona 2026: incluye locales (Mercè)', () => {

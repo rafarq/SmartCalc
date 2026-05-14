@@ -1,5 +1,6 @@
 import Holidays from 'date-holidays';
 import { REGION_MAP } from './regionMap';
+import { getLocalHolidays } from './localHolidays';
 
 export type Scope = 'national' | 'regional' | 'local';
 
@@ -41,12 +42,12 @@ export function getCityHolidays(city: string, year: number): CityHolidaysResult 
   const reg = new Holidays('ES', ccaa).getHolidays(year).filter(isPublic);
 
   const subdiv = CITY_SUBDIVISION[key];
-  const loc = subdiv ? new Holidays('ES', ccaa, subdiv).getHolidays(year).filter(isPublic) : reg;
+  const subdivList = subdiv ? new Holidays('ES', ccaa, subdiv).getHolidays(year).filter(isPublic) : [];
+  const customLocals = getLocalHolidays(key);
 
   const natDates = new Set(nat.map((h) => toIsoDate(h.date)));
   const regDates = new Set(reg.map((h) => toIsoDate(h.date)));
 
-  // Indexamos por fecha para poder distinguir el ámbito.
   const byDate = new Map<string, DayHoliday>();
   for (const h of nat) {
     const d = toIsoDate(h.date);
@@ -54,17 +55,27 @@ export function getCityHolidays(city: string, year: number): CityHolidaysResult 
   }
   for (const h of reg) {
     const d = toIsoDate(h.date);
-    if (natDates.has(d)) continue; // ya marcado como nacional
+    if (natDates.has(d)) continue;
     byDate.set(d, { date: d, name: h.name, scope: 'regional' });
   }
-  for (const h of loc) {
+  // 1) Locales que vienen de date-holidays a nivel subdivisión (Barcelona, etc.).
+  for (const h of subdivList) {
     const d = toIsoDate(h.date);
     if (natDates.has(d) || regDates.has(d)) continue;
     byDate.set(d, { date: d, name: h.name, scope: 'local' });
   }
+  // 2) Locales del JSON propio para capitales no cubiertas por la librería.
+  for (const l of customLocals) {
+    const dateObj = new Date(year, l.month, l.day);
+    if (dateObj.getMonth() !== l.month) continue; // fecha inválida
+    const d = `${year}-${String(l.month + 1).padStart(2, '0')}-${String(l.day).padStart(2, '0')}`;
+    if (natDates.has(d) || regDates.has(d) || byDate.has(d)) continue;
+    byDate.set(d, { date: d, name: l.name, scope: 'local' });
+  }
 
   const holidays = [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
-  return { city, ccaa, year, holidays, hasLocal: !!subdiv };
+  const hasLocal = !!subdiv || customLocals.length > 0;
+  return { city, ccaa, year, holidays, hasLocal };
 }
 
 // Devuelve las claves canónicas (con acentos cuando existan) para el selector.

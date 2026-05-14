@@ -191,16 +191,18 @@ export function tryDateExpression(
   if ((m = t.match(RE_LAB_PLUS))) {
     const base = parseSpanishDate(m[1], ref);
     if (!base) return null;
-    const region = m[3] ? REGION_MAP[m[3].trim().toLowerCase()] : undefined;
-    const d = addWorkingDays(base, parseInt(m[2], 10), region);
+    const cityKey = m[3]?.trim().toLowerCase();
+    const region = cityKey ? REGION_MAP[cityKey] : undefined;
+    const d = addWorkingDays(base, parseInt(m[2], 10), region, cityKey);
     return { value: d, formatted: formatDate(d) };
   }
   if ((m = t.match(RE_LAB_ENTRE))) {
     const a = parseSpanishDate(m[1], ref);
     const b = parseSpanishDate(m[2], ref);
     if (!a || !b) return null;
-    const region = m[3] ? REGION_MAP[m[3].trim().toLowerCase()] : undefined;
-    const n = workingDaysBetween(a, b, region);
+    const cityKey = m[3]?.trim().toLowerCase();
+    const region = cityKey ? REGION_MAP[cityKey] : undefined;
+    const n = workingDaysBetween(a, b, region, cityKey);
     return { value: n, formatted: `${n} d. laborables` };
   }
   if ((m = t.match(RE_SEM_DIAS))) {

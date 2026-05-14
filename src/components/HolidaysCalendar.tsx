@@ -98,6 +98,11 @@ export function HolidaysCalendar({ onClose }: Props) {
             <li><span className="cal-swatch local" /> Local</li>
           </ul>
         </div>
+        <p className="cal-disclaimer">
+          Los festivos locales se basan en patronales fijas bien conocidas; los
+          ayuntamientos pueden alterarlos cada año. Para uso oficial, consulta
+          el BOE y el BOP de tu provincia.
+        </p>
 
         {!data ? (
           <p className="cal-empty">No se ha podido cargar el calendario.</p>

@@ -527,13 +527,13 @@
   background: #ddd;
 }
 .cal-swatch.national, .cal-day.national, .cal-list-item.national .cal-swatch {
-  background: #2563eb;
+  background: #ea580c; /* naranja */
 }
 .cal-swatch.regional, .cal-day.regional, .cal-list-item.regional .cal-swatch {
-  background: #7c3aed;
+  background: #facc15; /* amarillo */
 }
 .cal-swatch.local, .cal-day.local, .cal-list-item.local .cal-swatch {
-  background: #f59e0b;
+  background: #2563eb; /* azul */
 }
 .cal-grid {
   display: grid;
@@ -583,8 +583,13 @@
   color: #333;
 }
 .cal-day.empty { visibility: hidden; }
-.cal-day.national, .cal-day.regional, .cal-day.local {
+.cal-day.national, .cal-day.local {
   color: #fff;
+  font-weight: 600;
+}
+.cal-day.regional {
+  /* amarillo necesita texto oscuro para legibilidad */
+  color: #1a1a1a;
   font-weight: 600;
 }
 .cal-list {
@@ -633,6 +638,13 @@
   font-weight: 600;
 }
 .cal-empty { color: #888; }
+.cal-disclaimer {
+  margin: -8px 0 24px;
+  font-size: 12px;
+  color: #888;
+  line-height: 1.5;
+  max-width: 640px;
+}
 
 .help-footer kbd {
   background: #f0f0f0;
