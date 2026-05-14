@@ -955,3 +955,27 @@
     height: 44px;
   }
 }
+
+/* ───────── App footer ───────── */
+.app-footer {
+  flex-shrink: 0;
+  padding: 14px 24px;
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 12px;
+  text-align: center;
+}
+.app-footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+.app-footer a:hover {
+  text-decoration: underline;
+}
+@media (max-width: 640px) {
+  .app-footer {
+    padding: 12px 8px;
+  }
+}

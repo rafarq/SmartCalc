@@ -35,6 +35,17 @@ export default function App() {
         onCalendar={() => setCalendarOpen(true)}
       />
       <Editor doc={doc} {...editorProps} />
+      <footer className="app-footer">
+        Herramienta abierta creada por{' '}
+        <a
+          href="https://www.systemarquitectura.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          System Arquitectura
+        </a>
+        .
+      </footer>
       {helpOpen && <HelpPage onClose={() => setHelpOpen(false)} />}
       {calendarOpen && <HolidaysCalendar onClose={() => setCalendarOpen(false)} />}
     </div>
