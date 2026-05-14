@@ -298,7 +298,8 @@ const SECTIONS: Section[] = [
       { input: 'meses y días entre 3/1/2023 y 4/2/2026', result: '37 meses y 1 d.' },
     ],
     notes: [
-      'Formatos de entrada admitidos: «hoy / ayer / mañana», «dd/mm/yyyy» (también con año corto «dd/mm/yy» o sin año «dd/mm»), «dd de <mes>» (con o sin año), «(el/la) próximo <día>» y «(el/la) <día> que viene».',
+      'Formatos de entrada admitidos: «hoy / ayer / mañana», «dd/mm/yyyy» (también con año corto «dd/mm/yy» de dos cifras), «dd de <mes>» (con o sin año), «(el/la) próximo <día>» y «(el/la) <día> que viene».',
+      'En la forma con barras siempre hay que escribir el año (2 o 4 dígitos): así «1/3» se sigue tratando como la división 1÷3, y «1/1/2026» espera a tener los 4 dígitos completos para considerarse fecha.',
       'Días de la semana: lunes, martes, miércoles, jueves, viernes, sábado, domingo (con o sin acento). El artículo «el / la / los / las» al inicio es opcional.',
       'Ordinales: «el primer/segundo/tercer/cuarto/quinto/último <día> de <mes>» — el «mes» puede ser «mes» (el actual), «mes que viene / próximo mes», «mes pasado» o el nombre de un mes («enero», «de febrero de 2027»…). Si el ordinal no existe en ese mes (p. ej. «el quinto lunes»), el resultado queda vacío.',
       'Aritmética: «<fecha> + N días/semanas/meses/años», «<fecha> - N …», «hace N …», «dentro de N …».',

@@ -17,8 +17,12 @@ describe('parseSpanishDate', () => {
     expect(parseSpanishDate('23/1/2026')).toEqual(new Date(2026, 0, 23)));
   it('23/1/26 (año corto)', () =>
     expect(parseSpanishDate('23/1/26')).toEqual(new Date(2026, 0, 23)));
-  it('23/1 (asume año actual)', () =>
-    expect(parseSpanishDate('23/1')).toEqual(new Date(2026, 0, 23)));
+  it('23/1 sin año NO es fecha (para no confundir con la división 23÷1)', () =>
+    expect(parseSpanishDate('23/1')).toBeNull());
+  it('1/3 sin año NO es fecha (es la división 1÷3)', () =>
+    expect(parseSpanishDate('1/3')).toBeNull());
+  it('1/1/202 (3 dígitos de año) NO es fecha mientras se tipea', () =>
+    expect(parseSpanishDate('1/1/202')).toBeNull());
   it('10 de febrero', () =>
     expect(parseSpanishDate('10 de febrero')).toEqual(new Date(2026, 1, 10)));
   it('10 de febrero de 2027', () =>
@@ -79,12 +83,12 @@ describe('tryDateExpression — "cuántos días hay entre"', () => {
     const r = tryDateExpression('cuántos días hay entre hoy y el miércoles que viene');
     expect(r?.value).toBe(7);
   });
-  it('cuantos días entre 1/1 y 1/2 (sin acento ni "hay") = 31', () => {
-    const r = tryDateExpression('cuantos días entre 1/1 y 1/2');
+  it('cuantos días entre 1/1/2026 y 1/2/2026 (sin acento ni "hay") = 31', () => {
+    const r = tryDateExpression('cuantos días entre 1/1/2026 y 1/2/2026');
     expect(r?.value).toBe(31);
   });
-  it('días hay entre 1/1 y 1/2 = 31', () => {
-    const r = tryDateExpression('días hay entre 1/1 y 1/2');
+  it('días hay entre 1/1/2026 y 1/2/2026 = 31', () => {
+    const r = tryDateExpression('días hay entre 1/1/2026 y 1/2/2026');
     expect(r?.value).toBe(31);
   });
   it('cuántos días laborables hay entre hoy y el primer lunes del mes que viene', () => {
@@ -123,8 +127,8 @@ describe('aritmética de fechas', () => {
     expect(r?.value).toEqual(new Date(2026, 0, 28));
   });
 
-  it('días entre 1/1 y 1/2 = 31', () => {
-    const r = tryDateExpression('días entre 1/1 y 1/2');
+  it('días entre 1/1/2026 y 1/2/2026 = 31', () => {
+    const r = tryDateExpression('días entre 1/1/2026 y 1/2/2026');
     expect(r?.value).toBe(31);
   });
 
@@ -149,6 +153,15 @@ describe('expresiones laborables', () => {
     const r = tryDateExpression('días laborables entre 1/1/2026 y 1/2/2026');
     expect(typeof r?.value).toBe('number');
     expect(r?.formatted).toMatch(/d\. laborables$/);
+  });
+  it('intervalo laboral irrealmente grande devuelve null (no bloquea)', () => {
+    // 70 años, supera MAX_WORKING_INTERVAL_DAYS (50 años) → null
+    const r = tryDateExpression('días laborables entre 1/1/1950 y 1/1/2020');
+    expect(r).toBeNull();
+  });
+  it('addWorkingDays con N enorme devuelve null', () => {
+    const r = tryDateExpression('1/1/2026 + 100000 días laborables');
+    expect(r).toBeNull();
   });
 });
 

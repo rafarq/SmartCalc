@@ -36,7 +36,10 @@ const ORDINALES: Record<string, number> = {
 };
 const ORDINAL_KEYS = Object.keys(ORDINALES).join('|');
 
-const RE_DDMMYYYY = /^(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?$/;
+// El año es obligatorio (2 o 4 dígitos). Así "1/3" se queda como división
+// numérica y mientras el usuario está escribiendo "1/1/2026" no se reconoce
+// "1/1/2" (1 dígito) ni "1/1/202" (3 dígitos) como año intermedio.
+const RE_DDMMYYYY = /^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/;
 const RE_DD_DE_MES = /^(\d{1,2})\s+de\s+([a-záéíóúñ]+)(?:\s+de\s+(\d{4}))?$/i;
 const RE_NEXT_DAY = /^(?:próximo|proximo|siguiente)\s+([a-záéíóú]+)$/i;
 const RE_DAY_QUE_VIENE = /^([a-záéíóú]+)\s+que\s+viene$/i;
@@ -102,7 +105,7 @@ export function parseSpanishDate(input: string, ref: Date = new Date()): Date | 
   if ((m = t.match(RE_DDMMYYYY))) {
     const d = parseInt(m[1], 10);
     const mo = parseInt(m[2], 10) - 1;
-    const y = m[3] ? normalizeYear(parseInt(m[3], 10)) : today.getFullYear();
+    const y = normalizeYear(parseInt(m[3], 10));
     return new Date(y, mo, d);
   }
   if ((m = t.match(RE_DD_DE_MES))) {
@@ -128,6 +131,11 @@ export function parseSpanishDate(input: string, ref: Date = new Date()): Date | 
   }
   return null;
 }
+
+// Tope para los cálculos laborables que iteran día a día: ~50 años.
+// Más allá no es un caso real y evita que la web se quede bloqueada si por
+// accidente se introduce una fecha lejana (año 202, año 2, etc.).
+const MAX_WORKING_INTERVAL_DAYS = 365 * 50;
 
 const UNIT_RE = String.raw`d[ií]as?|semanas?|mes(?:es)?|años?|anios?`;
 const RE_HACE = new RegExp(String.raw`^hace\s+(\d+)\s+(${UNIT_RE})$`, 'i');
@@ -195,15 +203,20 @@ export function tryDateExpression(
   if ((m = t.match(RE_LAB_PLUS))) {
     const base = parseSpanishDate(m[1], ref);
     if (!base) return null;
+    const n = parseInt(m[2], 10);
+    // Salvaguarda: addWorkingDays itera día a día. Más allá de ~50 años no es
+    // un caso de uso real y bloquearía el navegador.
+    if (Math.abs(n) > MAX_WORKING_INTERVAL_DAYS) return null;
     const cityKey = m[3]?.trim().toLowerCase();
     const region = cityKey ? REGION_MAP[cityKey] : undefined;
-    const d = addWorkingDays(base, parseInt(m[2], 10), region, cityKey);
+    const d = addWorkingDays(base, n, region, cityKey);
     return { value: d, formatted: formatDate(d) };
   }
   if ((m = t.match(RE_LAB_ENTRE))) {
     const a = parseSpanishDate(m[1], ref);
     const b = parseSpanishDate(m[2], ref);
     if (!a || !b) return null;
+    if (Math.abs(differenceInDays(b, a)) > MAX_WORKING_INTERVAL_DAYS) return null;
     const cityKey = m[3]?.trim().toLowerCase();
     const region = cityKey ? REGION_MAP[cityKey] : undefined;
     const n = workingDaysBetween(a, b, region, cityKey);
