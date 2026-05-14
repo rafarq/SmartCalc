@@ -20,6 +20,10 @@ describe('conversión de unidades — variantes', () => {
   it('admite plurales españoles', () =>
     expect(ev('2 horas a minutos')).toBe(120));
   it('km/h a m/s', () => expect(ev('36 km/h a m/s')).toBeCloseTo(10));
+  it('1 ha a m2 = 10 000', () => expect(ev('1 ha a m2')).toBeCloseTo(10000));
+  it('10000 m2 a ha = 1', () => expect(ev('10000 m2 a ha')).toBeCloseTo(1));
+  it('2.5 hectáreas a m2 = 25 000', () =>
+    expect(ev('2.5 hectáreas a m2')).toBeCloseTo(25000));
   it('devuelve null si no es conversión', () =>
     expect(tryUnitConversion('5 + 3')).toBeNull());
   it('devuelve null si una unidad es desconocida', () =>

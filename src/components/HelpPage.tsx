@@ -232,7 +232,7 @@ const SECTIONS: Section[] = [
       'Masa: kg, g, mg, lb, oz, libra(s), onza(s), tonelada(s).',
       'Tiempo: s, seg, segundo(s), min, minuto(s), h, hora(s), día(s), semana(s), mes(es), año(s).',
       'Temperatura: celsius, fahrenheit, kelvin.',
-      'Área: m2, km2, cm2, mm2, ft2, acre(s), hectárea(s).',
+      'Área: m2, km2, cm2, mm2, ft2, acre(s), ha, hectárea(s) — 1 ha = 10.000 m2.',
       'Volumen: m3, cm3, mm3, l, litro(s), ml, cl, dl, galón(es), taza(s).',
       'Velocidad: m/s, km/h, mph, nudo(s).',
       'Energía: J, kJ, cal, kcal, Wh, kWh, MWh.',

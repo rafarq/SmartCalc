@@ -30,6 +30,7 @@ const UNIT_MAP: Record<string, string> = {
   // Área
   m2: 'm^2', km2: 'km^2', cm2: 'cm^2', mm2: 'mm^2', ft2: 'ft^2',
   acre: 'acre', acres: 'acre',
+  ha: 'hectare',
   hectarea: 'hectare', hectareas: 'hectare',
   'hectárea': 'hectare', 'hectáreas': 'hectare',
   // Volumen
