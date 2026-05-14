@@ -7,6 +7,7 @@ import { tryAssignment } from './variables';
 import { tryInverse } from './inverse';
 import { tryUnitConversion } from './units';
 import { tryNaturalConversion } from './naturalConversions';
+import { tryDateExpression } from './dates';
 
 export type EvalContext = {
   vars: Record<string, number>;
@@ -90,6 +91,8 @@ export function evaluate(line: string, ctx: EvalContext): Result {
   if (uc) return { ok: true, value: uc.value, formatted: `${formatNumber(uc.value)} ${uc.unit}` };
   const nc = tryNaturalConversion(expr);
   if (nc) return { ok: true, value: nc.value, formatted: `${formatNumber(nc.value)} ${nc.unit}` };
+  const de = tryDateExpression(expr);
+  if (de) return { ok: true, value: de.value, formatted: de.formatted };
   try {
     const value = math.evaluate(expr, { ...ctx.vars });
     return { ok: true, value, formatted: formatNumber(value) };

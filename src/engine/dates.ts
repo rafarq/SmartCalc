@@ -1,4 +1,13 @@
-import { addDays, startOfDay } from 'date-fns';
+import {
+  addDays,
+  addWeeks,
+  addMonths,
+  addYears,
+  differenceInDays,
+  format,
+  startOfDay,
+} from 'date-fns';
+import { es } from 'date-fns/locale';
 
 const MESES: Record<string, number> = {
   enero: 0, febrero: 1, marzo: 2, abril: 3, mayo: 4, junio: 5,
@@ -53,5 +62,65 @@ export function parseSpanishDate(input: string, ref: Date = new Date()): Date | 
     const diff = ((target - today.getDay() + 7) % 7) || 7;
     return addDays(today, diff);
   }
+  return null;
+}
+
+const UNIT_RE = String.raw`d[ií]as?|semanas?|mes(?:es)?|años?|anios?`;
+const RE_HACE = new RegExp(String.raw`^hace\s+(\d+)\s+(${UNIT_RE})$`, 'i');
+const RE_DENTRO = new RegExp(String.raw`^dentro\s+de\s+(\d+)\s+(${UNIT_RE})$`, 'i');
+const RE_OP_FECHA = new RegExp(
+  String.raw`^(.+?)\s+([+-])\s+(\d+)\s+(${UNIT_RE})$`,
+  'i',
+);
+const RE_ENTRE = /^d[ií]as\s+entre\s+(.+?)\s+y\s+(.+?)$/i;
+
+function addUnit(date: Date, n: number, unit: string): Date {
+  const u = unit.toLowerCase();
+  if (u.startsWith('día') || u.startsWith('dia')) return addDays(date, n);
+  if (u.startsWith('semana')) return addWeeks(date, n);
+  if (u.startsWith('mes')) return addMonths(date, n);
+  if (u.startsWith('año') || u.startsWith('anio') || u.startsWith('ano')) return addYears(date, n);
+  return date;
+}
+
+function formatDate(d: Date): string {
+  return format(d, 'dd/MM/yyyy', { locale: es });
+}
+
+export type DateExpressionResult = { value: Date | number; formatted: string };
+
+export function tryDateExpression(
+  line: string,
+  ref: Date = new Date(),
+): DateExpressionResult | null {
+  const t = line.trim();
+  let m;
+
+  if ((m = t.match(RE_HACE))) {
+    const n = parseInt(m[1], 10);
+    const d = addUnit(startOfDay(ref), -n, m[2]);
+    return { value: d, formatted: formatDate(d) };
+  }
+  if ((m = t.match(RE_DENTRO))) {
+    const n = parseInt(m[1], 10);
+    const d = addUnit(startOfDay(ref), n, m[2]);
+    return { value: d, formatted: formatDate(d) };
+  }
+  if ((m = t.match(RE_OP_FECHA))) {
+    const base = parseSpanishDate(m[1], ref);
+    if (!base) return null;
+    const sign = m[2] === '+' ? 1 : -1;
+    const d = addUnit(base, sign * parseInt(m[3], 10), m[4]);
+    return { value: d, formatted: formatDate(d) };
+  }
+  if ((m = t.match(RE_ENTRE))) {
+    const a = parseSpanishDate(m[1], ref);
+    const b = parseSpanishDate(m[2], ref);
+    if (!a || !b) return null;
+    const days = differenceInDays(b, a);
+    return { value: days, formatted: `${days} días` };
+  }
+  const single = parseSpanishDate(t, ref);
+  if (single) return { value: single, formatted: formatDate(single) };
   return null;
 }

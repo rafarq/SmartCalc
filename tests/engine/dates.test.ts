@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { parseSpanishDate } from '../../src/engine/dates';
+import { parseSpanishDate, tryDateExpression } from '../../src/engine/dates';
 
 describe('parseSpanishDate', () => {
   beforeEach(() => {
@@ -31,4 +31,42 @@ describe('parseSpanishDate', () => {
     expect(parseSpanishDate('viernes que viene')).toEqual(new Date(2026, 4, 15)));
   it('texto no fecha devuelve null', () =>
     expect(parseSpanishDate('hola mundo')).toBeNull());
+});
+
+describe('aritmética de fechas', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 4, 13));
+  });
+  afterEach(() => vi.useRealTimers());
+
+  it('hoy + 3 semanas', () => {
+    const r = tryDateExpression('hoy + 3 semanas');
+    expect(r?.value).toEqual(new Date(2026, 5, 3));
+  });
+
+  it('hace 10 días', () => {
+    const r = tryDateExpression('hace 10 días');
+    expect(r?.value).toEqual(new Date(2026, 4, 3));
+  });
+
+  it('dentro de 1 mes', () => {
+    const r = tryDateExpression('dentro de 1 mes');
+    expect(r?.value).toEqual(new Date(2026, 5, 13));
+  });
+
+  it('23/1/2026 + 5 días = 28/01/2026', () => {
+    const r = tryDateExpression('23/1/2026 + 5 días');
+    expect(r?.value).toEqual(new Date(2026, 0, 28));
+  });
+
+  it('días entre 1/1 y 1/2 = 31', () => {
+    const r = tryDateExpression('días entre 1/1 y 1/2');
+    expect(r?.value).toBe(31);
+  });
+
+  it('fecha sola muestra formateada dd/MM/yyyy', () => {
+    const r = tryDateExpression('hoy');
+    expect(r?.formatted).toBe('13/05/2026');
+  });
 });
