@@ -123,11 +123,43 @@ export function Editor({
           />
         );
       })}
-      <div className="line-row line-total">
-        <span className="line-number" aria-hidden="true" />
-        <span className="line-total-spacer" />
-        <div className="line-total-right">
-          {numericValues.length > 0 && (
+      <div className="editor-toolbar">
+        <span className="editor-toolbar-label">Decimales</span>
+        <div className="decimals-control" role="group" aria-label="Decimales mostrados">
+          <button
+            type="button"
+            className="decimals-btn"
+            title="Menos decimales"
+            aria-label="Menos decimales"
+            onClick={() => setDecimals((d) => Math.max(0, d - 1))}
+            disabled={decimals <= 0}
+          >
+            −
+          </button>
+          <span
+            className="decimals-value"
+            title={`Decimales mostrados: ${decimals}`}
+            aria-live="polite"
+          >
+            {decimals}
+          </span>
+          <button
+            type="button"
+            className="decimals-btn"
+            title="Más decimales"
+            aria-label="Más decimales"
+            onClick={() => setDecimals((d) => Math.min(MAX_DECIMALS, d + 1))}
+            disabled={decimals >= MAX_DECIMALS}
+          >
+            +
+          </button>
+        </div>
+      </div>
+      {numericValues.length > 0 && (
+        <div className="line-row line-total">
+          <span className="line-number" aria-hidden="true" />
+          <span className="line-total-spacer" />
+          <div className="line-total-right">
             <select
               className="line-total-select"
               value={agg}
@@ -140,53 +172,20 @@ export function Editor({
                 </option>
               ))}
             </select>
-          )}
-          <div className="decimals-control" role="group" aria-label="Decimales mostrados">
-              <button
-                type="button"
-                className="decimals-btn"
-                title="Menos decimales"
-                aria-label="Menos decimales"
-                onClick={() => setDecimals((d) => Math.max(0, d - 1))}
-                disabled={decimals <= 0}
-              >
-                −
-              </button>
-              <span
-                className="decimals-value"
-                title={`Decimales mostrados: ${decimals}`}
-                aria-live="polite"
-              >
-                {decimals}
-              </span>
-              <button
-                type="button"
-                className="decimals-btn"
-                title="Más decimales"
-                aria-label="Más decimales"
-                onClick={() => setDecimals((d) => Math.min(MAX_DECIMALS, d + 1))}
-                disabled={decimals >= MAX_DECIMALS}
-              >
-                +
-              </button>
-            </div>
-          {numericValues.length > 0 && (
-            <>
-              <button
-                type="button"
-                className={`line-copy-btn${totalCopied ? ' copied' : ''}`}
-                title={totalCopied ? 'Copiado' : 'Copiar total'}
-                aria-label={totalCopied ? 'Copiado' : 'Copiar total'}
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={handleTotalCopy}
-              >
-                {totalCopied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
-              </button>
-              <span className="line-total-value">{aggDisplay}</span>
-            </>
-          )}
+            <button
+              type="button"
+              className={`line-copy-btn${totalCopied ? ' copied' : ''}`}
+              title={totalCopied ? 'Copiado' : 'Copiar total'}
+              aria-label={totalCopied ? 'Copiado' : 'Copiar total'}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={handleTotalCopy}
+            >
+              {totalCopied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
+            </button>
+            <span className="line-total-value">{aggDisplay}</span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
