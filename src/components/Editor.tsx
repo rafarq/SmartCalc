@@ -99,31 +99,7 @@ export function Editor({
   };
   return (
     <div className="editor">
-      {doc.lines.map((line, i) => {
-        const r = results[i];
-        const text = displayResult(r, decimals);
-        const hasValue = r.ok && r.formatted !== '';
-        return (
-          <LineRow
-            key={line.id}
-            lineNumber={i + 1}
-            value={line.text}
-            result={text}
-            lineValues={formattedById}
-            varNames={varNames}
-            autoFocus={line.id === focusedLineId}
-            resultClickable={hasValue && line.id !== focusedLineId}
-            onChange={(t) => setLineText(line.id, t)}
-            onEnter={() => insertLineAfter(i)}
-            onBackspaceEmpty={() => removeLine(line.id)}
-            onFocus={() => focusLine(line.id)}
-            onArrowUp={() => focusPrevLine(line.id)}
-            onArrowDown={() => focusNextLine(line.id)}
-            onResultClick={() => appendRefToFocused(line.id)}
-          />
-        );
-      })}
-      <div className="editor-toolbar">
+      <div className="editor-toolbar editor-toolbar-top">
         <span className="editor-toolbar-label">Decimales</span>
         <div className="decimals-control" role="group" aria-label="Decimales mostrados">
           <button
@@ -155,6 +131,30 @@ export function Editor({
           </button>
         </div>
       </div>
+      {doc.lines.map((line, i) => {
+        const r = results[i];
+        const text = displayResult(r, decimals);
+        const hasValue = r.ok && r.formatted !== '';
+        return (
+          <LineRow
+            key={line.id}
+            lineNumber={i + 1}
+            value={line.text}
+            result={text}
+            lineValues={formattedById}
+            varNames={varNames}
+            autoFocus={line.id === focusedLineId}
+            resultClickable={hasValue && line.id !== focusedLineId}
+            onChange={(t) => setLineText(line.id, t)}
+            onEnter={() => insertLineAfter(i)}
+            onBackspaceEmpty={() => removeLine(line.id)}
+            onFocus={() => focusLine(line.id)}
+            onArrowUp={() => focusPrevLine(line.id)}
+            onArrowDown={() => focusNextLine(line.id)}
+            onResultClick={() => appendRefToFocused(line.id)}
+          />
+        );
+      })}
       {numericValues.length > 0 && (
         <div className="line-row line-total">
           <span className="line-number" aria-hidden="true" />

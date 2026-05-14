@@ -260,6 +260,13 @@
   padding: 8px 6px 12px;
   border-top: 1px solid #f0f0f0;
 }
+.editor-toolbar-top {
+  margin-top: 0;
+  margin-bottom: 8px;
+  padding: 4px 6px 10px;
+  border-top: none;
+  border-bottom: 1px solid #f0f0f0;
+}
 .editor-toolbar-label {
   font-size: 11px;
   font-weight: 600;
