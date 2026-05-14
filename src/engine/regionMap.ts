@@ -1,6 +1,12 @@
-// 52 capitales de provincia y ciudades autónomas → código ISO de comunidad autónoma
-// usado por date-holidays para resolver festivos.
-export const REGION_MAP: Record<string, string> = {
+// Ciudad → código ISO de comunidad autónoma (usado por date-holidays).
+// Se construye uniendo:
+//   1. La lista manual de las 52 capitales de provincia + ciudades autónomas.
+//   2. Los municipios que aparecen en Constantes/municipios.json (la
+//      subdivision viene como "ES-XX", extraemos el código).
+
+import municipios from '../../Constantes/municipios.json';
+
+const MANUAL_REGION_MAP: Record<string, string> = {
   // Andalucía
   'almería': 'AN', almeria: 'AN',
   'cádiz': 'AN', cadiz: 'AN',
@@ -72,4 +78,19 @@ export const REGION_MAP: Record<string, string> = {
   // Ciudades autónomas
   ceuta: 'CE',
   melilla: 'ML',
+};
+
+function regionMapFromJson(): Record<string, string> {
+  const out: Record<string, string> = {};
+  const data = municipios as Record<string, { subdivision: string }>;
+  for (const [city, info] of Object.entries(data)) {
+    const m = info.subdivision.match(/^ES-(\w+)$/);
+    if (m) out[city.toLowerCase()] = m[1];
+  }
+  return out;
+}
+
+export const REGION_MAP: Record<string, string> = {
+  ...regionMapFromJson(),
+  ...MANUAL_REGION_MAP, // manual gana frente al JSON
 };

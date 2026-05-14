@@ -21,13 +21,16 @@ describe('getCityHolidays', () => {
     expect(fermin?.scope).toBe('local');
   });
 
-  it('Barcelona 2026: incluye locales (Mercè)', () => {
+  it('Barcelona 2026: incluye Mercè (date-holidays) + festivos del JSON', () => {
     const r = getCityHolidays('barcelona', 2026)!;
     expect(r.ccaa).toBe('CT');
     expect(r.hasLocal).toBe(true);
-    const merce = r.holidays.find((h) => h.scope === 'local');
+    // date-holidays subdivision 'B' aporta la Mercè (24 sep)
+    const merce = r.holidays.find((h) => h.date === '2026-09-24');
     expect(merce).toBeDefined();
-    expect(merce?.date).toBe('2026-09-24');
+    expect(merce?.scope).toBe('local');
+    // Y el JSON aporta más fechas locales
+    expect(r.holidays.filter((h) => h.scope === 'local').length).toBeGreaterThan(1);
   });
 
   it('ciudad inexistente devuelve null', () => {
