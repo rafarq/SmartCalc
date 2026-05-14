@@ -218,7 +218,7 @@ const SECTIONS: Section[] = [
       { input: '100 celsius a fahrenheit', result: '212 fahrenheit' },
       { input: '1 hora a min', result: '60 min' },
       { input: '1 kWh a J', result: '3.600.000 J' },
-      { input: '1 m2 a cm2', result: '10.000 cm2' },
+      { input: '1 m2 a cm2', result: '10.000 cm²' },
       { input: '1 litro a ml', result: '1.000 ml' },
     ],
     useCases: [
@@ -234,6 +234,7 @@ const SECTIONS: Section[] = [
       'Temperatura: celsius, fahrenheit, kelvin.',
       'Área: m2, km2, cm2, mm2, ft2, acre(s), ha, hectárea(s) — 1 ha = 10.000 m2.',
       'Exponentes con superíndice (m², km², m³, cm³…) son equivalentes a la forma ASCII (m2, km2, m3, cm3…) y se aceptan en cualquier mezcla. Funciona también para exponentes arbitrarios: m⁴ ≡ m4, cm⁵ ≡ cm5, etc.',
+      'El resultado siempre se muestra con superíndice tipográfico: aunque escribas «cm2» en la conversión, en la línea de resultados aparece «cm²».',
       'Volumen: m3, cm3, mm3, l, litro(s), ml, cl, dl, galón(es), taza(s).',
       'Velocidad: m/s, km/h, mph, nudo(s).',
       'Energía: J, kJ, cal, kcal, Wh, kWh, MWh.',

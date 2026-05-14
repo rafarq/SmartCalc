@@ -40,3 +40,14 @@ describe('exponentes en unidades (m2 / m²) y exponentes arbitrarios', () => {
     expect(ev('1 m² a cm2')).toBeCloseTo(10000));
   it('1 km² a m² = 1 000 000', () => expect(ev('1 km² a m²')).toBeCloseTo(1_000_000));
 });
+
+describe('formato de la unidad de salida', () => {
+  it('"1 m² a cm2" devuelve la unidad como "cm²"', () =>
+    expect(tryUnitConversion('1 m² a cm2')?.unit).toBe('cm²'));
+  it('"1 m3 a litros" mantiene "litros" sin tocar', () =>
+    expect(tryUnitConversion('1 m3 a litros')?.unit).toBe('litros'));
+  it('"1 m a km" conserva "km" sin superíndices espurios', () =>
+    expect(tryUnitConversion('1 m a km')?.unit).toBe('km'));
+  it('"1 m4 a cm4" se muestra como "cm⁴"', () =>
+    expect(tryUnitConversion('1 m4 a cm4')?.unit).toBe('cm⁴'));
+});

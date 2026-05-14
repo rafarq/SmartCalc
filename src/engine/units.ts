@@ -67,6 +67,27 @@ function normalize(unit: string): string {
   return unit.toLowerCase().replace(SUPERSCRIPT_RE, (c) => SUPERSCRIPT[c] ?? c);
 }
 
+const ASCII_TO_SUPERSCRIPT: Record<string, string> = {
+  '0': '⁰',
+  '1': '¹',
+  '2': '²',
+  '3': '³',
+  '4': '⁴',
+  '5': '⁵',
+  '6': '⁶',
+  '7': '⁷',
+  '8': '⁸',
+  '9': '⁹',
+};
+
+// Para mostrar el resultado: si la unidad termina en dígitos ASCII (m2, cm3,
+// km4…), los convertimos a superíndice tipográfico (m², cm³, km⁴…).
+export function prettyUnit(unit: string): string {
+  return unit.replace(/(\d+)$/, (digits) =>
+    [...digits].map((d) => ASCII_TO_SUPERSCRIPT[d] ?? d).join(''),
+  );
+}
+
 // Resuelve un nombre de unidad. Reconoce primero el alias directo del diccionario;
 // si no hay coincidencia y termina en dígitos, separa base + exponente y aplica
 // el exponente al alias de la base (m4 → m^4, cm5 → cm^5, m/s2 → m/s^2…).
@@ -97,7 +118,7 @@ export function tryUnitConversion(line: string): UnitConversion | null {
   try {
     const converted = math.unit(value, from).toNumber(to);
     if (!Number.isFinite(converted)) return null;
-    return { value: converted, unit: m[3] };
+    return { value: converted, unit: prettyUnit(m[3]) };
   } catch {
     return null;
   }
