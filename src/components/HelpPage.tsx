@@ -210,6 +210,30 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    title: 'Conversión de unidades',
+    description:
+      'Sintaxis "valor unidad a unidad". Reconoce nombres en español (singular/plural, mayúsculas/minúsculas) y los traduce internamente al sistema de unidades de mathjs.',
+    examples: [
+      { input: '5 km a millas', result: '3,11 millas' },
+      { input: '100 celsius a fahrenheit', result: '212 fahrenheit' },
+      { input: '1 hora a min', result: '60 min' },
+      { input: '1 kWh a J', result: '3.600.000 J' },
+      { input: '1 m2 a cm2', result: '10.000 cm2' },
+      { input: '1 litro a ml', result: '1.000 ml' },
+    ],
+    useCases: [
+      { input: '36 km/h a m/s', result: '10 m/s' },
+      { input: '2 horas a minutos', result: '120 minutos' },
+      { input: '70 kg a lb', result: '154,32 lb' },
+      { input: '500 ml a litros', result: '0,5 litros' },
+    ],
+    notes: [
+      'Categorías soportadas: longitud (m, km, cm, mm, pulgada(s), pie(s), yarda(s), milla(s)), masa (kg, g, mg, lb, oz, tonelada(s)), tiempo (s, min, hora(s), día(s), semana(s), mes(es), año(s)), temperatura (celsius, fahrenheit, kelvin), área (m2, km2, cm2, ft2, acre(s), hectárea(s)), volumen (m3, cm3, litro(s), ml, cl, dl, galón(es), taza(s)), velocidad (m/s, km/h, mph, nudo(s)) y energía (J, kJ, cal, kcal, Wh, kWh, MWh).',
+      'El resultado conserva la etiqueta de la unidad de destino tal y como la escribas: "60 min" si pediste "min", "60 minutos" si pediste "minutos".',
+      'La conexión es estricta: "5 burbujas a millas" no produce resultado (unidad desconocida).',
+    ],
+  },
+  {
     title: 'Cálculo inverso',
     description:
       'Para cuando conoces el resultado y quieres averiguar el valor original que lo produce.',

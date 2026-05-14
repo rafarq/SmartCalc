@@ -5,6 +5,7 @@ import { preprocess } from './preprocess';
 import { tryPercentages } from './percentages';
 import { tryAssignment } from './variables';
 import { tryInverse } from './inverse';
+import { tryUnitConversion } from './units';
 
 export type EvalContext = {
   vars: Record<string, number>;
@@ -84,6 +85,8 @@ export function evaluate(line: string, ctx: EvalContext): Result {
   if (pct) return { ok: true, value: pct.value, formatted: formatNumber(pct.value) };
   const inv = tryInverse(expr);
   if (inv) return { ok: true, value: inv.value, formatted: formatNumber(inv.value) };
+  const uc = tryUnitConversion(expr);
+  if (uc) return { ok: true, value: uc.value, formatted: `${formatNumber(uc.value)} ${uc.unit}` };
   try {
     const value = math.evaluate(expr, { ...ctx.vars });
     return { ok: true, value, formatted: formatNumber(value) };

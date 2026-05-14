@@ -1320,7 +1320,7 @@ mathjs soporta unidades nativamente con nombres en inglés. Mapearemos a sintaxi
 - Create: `src/engine/units.ts`, `tests/engine/units.test.ts`
 - Modify: `src/engine/index.ts`
 
-- [ ] **Paso 1: Tests (conjunto representativo de cada categoría)**
+- [x] **Paso 1: Tests (conjunto representativo de cada categoría)**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -1339,7 +1339,7 @@ describe('conversión de unidades', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/engine/units.ts`:
 
@@ -1397,7 +1397,7 @@ export function tryUnitConversion(line: string): { value: number; unit: string }
 }
 ```
 
-- [ ] **Paso 3: Integrar en orquestador**
+- [x] **Paso 3: Integrar en orquestador**
 
 ```ts
 import { tryUnitConversion } from './units';
@@ -1406,7 +1406,7 @@ const uc = tryUnitConversion(trimmed);
 if (uc) return { ok: true, value: uc.value, formatted: `${formatNumber(uc.value)} ${uc.unit}` };
 ```
 
-- [ ] **Paso 4: Verificar y commit**
+- [x] **Paso 4: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -2781,7 +2781,7 @@ git add -A && git commit -m "docs: README inicial"
 | 5 | §7 | Abreviaturas k / M | ✅ |
 | 6 | §8 | Porcentajes naturales + regla de tres | ✅ |
 | 7 | §9 | Cálculo inverso | ✅ |
-| 8 | §10 | Conversión de unidades | ⏳ |
+| 8 | §10 | Conversión de unidades | ✅ |
 | 9 | §12 (parcial) | Conversiones naturales temporales | ⏳ |
 | 10 | §12 (fechas) | Fechas y calendario laboral con festivos | ⏳ |
 | 11 | §13 | Geometría con autocompletado (desktop+móvil) | ⏳ |
