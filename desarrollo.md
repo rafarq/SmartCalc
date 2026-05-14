@@ -2032,7 +2032,7 @@ git add -A && git commit -m "feat(engine): diferencias compuestas de fecha"
 **Files:**
 - Create: `src/engine/geometry.ts`, `tests/engine/geometry.test.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -2064,7 +2064,7 @@ describe('geometría', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/engine/geometry.ts`:
 
@@ -2109,7 +2109,7 @@ export function tryGeometry(
 }
 ```
 
-- [ ] **Paso 3: Integrar en orquestador (antes de mathjs)**
+- [x] **Paso 3: Integrar en orquestador (antes de mathjs)**
 
 ```ts
 import { tryGeometry } from './geometry';
@@ -2118,7 +2118,7 @@ const g = tryGeometry(trimmed);
 if (g) return { ok: true, value: g.value, formatted: `${formatNumber(g.value)} ${g.unit}` };
 ```
 
-- [ ] **Paso 4: Verificar y commit**
+- [x] **Paso 4: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -2130,7 +2130,7 @@ git add -A && git commit -m "feat(engine): fórmulas geométricas"
 **Files:**
 - Create: `src/hooks/useAutocomplete.ts`, `tests/hooks/useAutocomplete.test.tsx`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```tsx
 import { describe, it, expect } from 'vitest';
@@ -2161,7 +2161,7 @@ describe('useAutocomplete', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/hooks/useAutocomplete.ts`:
 
@@ -2192,7 +2192,7 @@ export function useAutocomplete(input: string) {
 }
 ```
 
-- [ ] **Paso 3: Verificar y commit**
+- [x] **Paso 3: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -2205,7 +2205,7 @@ git add -A && git commit -m "feat(hooks): useAutocomplete para geometría"
 - Create: `src/components/Autocomplete.tsx`
 - Modify: `src/components/LineRow.tsx`
 
-- [ ] **Paso 1: Componente**
+- [x] **Paso 1: Componente**
 
 `src/components/Autocomplete.tsx`:
 
@@ -2235,7 +2235,7 @@ export function Autocomplete({ items, selectedIndex, onPick }: Props) {
 }
 ```
 
-- [ ] **Paso 2: Integrar en `LineRow`**
+- [x] **Paso 2: Integrar en `LineRow`**
 
 Refactor `LineRow` para gestionar autocompletado: usar `useAutocomplete(value)`, capturar `ArrowUp`/`ArrowDown`/`Enter`/`Tab`, y al elegir reemplazar el valor.
 
@@ -2290,7 +2290,7 @@ CSS:
 .autocomplete-item.selected { background: #eef4ff; }
 ```
 
-- [ ] **Paso 3: Verificar visualmente y commit**
+- [x] **Paso 3: Verificar visualmente y commit**
 
 ```bash
 npm run dev
@@ -2784,7 +2784,7 @@ git add -A && git commit -m "docs: README inicial"
 | 8 | §10 | Conversión de unidades | ✅ |
 | 9 | §12 (parcial) | Conversiones naturales temporales | ✅ |
 | 10 | §12 (fechas) | Fechas y calendario laboral con festivos | ✅ |
-| 11 | §13 | Geometría con autocompletado (desktop+móvil) | ⏳ |
+| 11 | §13 | Geometría con autocompletado (desktop+móvil) | 🟡 11.1-11.3 ✅ · 11.4 (móvil) ⏳ |
 | 12 | §14 | Variables, referencias, operador implícito, multilínea | 🟡 12.1 y 12.2 ✅ · 12.3 y 12.4 ⏳ |
 | 13 | §14 (persistencia) | localStorage + .syscalc | ✅ |
 | 14 | — | Pulido, responsive, README | ⏳ |

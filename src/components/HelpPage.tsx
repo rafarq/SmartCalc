@@ -253,6 +253,29 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    title: 'Geometría con autocompletado',
+    description:
+      'Plantillas «área / perímetro / volumen . figura . parámetros» con autocompletado a medida que escribes. Empieza por «area.», «perimetro.» o «volumen.» (también admite «perímetro.») y aparece una lista de fórmulas disponibles.',
+    examples: [
+      { input: 'area.circulo.radio. 5mm', result: '78,54 mm²' },
+      { input: 'area.cuadrado.lado. 4m', result: '16 m²' },
+      { input: 'area.rectangulo.lados. 3m 4m', result: '12 m²' },
+      { input: 'area.triangulo.base_altura. 6 4', result: '12 m²' },
+      { input: 'area.trapecio.bases_altura. 10 6 4', result: '32 m²' },
+      { input: 'perimetro.circulo.diametro. 10cm', result: '31,42 cm' },
+      { input: 'perimetro.rectangulo.lados. 3m 5m', result: '16 m' },
+      { input: 'volumen.cubo.lado. 3m', result: '27 m³' },
+      { input: 'volumen.esfera.radio. 5', result: '523,6 m³' },
+      { input: 'volumen.cilindro.radio_altura. 2 10', result: '125,66 m³' },
+    ],
+    notes: [
+      'Mientras la lista esté abierta: ↑ / ↓ navega entre sugerencias, Enter o Tab elige la actual, Esc cierra el popup.',
+      'Familias soportadas: área (círculo, cuadrado, rectángulo, triángulo, triángulo equilátero, rombo, trapecio, elipse), perímetro (cuadrado, rectángulo, círculo, triángulo equilátero) y volumen (cubo, esfera, cilindro, cono, prisma rectangular).',
+      'Unidades aceptadas para los valores: mm, cm, m, km, in, ft, yd. Si no escribes ninguna, se asume m. El resultado lleva la unidad al cuadrado para áreas y al cubo para volúmenes (m², cm³…).',
+      'Si mezclas unidades en una misma fórmula, se usa la primera para la salida; el cálculo numérico no las convierte por ahora.',
+    ],
+  },
+  {
     title: 'Fechas y calendario',
     description:
       'Reconoce fechas en español, hace aritmética con ellas y calcula diferencias. Trabaja con el calendario laboral español (festivos nacionales + autonómicos) cuando se trata de días laborables.',

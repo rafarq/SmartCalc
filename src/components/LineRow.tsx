@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { extractText, placeCursorAtEnd, renderTokensToHTML } from '../utils/refs';
+import { useAutocomplete } from '../hooks/useAutocomplete';
+import { Autocomplete } from './Autocomplete';
 import { CheckIcon, CopyIcon } from './icons';
 
 type Props = {
@@ -38,6 +40,13 @@ export function LineRow({
   const inputRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [copied, setCopied] = useState(false);
+  const ac = useAutocomplete(value);
+  const acVisible = isFocused && ac.suggestions.length > 0;
+
+  const pickSuggestion = (template: string) => {
+    onChange(template + ' ');
+    ac.reset();
+  };
 
   const hasValue = result !== '' && result !== '⚠';
 
@@ -106,6 +115,7 @@ export function LineRow({
       }}
     >
       {lineNumber !== undefined && <span className="line-number">{lineNumber}</span>}
+      <div className="line-input-wrap">
       <div
         ref={inputRef}
         className="line-input"
@@ -126,6 +136,18 @@ export function LineRow({
         }}
         onBlur={() => setIsFocused(false)}
         onKeyDown={(e) => {
+          // Mientras el autocompletado de geometría esté abierto, las flechas
+          // y Enter/Tab pertenecen al popup, no a la navegación entre líneas.
+          if (acVisible) {
+            if (e.key === 'ArrowDown') { e.preventDefault(); ac.moveDown(); return; }
+            if (e.key === 'ArrowUp') { e.preventDefault(); ac.moveUp(); return; }
+            if (e.key === 'Enter' || e.key === 'Tab') {
+              e.preventDefault();
+              pickSuggestion(ac.suggestions[ac.selectedIndex]);
+              return;
+            }
+            if (e.key === 'Escape') { e.preventDefault(); ac.reset(); return; }
+          }
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             onEnter();
@@ -150,6 +172,14 @@ export function LineRow({
           }
         }}
       />
+      {acVisible && (
+        <Autocomplete
+          items={ac.suggestions}
+          selectedIndex={ac.selectedIndex}
+          onPick={pickSuggestion}
+        />
+      )}
+      </div>
       <div className="line-result-cell">
         {hasValue && (
           <button
