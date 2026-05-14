@@ -3,7 +3,7 @@ import { LineRow } from './LineRow';
 
 type EditorProps = Omit<
   ReturnType<typeof useDocument>,
-  'lineValues' | 'replaceDocument' | 'setTitle'
+  'lineValues' | 'replaceDocument' | 'clearDocument' | 'setTitle'
 >;
 
 export function Editor({

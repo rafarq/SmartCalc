@@ -2,17 +2,18 @@ import { useRef } from 'react';
 import type { DocumentModel } from '../state/document';
 import { importSyscalc } from '../state/storage';
 import { EditableTitle } from './EditableTitle';
-import { HelpIcon, LoadIcon, SaveIcon } from './icons';
+import { HelpIcon, LoadIcon, SaveIcon, TrashIcon } from './icons';
 
 type Props = {
   title: string;
   onTitleChange: (next: string) => void;
   onSave: () => void;
   onLoad: (doc: DocumentModel) => void;
+  onClear: () => void;
   onHelp: () => void;
 };
 
-export function Header({ title, onTitleChange, onSave, onLoad, onHelp }: Props) {
+export function Header({ title, onTitleChange, onSave, onLoad, onClear, onHelp }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,6 +42,14 @@ export function Header({ title, onTitleChange, onSave, onLoad, onHelp }: Props) 
       <div className="header-actions">
         <button className="icon-btn" onClick={onHelp} title="Ayuda" aria-label="Ayuda">
           <HelpIcon />
+        </button>
+        <button
+          className="icon-btn"
+          onClick={onClear}
+          title="Limpiar hoja (empezar de cero)"
+          aria-label="Limpiar hoja"
+        >
+          <TrashIcon />
         </button>
         <button
           className="icon-btn"

@@ -10,7 +10,16 @@ import './styles/app.css';
 export default function App() {
   const [helpOpen, setHelpOpen] = useState(false);
   const docState = useDocument();
-  const { doc, replaceDocument, setTitle, ...editorProps } = docState;
+  const { doc, replaceDocument, clearDocument, setTitle, ...editorProps } = docState;
+
+  const hasContent = doc.lines.some((l) => l.text.trim().length > 0);
+
+  const handleClear = () => {
+    if (hasContent && !window.confirm('¿Limpiar la hoja? Se perderán las líneas actuales.')) {
+      return;
+    }
+    clearDocument();
+  };
 
   return (
     <div className="app">
@@ -19,6 +28,7 @@ export default function App() {
         onTitleChange={setTitle}
         onSave={() => exportSyscalc(doc)}
         onLoad={(loaded) => replaceDocument(loaded)}
+        onClear={handleClear}
         onHelp={() => setHelpOpen(true)}
       />
       <Editor doc={doc} {...editorProps} />

@@ -304,6 +304,7 @@ const SECTIONS: Section[] = [
       'Título de la hoja — click sobre el título centrado en la cabecera para renombrar (Enter guarda, Esc cancela).',
       'Guardar (icono ↓) — descarga la hoja como archivo .syscalc con el nombre del título.',
       'Cargar (icono carpeta) — abre un archivo .syscalc previamente guardado, sustituyendo la hoja actual.',
+      'Limpiar (icono papelera) — borra todas las líneas y el título, dejando la hoja en blanco para empezar de cero. Pide confirmación si hay contenido.',
     ],
   },
 ];

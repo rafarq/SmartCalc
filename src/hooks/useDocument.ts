@@ -114,6 +114,12 @@ export function useDocument() {
     setFocusedLineId(next.lines[0].id);
   }, []);
 
+  const clearDocument = useCallback(() => {
+    const fresh = createEmptyDocument();
+    setDoc(fresh);
+    setFocusedLineId(fresh.lines[0].id);
+  }, []);
+
   const setTitle = useCallback((title: string) => {
     setDoc((d) => docSetTitle(d, title));
   }, []);
@@ -133,6 +139,7 @@ export function useDocument() {
     focusNextLine,
     appendRefToFocused,
     replaceDocument,
+    clearDocument,
     setTitle,
   };
 }
