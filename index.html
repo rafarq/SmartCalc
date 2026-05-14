@@ -6,6 +6,19 @@
     <title>SmartCalc</title>
   </head>
   <body>
+    <!-- Aplica el tema inicial antes de que cargue React, para evitar el flash
+         entre claro y oscuro. Si el usuario ha elegido un tema explícito en
+         localStorage se respeta; si no, se cae al preferido del sistema. -->
+    <script>
+      (function () {
+        var theme = null;
+        try { theme = localStorage.getItem('smartcalc.theme'); } catch (e) {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

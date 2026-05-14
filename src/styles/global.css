@@ -1,5 +1,7 @@
 :root {
-  /* Paleta clara (por defecto). El modo oscuro se aplica más abajo. */
+  /* Paleta clara (defecto). El tema se controla con el atributo data-theme
+     en <html>: 'light' o 'dark'. El script inline en index.html lo aplica
+     antes de que cargue React para evitar parpadeos. */
   --bg: #fdfdfd;
   --bg-elev: #ffffff;
   --bg-sunken: #f6f7f9;
@@ -15,22 +17,20 @@
   --accent-soft: #eef4ff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #181818;
-    --bg-elev: #1f1f1f;
-    --bg-sunken: #262626;
-    --hover-bg: #2c2c2c;
-    --text: #ececec;
-    --text-secondary: #c5c5c5;
-    --text-muted: #9a9a9a;
-    --text-faint: #6a6a6a;
-    --border: #2e2e2e;
-    --border-soft: #242424;
-    --focus-bg: #232323;
-    --accent: #60a5fa;
-    --accent-soft: #1f2937;
-  }
+:root[data-theme='dark'] {
+  --bg: #181818;
+  --bg-elev: #1f1f1f;
+  --bg-sunken: #262626;
+  --hover-bg: #2c2c2c;
+  --text: #ececec;
+  --text-secondary: #c5c5c5;
+  --text-muted: #9a9a9a;
+  --text-faint: #6a6a6a;
+  --border: #2e2e2e;
+  --border-soft: #242424;
+  --focus-bg: #232323;
+  --accent: #60a5fa;
+  --accent-soft: #1f2937;
 }
 
 *,
@@ -49,4 +49,30 @@ body {
   font-size: 16px;
   color: var(--text);
   background: var(--bg);
+}
+
+/* Animación circular reveal al cambiar de tema (Chrome/Edge/Safari 18+).
+   En navegadores que no soportan View Transitions API el tema cambia
+   sin animación (fallback transparente). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  animation: theme-reveal 0.5s ease-out;
+}
+::view-transition-old(root) {
+  z-index: 0;
+}
+::view-transition-new(root) {
+  z-index: 1;
+}
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0px at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+  to {
+    clip-path: circle(150% at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
 }

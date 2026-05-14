@@ -819,11 +819,12 @@
   }
 }
 
-/* ───────── Modo oscuro mínimo ─────────
-   Variables principales en :root (global.css). Aquí solo sobrescribimos las
-   superficies y colores que no se adaptan automáticamente. Los acentos
-   (azul, verde de chips, naranja/amarillo del calendario) se mantienen. */
-@media (prefers-color-scheme: dark) {
+/* ───────── Modo oscuro ─────────
+   Variables principales en :root[data-theme='dark'] (global.css). Aquí solo
+   sobrescribimos las superficies y colores que no se adaptan automáticamente.
+   El selector [data-theme='dark'] permite alternar manualmente con el botón
+   de la cabecera. */
+[data-theme='dark'] {
   .header {
     background: var(--bg-elev);
     border-bottom-color: var(--border);

@@ -2,7 +2,16 @@ import { useRef } from 'react';
 import type { DocumentModel } from '../state/document';
 import { importSyscalc } from '../state/storage';
 import { EditableTitle } from './EditableTitle';
-import { CalendarIcon, HelpIcon, LoadIcon, SaveIcon, TrashIcon } from './icons';
+import { useTheme } from '../hooks/useTheme';
+import {
+  CalendarIcon,
+  HelpIcon,
+  LoadIcon,
+  MoonIcon,
+  SaveIcon,
+  SunIcon,
+  TrashIcon,
+} from './icons';
 
 type Props = {
   title: string;
@@ -15,6 +24,7 @@ type Props = {
 };
 
 export function Header({ title, onTitleChange, onSave, onLoad, onClear, onHelp, onCalendar }: Props) {
+  const { theme, toggle } = useTheme();
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,6 +51,14 @@ export function Header({ title, onTitleChange, onSave, onLoad, onClear, onHelp, 
         onChange={handleFileChange}
       />
       <div className="header-actions">
+        <button
+          className="icon-btn"
+          onClick={(e) => toggle({ clientX: e.clientX, clientY: e.clientY })}
+          title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+          aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+        >
+          {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+        </button>
         <button
           className="icon-btn"
           onClick={onCalendar}

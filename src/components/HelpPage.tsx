@@ -478,7 +478,7 @@ const SECTIONS: Section[] = [
       'Cargar (icono carpeta) — abre un archivo .syscalc previamente guardado, sustituyendo la hoja actual.',
       'Limpiar (icono papelera) — borra todas las líneas y el título, dejando la hoja en blanco para empezar de cero. Pide confirmación si hay contenido.',
       'Calendario (icono de calendario) — abre un visor por año con los festivos de la ciudad elegida, coloreados por ámbito (nacional / autonómico / local) y con leyenda.',
-      'Modo oscuro — automático según las preferencias del sistema operativo (no hay interruptor manual). Si tienes el sistema en oscuro, la interfaz se adapta.',
+      'Modo oscuro/claro (icono sol/luna en la cabecera) — alterna entre temas con una animación circular reveal desde el botón. Inicialmente se respeta la preferencia del sistema operativo; tu elección manual se recuerda entre sesiones.',
     ],
   },
 ];
