@@ -82,31 +82,6 @@
   padding: 24px 40px;
   overflow-y: auto;
 }
-@media (max-width: 640px) {
-  .editor {
-    /* Quitamos casi todo el margen lateral en móvil para dar el ancho máximo
-       a la zona de escritura. */
-    padding: 12px 6px 24px;
-  }
-  .line-row {
-    grid-template-columns: 20px 1fr 130px;
-    gap: 8px;
-  }
-  .line-total .line-total-value {
-    min-width: auto;
-  }
-  .line-total-select {
-    min-width: auto;
-  }
-  .line-result {
-    padding: 4px 4px;
-  }
-  .editor-toolbar,
-  .editor-toolbar-top {
-    padding-left: 4px;
-    padding-right: 4px;
-  }
-}
 .line-row {
   display: grid;
   grid-template-columns: 24px 1fr 200px;
@@ -780,4 +755,40 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
   border: 1px solid #ddd;
+}
+
+/* ───────── Responsive móvil ─────────
+   Importante: este bloque va al final para que sus reglas tengan
+   prioridad de cascade sobre las reglas desktop equivalentes
+   (misma especificidad → la última gana). */
+@media (max-width: 640px) {
+  .editor {
+    padding: 12px 6px 24px;
+  }
+  .line-row {
+    grid-template-columns: 20px minmax(0, 1fr) 110px;
+    gap: 8px;
+  }
+  .line-input {
+    padding: 4px 4px;
+  }
+  .line-result {
+    padding: 4px 4px;
+  }
+  .line-total .line-total-value {
+    min-width: auto;
+  }
+  .line-total-select {
+    min-width: auto;
+    padding: 4px 18px 4px 4px;
+  }
+  .line-total-right {
+    gap: 6px;
+    padding: 4px 0;
+  }
+  .editor-toolbar,
+  .editor-toolbar-top {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
 }
