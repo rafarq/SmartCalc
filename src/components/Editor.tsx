@@ -123,11 +123,11 @@ export function Editor({
           />
         );
       })}
-      {numericValues.length > 0 && (
-        <div className="line-row line-total">
-          <span className="line-number" aria-hidden="true" />
-          <span className="line-total-spacer" />
-          <div className="line-total-right">
+      <div className="line-row line-total">
+        <span className="line-number" aria-hidden="true" />
+        <span className="line-total-spacer" />
+        <div className="line-total-right">
+          {numericValues.length > 0 && (
             <select
               className="line-total-select"
               value={agg}
@@ -140,7 +140,8 @@ export function Editor({
                 </option>
               ))}
             </select>
-            <div className="decimals-control" role="group" aria-label="Decimales mostrados">
+          )}
+          <div className="decimals-control" role="group" aria-label="Decimales mostrados">
               <button
                 type="button"
                 className="decimals-btn"
@@ -169,20 +170,23 @@ export function Editor({
                 +
               </button>
             </div>
-            <button
-              type="button"
-              className={`line-copy-btn${totalCopied ? ' copied' : ''}`}
-              title={totalCopied ? 'Copiado' : 'Copiar total'}
-              aria-label={totalCopied ? 'Copiado' : 'Copiar total'}
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={handleTotalCopy}
-            >
-              {totalCopied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
-            </button>
-            <span className="line-total-value">{aggDisplay}</span>
-          </div>
+          {numericValues.length > 0 && (
+            <>
+              <button
+                type="button"
+                className={`line-copy-btn${totalCopied ? ' copied' : ''}`}
+                title={totalCopied ? 'Copiado' : 'Copiar total'}
+                aria-label={totalCopied ? 'Copiado' : 'Copiar total'}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={handleTotalCopy}
+              >
+                {totalCopied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
+              </button>
+              <span className="line-total-value">{aggDisplay}</span>
+            </>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
