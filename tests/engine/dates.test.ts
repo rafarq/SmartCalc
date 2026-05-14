@@ -70,3 +70,21 @@ describe('aritmética de fechas', () => {
     expect(r?.formatted).toBe('13/05/2026');
   });
 });
+
+describe('expresiones laborables', () => {
+  it('viernes 15/5/2026 + 1 día laborable → lunes 18/5/2026', () => {
+    const r = tryDateExpression('15/5/2026 + 1 día laborable');
+    expect(r?.value).toEqual(new Date(2026, 4, 18));
+  });
+
+  it('15/5/2026 + 3 días laborables → miércoles 20/5/2026', () => {
+    const r = tryDateExpression('15/5/2026 + 3 días laborables');
+    expect(r?.value).toEqual(new Date(2026, 4, 20));
+  });
+
+  it('días laborables entre 1/1/2026 y 1/2/2026', () => {
+    const r = tryDateExpression('días laborables entre 1/1/2026 y 1/2/2026');
+    expect(typeof r?.value).toBe('number');
+    expect(r?.formatted).toMatch(/d\. laborables$/);
+  });
+});

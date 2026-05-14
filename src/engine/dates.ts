@@ -8,6 +8,7 @@ import {
   startOfDay,
 } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { addWorkingDays, workingDaysBetween, REGION_MAP } from './holidays';
 
 const MESES: Record<string, number> = {
   enero: 0, febrero: 1, marzo: 2, abril: 3, mayo: 4, junio: 5,
@@ -73,6 +74,8 @@ const RE_OP_FECHA = new RegExp(
   'i',
 );
 const RE_ENTRE = /^d[ií]as\s+entre\s+(.+?)\s+y\s+(.+?)$/i;
+const RE_LAB_PLUS = /^(.+?)\s+\+\s+(\d+)\s+d[ií]as?\s+laborables?(?:\s+en\s+([a-záéíóúñ\s-]+))?$/i;
+const RE_LAB_ENTRE = /^d[ií]as\s+laborables?\s+entre\s+(.+?)\s+y\s+(.+?)(?:\s+en\s+([a-záéíóúñ\s-]+))?$/i;
 
 function addUnit(date: Date, n: number, unit: string): Date {
   const u = unit.toLowerCase();
@@ -119,6 +122,21 @@ export function tryDateExpression(
     if (!a || !b) return null;
     const days = differenceInDays(b, a);
     return { value: days, formatted: `${days} días` };
+  }
+  if ((m = t.match(RE_LAB_PLUS))) {
+    const base = parseSpanishDate(m[1], ref);
+    if (!base) return null;
+    const region = m[3] ? REGION_MAP[m[3].trim().toLowerCase()] : undefined;
+    const d = addWorkingDays(base, parseInt(m[2], 10), region);
+    return { value: d, formatted: formatDate(d) };
+  }
+  if ((m = t.match(RE_LAB_ENTRE))) {
+    const a = parseSpanishDate(m[1], ref);
+    const b = parseSpanishDate(m[2], ref);
+    if (!a || !b) return null;
+    const region = m[3] ? REGION_MAP[m[3].trim().toLowerCase()] : undefined;
+    const n = workingDaysBetween(a, b, region);
+    return { value: n, formatted: `${n} d. laborables` };
   }
   const single = parseSpanishDate(t, ref);
   if (single) return { value: single, formatted: formatDate(single) };
