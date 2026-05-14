@@ -1,5 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CloseIcon } from './icons';
+
+function slugify(s: string): string {
+  return s
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
 
 type Props = { onClose: () => void };
 
@@ -396,6 +405,9 @@ const SECTIONS: Section[] = [
 ];
 
 export function HelpPage({ onClose }: Props) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [activeId, setActiveId] = useState<string>(() => slugify(SECTIONS[0].title));
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -403,6 +415,30 @@ export function HelpPage({ onClose }: Props) {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
+
+  useEffect(() => {
+    const root = contentRef.current;
+    if (!root) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top);
+        if (visible.length > 0) setActiveId(visible[0].target.id);
+      },
+      { root, rootMargin: '0px 0px -70% 0px', threshold: 0 },
+    );
+    SECTIONS.forEach((sec) => {
+      const el = document.getElementById(slugify(sec.title));
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollTo = (id: string) => {
+    setActiveId(id);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <div className="help-page" role="dialog" aria-modal="true" aria-labelledby="help-title">
@@ -412,9 +448,31 @@ export function HelpPage({ onClose }: Props) {
           <CloseIcon size={20} />
         </button>
       </header>
-      <div className="help-content">
+      <div className="help-content" ref={contentRef}>
+        <nav className="help-toc" aria-label="Índice de secciones">
+          <ul>
+            {SECTIONS.map((sec) => {
+              const id = slugify(sec.title);
+              return (
+                <li key={id}>
+                  <a
+                    href={`#${id}`}
+                    className={`help-toc-link${activeId === id ? ' active' : ''}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollTo(id);
+                    }}
+                  >
+                    {sec.title}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+        <div className="help-main">
         {SECTIONS.map((sec) => (
-          <section key={sec.title} className="help-section">
+          <section key={sec.title} id={slugify(sec.title)} className="help-section">
             <h2 className="help-section-title">{sec.title}</h2>
             {sec.description && <p className="help-section-desc">{sec.description}</p>}
             {sec.examples && (
@@ -484,6 +542,7 @@ export function HelpPage({ onClose }: Props) {
         <footer className="help-footer">
           Pulsa <kbd>Esc</kbd> o el botón de cerrar para volver a la calculadora.
         </footer>
+        </div>
       </div>
     </div>
   );
