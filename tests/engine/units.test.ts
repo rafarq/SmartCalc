@@ -29,3 +29,14 @@ describe('conversión de unidades — variantes', () => {
   it('devuelve null si una unidad es desconocida', () =>
     expect(tryUnitConversion('5 burbujas a millas')).toBeNull());
 });
+
+describe('exponentes en unidades (m2 / m²) y exponentes arbitrarios', () => {
+  it('1 m² a cm² = 10 000', () => expect(ev('1 m² a cm²')).toBeCloseTo(10000));
+  it('1 m³ a cm³ = 1 000 000', () => expect(ev('1 m³ a cm³')).toBeCloseTo(1_000_000));
+  it('1 m³ a litros = 1 000', () => expect(ev('1 m³ a litros')).toBeCloseTo(1000));
+  it('1 m⁴ a cm⁴ = 100 000 000 (exponente arbitrario)', () =>
+    expect(ev('1 m⁴ a cm⁴')).toBeCloseTo(100_000_000));
+  it('mezcla superíndice + dígito ASCII', () =>
+    expect(ev('1 m² a cm2')).toBeCloseTo(10000));
+  it('1 km² a m² = 1 000 000', () => expect(ev('1 km² a m²')).toBeCloseTo(1_000_000));
+});
