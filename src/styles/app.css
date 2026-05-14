@@ -791,4 +791,26 @@
     padding-left: 4px;
     padding-right: 4px;
   }
+  /* En móvil el título salta a una segunda línea bajo el logo y los iconos. */
+  .header {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "logo actions"
+      "title title";
+    padding: 8px 12px;
+    row-gap: 6px;
+  }
+  .header-brand-logo { grid-area: logo; }
+  .header-actions { grid-area: actions; }
+  .doc-title,
+  .doc-title-input {
+    grid-area: title;
+    justify-self: center;
+    max-width: 100%;
+    width: 100%;
+  }
+  .doc-title-input {
+    text-align: center;
+  }
 }
