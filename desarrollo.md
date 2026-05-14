@@ -1425,7 +1425,7 @@ Frases tipo "12 horas en minutos", "minutos en 4 días", "100 km a millas" (esta
 - Create: `src/engine/naturalConversions.ts`, `tests/engine/naturalConversions.test.ts`
 - Modify: `src/engine/index.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -1457,7 +1457,7 @@ describe('conversiones naturales', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/engine/naturalConversions.ts`:
 
@@ -1514,7 +1514,7 @@ export function tryNaturalConversion(
 }
 ```
 
-- [ ] **Paso 3: Integrar en orquestador (antes de mathjs, después de units)**
+- [x] **Paso 3: Integrar en orquestador (antes de mathjs, después de units)**
 
 ```ts
 import { tryNaturalConversion } from './naturalConversions';
@@ -1523,7 +1523,7 @@ const nc = tryNaturalConversion(trimmed);
 if (nc) return { ok: true, value: nc.value, formatted: `${formatNumber(nc.value)} ${nc.unit}` };
 ```
 
-- [ ] **Paso 4: Verificar y commit**
+- [x] **Paso 4: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -2782,7 +2782,7 @@ git add -A && git commit -m "docs: README inicial"
 | 6 | §8 | Porcentajes naturales + regla de tres | ✅ |
 | 7 | §9 | Cálculo inverso | ✅ |
 | 8 | §10 | Conversión de unidades | ✅ |
-| 9 | §12 (parcial) | Conversiones naturales temporales | ⏳ |
+| 9 | §12 (parcial) | Conversiones naturales temporales | ✅ |
 | 10 | §12 (fechas) | Fechas y calendario laboral con festivos | ⏳ |
 | 11 | §13 | Geometría con autocompletado (desktop+móvil) | ⏳ |
 | 12 | §14 | Variables, referencias, operador implícito, multilínea | 🟡 12.1 y 12.2 ✅ · 12.3 y 12.4 ⏳ |

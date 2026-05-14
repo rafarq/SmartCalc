@@ -244,6 +244,31 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    title: 'Conversiones naturales temporales',
+    description:
+      'Frases en español natural para tiempo: «12 horas en minutos», «minutos en 4 días». También permite saber cuántos días tiene un mes.',
+    examples: [
+      { input: '12 horas en minutos', result: '720 minutos' },
+      { input: '1 día en horas', result: '24 horas' },
+      { input: 'minutos en 4 días', result: '5.760 minutos' },
+      { input: 'segundos en 2 horas', result: '7.200 segundos' },
+      { input: 'días en febrero de 2020', result: '29 días' },
+      { input: 'días en febrero de 2021', result: '28 días' },
+    ],
+    useCases: [
+      { input: 'horas en 3 semanas', result: '504 horas' },
+      { input: 'días en abril de 2024', result: '30 días' },
+      { input: '90 minutos en horas', result: '1,5 horas' },
+    ],
+    notes: [
+      'Forma directa: «<número> <unidad> en/a <unidad>» — convierte como una conversión de unidades pero con la palabra «en».',
+      'Forma invertida: «<unidad> en <número> <unidad>» — pregunta «cuántos X hay en N Y» (ej.: «minutos en 4 días»).',
+      'Días en un mes: «días en <mes> de <año>» — usa el calendario real, así que detecta bisiestos (febrero de 2020 = 29).',
+      'Si omites el año, se asume el año actual: «días en febrero» te da 28 o 29 según corresponda.',
+      'Unidades temporales reconocidas: segundo(s), s, seg, minuto(s), min, hora(s), h, día(s), dia(s), semana(s).',
+    ],
+  },
+  {
     title: 'Cálculo inverso',
     description:
       'Para cuando conoces el resultado y quieres averiguar el valor original que lo produce.',
