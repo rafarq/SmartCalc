@@ -446,6 +446,7 @@ const SECTIONS: Section[] = [
       'Cantidad — número de líneas que han producido un resultado numérico.',
       'Solo se cuentan líneas que producen un número finito: cálculos, porcentajes, conversiones, asignaciones de variables… Las líneas vacías o con error se ignoran.',
       'Si no hay ninguna línea con resultado numérico, el resumen no aparece.',
+      'Al pasar el ratón sobre la fila del resumen aparece un icono de copia junto al valor: pulsa para llevártelo al portapapeles tal y como se muestra.',
     ],
   },
   {

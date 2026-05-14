@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { useDocument } from '../hooks/useDocument';
 import { formatNumber } from '../utils/numberFormat';
 import { LineRow } from './LineRow';
+import { CheckIcon, CopyIcon } from './icons';
 
 type Aggregate = 'sum' | 'mean' | 'median' | 'count';
 
@@ -42,6 +43,7 @@ export function Editor({
   appendRefToFocused,
 }: EditorProps) {
   const [agg, setAgg] = useState<Aggregate>('sum');
+  const [totalCopied, setTotalCopied] = useState(false);
   const numericValues: number[] = [];
   for (const r of results) {
     if (r.ok && typeof r.value === 'number' && Number.isFinite(r.value)) {
@@ -49,6 +51,18 @@ export function Editor({
     }
   }
   const aggValue = numericValues.length > 0 ? aggregateValue(numericValues, agg) : 0;
+  const aggDisplay =
+    agg === 'count' ? String(numericValues.length) : formatNumber(aggValue);
+
+  const handleTotalCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(aggDisplay);
+      setTotalCopied(true);
+      window.setTimeout(() => setTotalCopied(false), 1200);
+    } catch {
+      // silenciamos errores de portapapeles (permisos, navegador antiguo…)
+    }
+  };
   return (
     <div className="editor">
       {doc.lines.map((line, i) => {
@@ -92,9 +106,17 @@ export function Editor({
                 </option>
               ))}
             </select>
-            <span className="line-total-value">
-              {agg === 'count' ? String(numericValues.length) : formatNumber(aggValue)}
-            </span>
+            <button
+              type="button"
+              className={`line-copy-btn${totalCopied ? ' copied' : ''}`}
+              title={totalCopied ? 'Copiado' : 'Copiar total'}
+              aria-label={totalCopied ? 'Copiado' : 'Copiar total'}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={handleTotalCopy}
+            >
+              {totalCopied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
+            </button>
+            <span className="line-total-value">{aggDisplay}</span>
           </div>
         </div>
       )}
