@@ -194,16 +194,19 @@ const SECTIONS: Section[] = [
       { input: '120 - 30% de descuento', result: '84' },
       { input: '20% de 300', result: '60' },
       { input: '50 es qué % de 200', result: '25' },
+      { input: 'si 3 es 6, cuánto es 5', result: '10' },
       { input: 'si 3 kg son 6€, 5 kg son ?', result: '10' },
     ],
     useCases: [
       { input: '90 + 21% de IVA', result: '108,9' },
       { input: '1500 - 15% de descuento', result: '1.275' },
+      { input: 'si 100 es 5, cuánto es 250', result: '12,5' },
       { input: 'si 100 km son 5h, 250 km son ?', result: '12,5' },
     ],
     notes: [
       'El texto tras "de" es libre: 10% de propina, 21% de IVA, 30% de descuento… SmartCalc ignora la etiqueta.',
-      'Regla de tres directa: las unidades junto a los números son decorativas, solo se usan los valores numéricos.',
+      'Regla de tres — dos formas equivalentes: «si A (es/son) B, cuánto (es/son) C» o «si A (es/son) B, C (es/son) ?». Acepta es/son indistintamente y la coma es opcional.',
+      'Las unidades junto a los números son decorativas (€, kg, h, manzanas…): solo se usan los valores numéricos.',
     ],
   },
   {
