@@ -297,13 +297,16 @@ const SECTIONS: Section[] = [
     ],
   },
   {
-    title: 'Total de la hoja',
+    title: 'Resumen de la hoja',
     description:
-      'Bajo la última línea aparece automáticamente la suma de todos los resultados numéricos válidos del documento. Entre paréntesis se indica cuántas líneas se han contado.',
+      'Bajo la última línea aparece automáticamente un resumen alineado a la derecha. El desplegable permite elegir la operación a aplicar sobre todos los resultados numéricos válidos del documento.',
     notes: [
-      'Se suman todas las líneas que producen un número finito: cálculos, porcentajes, conversiones, asignaciones de variables…',
-      'Las líneas vacías o con error se ignoran (no rompen el total).',
-      'Si no hay ninguna línea con resultado numérico, el total no se muestra.',
+      'Suma — total acumulado de todos los resultados.',
+      'Media — media aritmética (suma dividida entre el número de líneas con resultado).',
+      'Mediana — valor central tras ordenar los resultados; con cantidad par, promedio de los dos del medio.',
+      'Cantidad — número de líneas que han producido un resultado numérico.',
+      'Solo se cuentan líneas que producen un número finito: cálculos, porcentajes, conversiones, asignaciones de variables… Las líneas vacías o con error se ignoran.',
+      'Si no hay ninguna línea con resultado numérico, el resumen no aparece.',
     ],
   },
   {

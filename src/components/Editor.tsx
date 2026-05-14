@@ -1,6 +1,26 @@
+import { useState } from 'react';
 import type { useDocument } from '../hooks/useDocument';
 import { formatNumber } from '../utils/numberFormat';
 import { LineRow } from './LineRow';
+
+type Aggregate = 'sum' | 'mean' | 'median' | 'count';
+
+const AGG_LABEL: Record<Aggregate, string> = {
+  sum: 'Suma',
+  mean: 'Media',
+  median: 'Mediana',
+  count: 'Cantidad',
+};
+
+function aggregateValue(values: number[], kind: Aggregate): number {
+  if (kind === 'count') return values.length;
+  if (kind === 'sum') return values.reduce((a, b) => a + b, 0);
+  if (kind === 'mean') return values.reduce((a, b) => a + b, 0) / values.length;
+  // median
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
+}
 
 type EditorProps = Omit<
   ReturnType<typeof useDocument>,
@@ -21,14 +41,14 @@ export function Editor({
   focusNextLine,
   appendRefToFocused,
 }: EditorProps) {
-  let total = 0;
-  let count = 0;
+  const [agg, setAgg] = useState<Aggregate>('sum');
+  const numericValues: number[] = [];
   for (const r of results) {
     if (r.ok && typeof r.value === 'number' && Number.isFinite(r.value)) {
-      total += r.value;
-      count += 1;
+      numericValues.push(r.value);
     }
   }
+  const aggValue = numericValues.length > 0 ? aggregateValue(numericValues, agg) : 0;
   return (
     <div className="editor">
       {doc.lines.map((line, i) => {
@@ -55,11 +75,27 @@ export function Editor({
           />
         );
       })}
-      {count > 0 && (
-        <div className="line-row line-total" aria-label="Suma de los resultados">
+      {numericValues.length > 0 && (
+        <div className="line-row line-total">
           <span className="line-number" aria-hidden="true" />
-          <span className="line-total-label">Total ({count})</span>
-          <span className="line-total-value">{formatNumber(total)}</span>
+          <span className="line-total-spacer" />
+          <div className="line-total-right">
+            <select
+              className="line-total-select"
+              value={agg}
+              onChange={(e) => setAgg(e.target.value as Aggregate)}
+              aria-label="Operación de agregado"
+            >
+              {(Object.keys(AGG_LABEL) as Aggregate[]).map((k) => (
+                <option key={k} value={k}>
+                  {AGG_LABEL[k]}
+                </option>
+              ))}
+            </select>
+            <span className="line-total-value">
+              {agg === 'count' ? String(numericValues.length) : formatNumber(aggValue)}
+            </span>
+          </div>
         </div>
       )}
     </div>
