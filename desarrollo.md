@@ -103,7 +103,7 @@ SmartCalc/
 **Files:**
 - Create: `package.json`, `vite.config.ts`, `tsconfig.json`, `index.html`, `src/main.tsx`, `src/App.tsx`
 
-- [ ] **Paso 1: Crear proyecto Vite en el directorio actual**
+- [x] **Paso 1: Crear proyecto Vite en el directorio actual**
 
 ```bash
 npm create vite@latest . -- --template react-ts
@@ -111,7 +111,7 @@ npm create vite@latest . -- --template react-ts
 npm install
 ```
 
-- [ ] **Paso 2: Verificar arranque**
+- [x] **Paso 2: Verificar arranque**
 
 ```bash
 npm run dev
@@ -119,7 +119,7 @@ npm run dev
 
 Esperado: servidor en `http://localhost:5173`, página default de Vite carga. Detener con Ctrl+C.
 
-- [ ] **Paso 3: Limpiar plantilla**
+- [x] **Paso 3: Limpiar plantilla**
 
 Reemplazar `src/App.tsx`:
 
@@ -131,7 +131,7 @@ export default function App() {
 
 Borrar: `src/App.css`, `src/assets/`, contenido de `src/index.css`.
 
-- [ ] **Paso 4: Commit**
+- [x] **Paso 4: Commit**
 
 ```bash
 git init
@@ -145,13 +145,13 @@ git commit -m "chore: bootstrap Vite + React + TS"
 - Create: `vitest.config.ts`, `tests/setup.ts`
 - Modify: `package.json` (scripts)
 
-- [ ] **Paso 1: Instalar dependencias de test**
+- [x] **Paso 1: Instalar dependencias de test**
 
 ```bash
 npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom @vitest/coverage-v8
 ```
 
-- [ ] **Paso 2: Crear `vitest.config.ts`**
+- [x] **Paso 2: Crear `vitest.config.ts`**
 
 ```ts
 import { defineConfig } from 'vitest/config';
@@ -167,13 +167,13 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Paso 3: Crear `tests/setup.ts`**
+- [x] **Paso 3: Crear `tests/setup.ts`**
 
 ```ts
 import '@testing-library/jest-dom';
 ```
 
-- [ ] **Paso 4: Añadir scripts en `package.json`**
+- [x] **Paso 4: Añadir scripts en `package.json`**
 
 ```json
 "scripts": {
@@ -186,7 +186,7 @@ import '@testing-library/jest-dom';
 }
 ```
 
-- [ ] **Paso 5: Test sanity**
+- [x] **Paso 5: Test sanity**
 
 Crear `tests/sanity.test.ts`:
 
@@ -202,7 +202,7 @@ describe('sanity', () => {
 
 Ejecutar `npm run test:run`. Esperado: 1 test pasa.
 
-- [ ] **Paso 6: Commit**
+- [x] **Paso 6: Commit**
 
 ```bash
 git add -A
@@ -211,14 +211,14 @@ git commit -m "chore: add Vitest + Testing Library setup"
 
 ### Tarea 0.3: Instalar mathjs y date-fns
 
-- [ ] **Paso 1: Instalar**
+- [x] **Paso 1: Instalar**
 
 ```bash
 npm install mathjs date-fns date-fns-tz
 npm install -D @types/node
 ```
 
-- [ ] **Paso 2: Test de humo de mathjs**
+- [x] **Paso 2: Test de humo de mathjs**
 
 Crear `tests/engine/mathjs.smoke.test.ts`:
 
@@ -236,7 +236,7 @@ describe('mathjs smoke', () => {
 
 Ejecutar `npm run test:run`. Esperado: 2 tests pasan.
 
-- [ ] **Paso 3: Commit**
+- [x] **Paso 3: Commit**
 
 ```bash
 git add -A
@@ -245,19 +245,19 @@ git commit -m "chore: add mathjs + date-fns dependencies"
 
 ### Tarea 0.4: ESLint + Prettier mínimo
 
-- [ ] **Paso 1: Instalar**
+- [x] **Paso 1: Instalar**
 
 ```bash
 npm install -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react-hooks prettier
 ```
 
-- [ ] **Paso 2: Crear `.prettierrc`**
+- [x] **Paso 2: Crear `.prettierrc`**
 
 ```json
 { "singleQuote": true, "semi": true, "trailingComma": "all", "printWidth": 100 }
 ```
 
-- [ ] **Paso 3: Crear `.eslintrc.cjs`**
+- [x] **Paso 3: Crear `.eslintrc.cjs`**
 
 ```js
 module.exports = {
@@ -268,7 +268,7 @@ module.exports = {
 };
 ```
 
-- [ ] **Paso 4: Commit**
+- [x] **Paso 4: Commit**
 
 ```bash
 git add -A
@@ -284,7 +284,7 @@ git commit -m "chore: add ESLint and Prettier"
 **Files:**
 - Create: `src/state/document.ts`, `tests/state/document.test.ts`
 
-- [ ] **Paso 1: Test que falla**
+- [x] **Paso 1: Test que falla**
 
 `tests/state/document.test.ts`:
 
@@ -316,7 +316,7 @@ describe('document model', () => {
 
 `npm run test:run` → falla con módulo no encontrado.
 
-- [ ] **Paso 2: Implementación mínima**
+- [x] **Paso 2: Implementación mínima**
 
 `src/state/document.ts`:
 
@@ -341,11 +341,11 @@ export const updateLine = (doc: DocumentModel, id: string, text: string): Docume
 });
 ```
 
-- [ ] **Paso 3: Verificar**
+- [x] **Paso 3: Verificar**
 
 `npm run test:run` → pasa.
 
-- [ ] **Paso 4: Commit**
+- [x] **Paso 4: Commit**
 
 ```bash
 git add -A
@@ -357,7 +357,7 @@ git commit -m "feat(state): document model with create/add/update"
 **Files:**
 - Create: `src/hooks/useDocument.ts`, `tests/hooks/useDocument.test.tsx`
 
-- [ ] **Paso 1: Test que falla**
+- [x] **Paso 1: Test que falla**
 
 `tests/hooks/useDocument.test.tsx`:
 
@@ -381,7 +381,7 @@ describe('useDocument', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/hooks/useDocument.ts`:
 
@@ -404,7 +404,7 @@ export function useDocument() {
 }
 ```
 
-- [ ] **Paso 3: Verificar y commit**
+- [x] **Paso 3: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -416,7 +416,7 @@ git add -A && git commit -m "feat(hooks): useDocument basic state"
 **Files:**
 - Create: `src/components/LineRow.tsx`, `tests/components/LineRow.test.tsx`
 
-- [ ] **Paso 1: Test que falla**
+- [x] **Paso 1: Test que falla**
 
 `tests/components/LineRow.test.tsx`:
 
@@ -442,7 +442,7 @@ describe('LineRow', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/components/LineRow.tsx`:
 
@@ -475,7 +475,7 @@ export function LineRow({ value, result, onChange, onEnter }: Props) {
 }
 ```
 
-- [ ] **Paso 3: Verificar y commit**
+- [x] **Paso 3: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -488,7 +488,7 @@ git add -A && git commit -m "feat(ui): LineRow component"
 - Create: `src/components/Editor.tsx`
 - Modify: `src/App.tsx`
 
-- [ ] **Paso 1: Implementación**
+- [x] **Paso 1: Implementación**
 
 `src/components/Editor.tsx`:
 
@@ -530,7 +530,7 @@ export default function App() {
 }
 ```
 
-- [ ] **Paso 2: Estilos básicos**
+- [x] **Paso 2: Estilos básicos**
 
 `src/styles/global.css`:
 
@@ -556,11 +556,11 @@ body {
 .line-result { text-align: right; color: #444; font-variant-numeric: tabular-nums; }
 ```
 
-- [ ] **Paso 3: Verificar visualmente**
+- [x] **Paso 3: Verificar visualmente**
 
 `npm run dev`, abrir navegador, escribir en una línea, pulsar Enter → aparece otra línea.
 
-- [ ] **Paso 4: Commit**
+- [x] **Paso 4: Commit**
 
 ```bash
 git add -A && git commit -m "feat(ui): Editor + base styles"
@@ -572,7 +572,7 @@ git add -A && git commit -m "feat(ui): Editor + base styles"
 - Create: `src/components/Header.tsx`
 - Modify: `src/App.tsx`
 
-- [ ] **Paso 1: Implementación**
+- [x] **Paso 1: Implementación**
 
 `src/components/Header.tsx`:
 
@@ -618,7 +618,7 @@ export default function App() {
 }
 ```
 
-- [ ] **Paso 2: Commit**
+- [x] **Paso 2: Commit**
 
 ```bash
 git add -A && git commit -m "feat(ui): Header placeholder"
@@ -633,7 +633,7 @@ git add -A && git commit -m "feat(ui): Header placeholder"
 **Files:**
 - Create: `src/engine/index.ts`, `tests/engine/index.test.ts`
 
-- [ ] **Paso 1: Test**
+- [x] **Paso 1: Test**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -651,7 +651,7 @@ describe('evaluate', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/engine/index.ts`:
 
@@ -672,7 +672,7 @@ export function evaluate(line: string, _ctx: EvalContext): Result {
 }
 ```
 
-- [ ] **Paso 3: Verificar y commit**
+- [x] **Paso 3: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -685,7 +685,7 @@ git add -A && git commit -m "feat(engine): Result type and empty orchestrator"
 - Modify: `src/engine/index.ts`
 - Modify/extend: `tests/engine/index.test.ts`
 
-- [ ] **Paso 1: Tests adicionales**
+- [x] **Paso 1: Tests adicionales**
 
 Añadir a `tests/engine/index.test.ts`:
 
@@ -714,7 +714,7 @@ describe('evaluate basics', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 Reescribir `src/engine/index.ts`:
 
@@ -746,7 +746,7 @@ export function evaluate(line: string, ctx: EvalContext): Result {
 }
 ```
 
-- [ ] **Paso 3: Crear utilidad de formateo**
+- [x] **Paso 3: Crear utilidad de formateo**
 
 `src/utils/numberFormat.ts`:
 
@@ -760,7 +760,7 @@ export function formatNumber(value: unknown): string {
 }
 ```
 
-- [ ] **Paso 4: Verificar y commit**
+- [x] **Paso 4: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -772,7 +772,7 @@ git add -A && git commit -m "feat(engine): basic ops and constants via mathjs"
 **Files:**
 - Modify: `src/hooks/useDocument.ts`, `src/components/Editor.tsx`
 
-- [ ] **Paso 1: Extender `useDocument`**
+- [x] **Paso 1: Extender `useDocument`**
 
 ```ts
 import { useCallback, useMemo, useState } from 'react';
@@ -805,7 +805,7 @@ export function useDocument() {
 }
 ```
 
-- [ ] **Paso 2: Pasar resultados al `LineRow`**
+- [x] **Paso 2: Pasar resultados al `LineRow`**
 
 `src/components/Editor.tsx`:
 
@@ -835,11 +835,11 @@ export function Editor() {
 }
 ```
 
-- [ ] **Paso 3: Verificar en navegador**
+- [x] **Paso 3: Verificar en navegador**
 
 `npm run dev`. Probar: `1 + 1`, `9 * 9`, `pi`. Resultados aparecen a la derecha.
 
-- [ ] **Paso 4: Commit**
+- [x] **Paso 4: Commit**
 
 ```bash
 git add -A && git commit -m "feat(ui): wire engine results into Editor"
@@ -856,7 +856,7 @@ git add -A && git commit -m "feat(ui): wire engine results into Editor"
 **Files:**
 - Create: `tests/engine/math-functions.test.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -884,7 +884,7 @@ describe('funciones matemáticas', () => {
 });
 ```
 
-- [ ] **Paso 2: Ejecutar — deben pasar sin tocar el motor**
+- [x] **Paso 2: Ejecutar — deben pasar sin tocar el motor**
 
 ```bash
 npm run test:run
@@ -892,7 +892,7 @@ npm run test:run
 
 Si alguno falla por defaults de mathjs, ajustar en `src/engine/index.ts`. (Ej. `round(2.5)` — mathjs redondea half-up correctamente).
 
-- [ ] **Paso 3: Commit**
+- [x] **Paso 3: Commit**
 
 ```bash
 git add -A && git commit -m "test(engine): math functions coverage"
@@ -906,7 +906,7 @@ mathjs usa radianes por defecto. El usuario espera comportamiento natural: `sin(
 - Modify: `src/engine/index.ts`
 - Create: `tests/engine/trig.test.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -931,7 +931,7 @@ describe('trigonometría (grados)', () => {
 });
 ```
 
-- [ ] **Paso 2: Sobrescribir funciones trig en mathjs**
+- [x] **Paso 2: Sobrescribir funciones trig en mathjs**
 
 En `src/engine/index.ts`, tras la creación de `math`:
 
@@ -952,7 +952,7 @@ math.import(
 );
 ```
 
-- [ ] **Paso 3: Verificar**
+- [x] **Paso 3: Verificar**
 
 ```bash
 npm run test:run
@@ -960,7 +960,7 @@ npm run test:run
 
 Esperado: todos los tests trig pasan.
 
-- [ ] **Paso 4: Commit**
+- [x] **Paso 4: Commit**
 
 ```bash
 git add -A && git commit -m "feat(engine): trig functions in degrees"
@@ -975,7 +975,7 @@ git add -A && git commit -m "feat(engine): trig functions in degrees"
 **Files:**
 - Create: `tests/engine/log-exp.test.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -996,7 +996,7 @@ describe('logaritmos y exp', () => {
 });
 ```
 
-- [ ] **Paso 2: Ajustar mathjs**
+- [x] **Paso 2: Ajustar mathjs**
 
 En mathjs por defecto `log(x)` es ln. Spec dice `log = base 10`. Sobrescribir en `src/engine/index.ts`:
 
@@ -1012,7 +1012,7 @@ math.import(
 );
 ```
 
-- [ ] **Paso 3: Verificar y commit**
+- [x] **Paso 3: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -1024,7 +1024,7 @@ git add -A && git commit -m "feat(engine): log base 10, ln, exp"
 **Files:**
 - Create: `tests/engine/stats.test.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -1046,7 +1046,7 @@ describe('estadística', () => {
 });
 ```
 
-- [ ] **Paso 2: Ejecutar (mathjs ya provee min/max/mean/median/std)**
+- [x] **Paso 2: Ejecutar (mathjs ya provee min/max/mean/median/std)**
 
 ```bash
 npm run test:run
@@ -1058,7 +1058,7 @@ Si `mean` no existe (mathjs usa `mean` correctamente), aliasarlo. Si fuese neces
 math.import({ mean: math.mean }, { override: false });
 ```
 
-- [ ] **Paso 3: Commit**
+- [x] **Paso 3: Commit**
 
 ```bash
 git add -A && git commit -m "test(engine): stats coverage"
@@ -1074,7 +1074,7 @@ git add -A && git commit -m "test(engine): stats coverage"
 - Create: `src/engine/preprocess.ts`, `tests/engine/preprocess.test.ts`
 - Modify: `src/engine/index.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 `tests/engine/preprocess.test.ts`:
 
@@ -1092,7 +1092,7 @@ describe('preprocess: abreviaturas', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/engine/preprocess.ts`:
 
@@ -1108,7 +1108,7 @@ export function preprocess(line: string): string {
 }
 ```
 
-- [ ] **Paso 3: Aplicar en orquestador**
+- [x] **Paso 3: Aplicar en orquestador**
 
 En `src/engine/index.ts`, dentro de `evaluate` antes de `math.evaluate`:
 
@@ -1119,7 +1119,7 @@ const expr = preprocess(trimmed);
 const value = math.evaluate(expr, { ...ctx.vars });
 ```
 
-- [ ] **Paso 4: Verificar y commit**
+- [x] **Paso 4: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -1138,7 +1138,7 @@ Esta fase necesita un módulo dedicado porque mathjs no parsea español natural.
 - Create: `src/engine/percentages.ts`, `tests/engine/percentages.test.ts`
 - Modify: `src/engine/index.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -1156,7 +1156,7 @@ describe('porcentajes naturales', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/engine/percentages.ts`:
 
@@ -1183,7 +1183,7 @@ export function tryPercentages(line: string): LocalResult {
 }
 ```
 
-- [ ] **Paso 3: Integrar en orquestador**
+- [x] **Paso 3: Integrar en orquestador**
 
 En `src/engine/index.ts`, antes de mathjs:
 
@@ -1194,7 +1194,7 @@ const pct = tryPercentages(trimmed);
 if (pct) return { ok: true, value: pct.value, formatted: formatNumber(pct.value) };
 ```
 
-- [ ] **Paso 4: Verificar y commit**
+- [x] **Paso 4: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -1206,7 +1206,7 @@ git add -A && git commit -m "feat(engine): porcentajes naturales"
 **Files:**
 - Modify: `src/engine/percentages.ts`, `tests/engine/percentages.test.ts`
 
-- [ ] **Paso 1: Tests (añadir al describe)**
+- [x] **Paso 1: Tests (añadir al describe)**
 
 ```ts
 describe('regla de tres', () => {
@@ -1219,7 +1219,7 @@ describe('regla de tres', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 Añadir a `percentages.ts`:
 
@@ -1236,7 +1236,7 @@ if (d) {
 }
 ```
 
-- [ ] **Paso 3: Verificar y commit**
+- [x] **Paso 3: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -1255,7 +1255,7 @@ git add -A && git commit -m "feat(engine): regla de tres"
 - Create: `src/engine/inverse.ts`, `tests/engine/inverse.test.ts`
 - Modify: `src/engine/index.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -1271,7 +1271,7 @@ describe('cálculo inverso', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/engine/inverse.ts`:
 
@@ -1292,7 +1292,7 @@ export function tryInverse(line: string): { value: number } | null {
 }
 ```
 
-- [ ] **Paso 3: Integrar en orquestador (justo después de porcentajes)**
+- [x] **Paso 3: Integrar en orquestador (justo después de porcentajes)**
 
 ```ts
 import { tryInverse } from './inverse';
@@ -1301,7 +1301,7 @@ const inv = tryInverse(trimmed);
 if (inv) return { ok: true, value: inv.value, formatted: formatNumber(inv.value) };
 ```
 
-- [ ] **Paso 4: Verificar y commit**
+- [x] **Paso 4: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -2348,7 +2348,7 @@ git add -A && git commit -m "feat(ui): formulario táctil de geometría para mó
 - Create: `src/engine/variables.ts`, `tests/engine/variables.test.ts`
 - Modify: `src/engine/index.ts`, `src/hooks/useDocument.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 import { describe, it, expect } from 'vitest';
@@ -2370,7 +2370,7 @@ describe('asignación de variables', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/engine/variables.ts`:
 
@@ -2384,7 +2384,7 @@ export function tryAssignment(line: string): { name: string; expr: string } | nu
 }
 ```
 
-- [ ] **Paso 3: Integrar**
+- [x] **Paso 3: Integrar**
 
 En `src/engine/index.ts`:
 
@@ -2402,7 +2402,7 @@ if (assign) {
 
 En `useDocument`, el `ctx.vars` se acumula entre líneas (ya pasa).
 
-- [ ] **Paso 4: Verificar y commit**
+- [x] **Paso 4: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -2417,7 +2417,7 @@ git add -A && git commit -m "feat(engine): asignación de variables"
 
 **Diseño:** una referencia es un token tipo `@L3` que internamente representa "valor de la línea 3". El input del usuario lo verá como un chip visual ("Línea 3 = 42") pero internamente es texto plano. MVP simple: el orquestador sustituye `@LN` por el `formatted` numérico de la línea N antes de evaluar.
 
-- [ ] **Paso 1: Tests del orquestador con referencias**
+- [x] **Paso 1: Tests del orquestador con referencias**
 
 ```ts
 it('@L1 referencia el resultado anterior', () => {
@@ -2427,7 +2427,7 @@ it('@L1 referencia el resultado anterior', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/engine/references.ts`:
 
@@ -2456,7 +2456,7 @@ let expr = preprocess(trimmed);
 expr = expandReferences(expr, ctx.prev);
 ```
 
-- [ ] **Paso 3: UI — click en resultado inserta referencia en línea actual**
+- [x] **Paso 3: UI — click en resultado inserta referencia en línea actual**
 
 Eso requiere que `LineRow` sepa qué línea está enfocada en el editor. Refactor:
 - `useDocument` mantiene `focusedLineId`.
@@ -2480,7 +2480,7 @@ const insertRef = (idx: number) => {
 </span>
 ```
 
-- [ ] **Paso 4: Verificar manualmente + commit**
+- [x] **Paso 4: Verificar manualmente + commit**
 
 ```bash
 npm run test:run
@@ -2568,7 +2568,7 @@ git add -A && git commit -m "feat(ui): Shift+Enter inserta línea al final"
 - Create: `src/state/storage.ts`, `tests/state/storage.test.ts`
 - Modify: `src/hooks/useDocument.ts`
 
-- [ ] **Paso 1: Tests**
+- [x] **Paso 1: Tests**
 
 ```ts
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -2588,7 +2588,7 @@ describe('storage', () => {
 });
 ```
 
-- [ ] **Paso 2: Implementación**
+- [x] **Paso 2: Implementación**
 
 `src/state/storage.ts`:
 
@@ -2612,7 +2612,7 @@ export function loadLocal(): DocumentModel | null {
 }
 ```
 
-- [ ] **Paso 3: Integrar en `useDocument`**
+- [x] **Paso 3: Integrar en `useDocument`**
 
 ```ts
 import { saveLocal, loadLocal } from '../state/storage';
@@ -2622,7 +2622,7 @@ const [doc, setDoc] = useState<DocumentModel>(() => loadLocal() ?? createEmptyDo
 useEffect(() => { saveLocal(doc); }, [doc]);
 ```
 
-- [ ] **Paso 4: Verificar y commit**
+- [x] **Paso 4: Verificar y commit**
 
 ```bash
 npm run test:run
@@ -2634,7 +2634,7 @@ git add -A && git commit -m "feat(state): autoguardado en localStorage"
 **Files:**
 - Modify: `src/state/storage.ts`, `src/components/Header.tsx`, `src/App.tsx`
 
-- [ ] **Paso 1: Función de export**
+- [x] **Paso 1: Función de export**
 
 ```ts
 // storage.ts
@@ -2652,7 +2652,7 @@ export function exportSyscalc(doc: DocumentModel) {
 }
 ```
 
-- [ ] **Paso 2: Conectar al `Header` desde `App`**
+- [x] **Paso 2: Conectar al `Header` desde `App`**
 
 ```tsx
 // App.tsx
@@ -2661,7 +2661,7 @@ const { doc, ... } = useDocument();
 <Header onSave={() => exportSyscalc(doc)} onLoad={...} />
 ```
 
-- [ ] **Paso 3: Commit**
+- [x] **Paso 3: Commit**
 
 ```bash
 git add -A && git commit -m "feat: export documento como .syscalc"
@@ -2672,7 +2672,7 @@ git add -A && git commit -m "feat: export documento como .syscalc"
 **Files:**
 - Modify: `src/state/storage.ts`, `src/hooks/useDocument.ts`, `src/components/Header.tsx`
 
-- [ ] **Paso 1: Función de import**
+- [x] **Paso 1: Función de import**
 
 ```ts
 // storage.ts
@@ -2681,13 +2681,13 @@ export function importSyscalc(file: File): Promise<DocumentModel> {
 }
 ```
 
-- [ ] **Paso 2: Exponer `setDocument` en `useDocument`**
+- [x] **Paso 2: Exponer `setDocument` en `useDocument`**
 
 ```ts
 return { doc, results, setLineText, insertLineAfter, replaceDocument: setDoc };
 ```
 
-- [ ] **Paso 3: Botón Cargar abre `<input type="file" accept=".syscalc">` invisible**
+- [x] **Paso 3: Botón Cargar abre `<input type="file" accept=".syscalc">` invisible**
 
 ```tsx
 // Header.tsx
@@ -2702,7 +2702,7 @@ const fileRef = useRef<HTMLInputElement>(null);
 
 `App.tsx` recibe el doc cargado y llama `replaceDocument(...)`.
 
-- [ ] **Paso 4: Verificar manualmente y commit**
+- [x] **Paso 4: Verificar manualmente y commit**
 
 ```bash
 npm run dev
@@ -2771,22 +2771,22 @@ git add -A && git commit -m "docs: README inicial"
 
 ## Resumen de fases
 
-| Fase | Cubre del spec | Resultado entregable |
-|------|----------------|----------------------|
-| 0 | — | Proyecto Vite + tests + deps |
-| 1 | UI | Editor de líneas funcional sin lógica |
-| 2 | §1 + §6 | Operaciones básicas y constantes |
-| 3 | §2 + §3 | Funciones matemáticas + trigonometría en grados |
-| 4 | §4 + §5 | Logaritmos, exp, estadística |
-| 5 | §7 | Abreviaturas k / M |
-| 6 | §8 | Porcentajes naturales + regla de tres |
-| 7 | §9 | Cálculo inverso |
-| 8 | §10 | Conversión de unidades |
-| 9 | §12 (parcial) | Conversiones naturales temporales |
-| 10 | §12 (fechas) | Fechas y calendario laboral con festivos |
-| 11 | §13 | Geometría con autocompletado (desktop+móvil) |
-| 12 | §14 | Variables, referencias, operador implícito, multilínea |
-| 13 | §14 (persistencia) | localStorage + .syscalc |
-| 14 | — | Pulido, responsive, README |
+| Fase | Cubre del spec | Resultado entregable | Estado |
+|------|----------------|----------------------|--------|
+| 0 | — | Proyecto Vite + tests + deps | ✅ |
+| 1 | UI | Editor de líneas funcional sin lógica | ✅ |
+| 2 | §1 + §6 | Operaciones básicas y constantes | ✅ |
+| 3 | §2 + §3 | Funciones matemáticas + trigonometría en grados | ✅ |
+| 4 | §4 + §5 | Logaritmos, exp, estadística | ✅ |
+| 5 | §7 | Abreviaturas k / M | ✅ |
+| 6 | §8 | Porcentajes naturales + regla de tres | ✅ |
+| 7 | §9 | Cálculo inverso | ✅ |
+| 8 | §10 | Conversión de unidades | ⏳ |
+| 9 | §12 (parcial) | Conversiones naturales temporales | ⏳ |
+| 10 | §12 (fechas) | Fechas y calendario laboral con festivos | ⏳ |
+| 11 | §13 | Geometría con autocompletado (desktop+móvil) | ⏳ |
+| 12 | §14 | Variables, referencias, operador implícito, multilínea | 🟡 12.1 y 12.2 ✅ · 12.3 y 12.4 ⏳ |
+| 13 | §14 (persistencia) | localStorage + .syscalc | ✅ |
+| 14 | — | Pulido, responsive, README | ⏳ |
 
 Cada fase deja la aplicación en estado funcional y publicable; las fases posteriores añaden capacidades sin romper las anteriores.
