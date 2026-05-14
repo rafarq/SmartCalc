@@ -126,6 +126,43 @@
   background: #f1f3f5;
   color: #1a1a1a;
 }
+.line-result-cell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.line-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #bbb;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+.line-row:hover .line-copy-btn,
+.line-copy-btn:focus-visible,
+.line-copy-btn.copied {
+  opacity: 1;
+}
+.line-copy-btn:hover {
+  background: #f1f3f5;
+  color: #1a1a1a;
+}
+.line-copy-btn.copied {
+  color: #16a34a;
+}
+.line-copy-btn:focus-visible {
+  outline: 2px solid #2563eb33;
+  outline-offset: 1px;
+}
 .line-total {
   margin-top: 12px;
   padding-top: 12px;

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { extractText, placeCursorAtEnd, renderTokensToHTML } from '../utils/refs';
+import { CheckIcon, CopyIcon } from './icons';
 
 type Props = {
   value: string;
@@ -36,6 +37,19 @@ export function LineRow({
 }: Props) {
   const inputRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const hasValue = result !== '' && result !== '⚠';
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(result);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1200);
+    } catch {
+      // navegadores sin clipboard API o sin permisos: ignoramos silenciosamente
+    }
+  };
 
   useEffect(() => {
     const el = inputRef.current;
@@ -136,18 +150,32 @@ export function LineRow({
           }
         }}
       />
-      <span
-        className={`line-result${resultClickable ? ' clickable' : ''}`}
-        role={resultClickable ? 'button' : undefined}
-        title={resultClickable ? 'Click para insertar referencia' : undefined}
-        onMouseDown={(e) => {
-          if (!resultClickable) return;
-          e.preventDefault();
-          onResultClick?.();
-        }}
-      >
-        {result}
-      </span>
+      <div className="line-result-cell">
+        {hasValue && (
+          <button
+            type="button"
+            className={`line-copy-btn${copied ? ' copied' : ''}`}
+            title={copied ? 'Copiado' : 'Copiar resultado'}
+            aria-label={copied ? 'Copiado' : 'Copiar resultado'}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={handleCopy}
+          >
+            {copied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
+          </button>
+        )}
+        <span
+          className={`line-result${resultClickable ? ' clickable' : ''}`}
+          role={resultClickable ? 'button' : undefined}
+          title={resultClickable ? 'Click para insertar referencia' : undefined}
+          onMouseDown={(e) => {
+            if (!resultClickable) return;
+            e.preventDefault();
+            onResultClick?.();
+          }}
+        >
+          {result}
+        </span>
+      </div>
     </div>
   );
 }

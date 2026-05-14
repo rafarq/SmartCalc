@@ -283,6 +283,17 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    title: 'Copiar resultado de una línea',
+    description:
+      'Al pasar el ratón por encima de una línea con resultado aparece un icono de copia junto al valor. Pulsa para copiar el número formateado al portapapeles.',
+    notes: [
+      'El icono se queda verde con una marca de verificación durante unos instantes para confirmar que se ha copiado.',
+      'Se copia exactamente el texto del resultado tal y como aparece en pantalla (con separadores de miles y decimales en formato español).',
+      'No pierdes el foco de la línea donde estás escribiendo: el botón se puede pulsar desde cualquier línea sin perder el cursor.',
+      'Si el navegador deniega el permiso del portapapeles, la acción no produce error visible (solo no se copia).',
+    ],
+  },
+  {
     title: 'Referencias entre líneas',
     description:
       'Haz click sobre el resultado de cualquier línea (a la derecha) para insertarlo como referencia en la línea donde tienes el cursor. La referencia se muestra como un chip azul con el valor actual.',
