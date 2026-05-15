@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { extractText, placeCursorAtEnd, renderTokensToHTML } from '../utils/refs';
-import { useAutocomplete } from '../hooks/useAutocomplete';
+import { useAutocomplete, type Suggestion } from '../hooks/useAutocomplete';
 import { Autocomplete } from './Autocomplete';
 import { CheckIcon, CopyIcon } from './icons';
 
@@ -47,8 +47,11 @@ export function LineRow({
   const ac = useAutocomplete(value);
   const acVisible = isFocused && ac.suggestions.length > 0;
 
-  const pickSuggestion = (template: string) => {
-    onChange(template + ' ');
+  const pickSuggestion = (s: Suggestion) => {
+    // Sustituimos solo desde `replaceFrom` hasta el final, conservando el
+    // prefijo (p. ej. "2 + " antes de "IPN100.h").
+    const before = value.slice(0, s.replaceFrom);
+    onChange(before + s.text);
     ac.reset();
   };
 

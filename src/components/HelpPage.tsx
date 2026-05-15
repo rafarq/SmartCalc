@@ -212,6 +212,7 @@ const SECTIONS: Section[] = [
       'Propiedades disponibles: h (altura), b (ancho), e1/er (espesores), h1, u, A (área), Sx, Ix/Iy (inercia), Wx/Wy (módulo resistente), ix/iy (radio de giro), It, Ia, w, a, e2 y p (peso por metro en kg/m).',
       'Los perfiles con punto en el nombre se acceden con guion bajo: «L40.4» → «L40_4», «r80.40.3» → «r80_40_3» (el rectangular 80×40 espesor 3).',
       'Casos típicos: peso total de un perfil de longitud L → «IPN200.p * L»; comparativa de áreas → «HEA200.A / IPE200.A»; cortante resistido por un alma → «h * er * fyd».',
+      'Autocompletado: al escribir el nombre del perfil seguido de un punto («IPN100.») aparece una lista con todas las propiedades disponibles, con una breve descripción al lado. Funciona también dentro de una expresión más larga («2 + HEA150.» mostrará las propiedades de HEA150 sin perder el resto).',
     ],
   },
   {

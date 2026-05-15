@@ -135,11 +135,23 @@
   cursor: pointer;
   font-size: 13px;
   color: #444;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
 }
-.autocomplete-item code {
+.autocomplete-item code,
+.autocomplete-label {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   background: transparent;
   color: inherit;
+  flex-shrink: 0;
+}
+.autocomplete-desc {
+  font-size: 11px;
+  color: #999;
+  font-style: italic;
+  text-align: right;
+  margin-left: auto;
 }
 .autocomplete-item:hover { background: #f6f7f9; color: #1a1a1a; }
 .autocomplete-item.selected {
@@ -956,6 +968,7 @@
   .autocomplete-item { color: var(--text-secondary); }
   .autocomplete-item:hover { background: var(--hover-bg); color: var(--text); }
   .autocomplete-item.selected { background: var(--accent-soft); color: var(--text); }
+  .autocomplete-desc { color: var(--text-muted); }
 
   /* Chips: el verde y el azul se mantienen pero ajustamos el azul para
      mejor contraste sobre fondo oscuro. */

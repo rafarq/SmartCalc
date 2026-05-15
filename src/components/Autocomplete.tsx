@@ -1,7 +1,9 @@
+import type { Suggestion } from '../hooks/useAutocomplete';
+
 type Props = {
-  items: string[];
+  items: Suggestion[];
   selectedIndex: number;
-  onPick: (s: string) => void;
+  onPick: (s: Suggestion) => void;
 };
 
 export function Autocomplete({ items, selectedIndex, onPick }: Props) {
@@ -10,7 +12,7 @@ export function Autocomplete({ items, selectedIndex, onPick }: Props) {
     <ul className="autocomplete" role="listbox">
       {items.map((s, i) => (
         <li
-          key={s}
+          key={s.text}
           role="option"
           aria-selected={i === selectedIndex}
           className={i === selectedIndex ? 'autocomplete-item selected' : 'autocomplete-item'}
@@ -19,7 +21,8 @@ export function Autocomplete({ items, selectedIndex, onPick }: Props) {
             onPick(s);
           }}
         >
-          <code>{s}</code>
+          <code className="autocomplete-label">{s.label}</code>
+          {s.description && <span className="autocomplete-desc">{s.description}</span>}
         </li>
       ))}
     </ul>
