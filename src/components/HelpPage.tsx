@@ -191,6 +191,30 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    title: 'Perfiles estructurales',
+    description:
+      'Catálogo completo de perfiles metálicos (IPN, IPE, HEA, HEB, HEM, UPN, L, LD, T, redondos, cuadrados y rectangulares) accesibles como variables. Cada perfil expone sus propiedades geométricas con notación punto.',
+    examples: [
+      { input: 'IPN100.h', result: '100' },
+      { input: 'IPN100.b', result: '50' },
+      { input: 'IPN100.p', result: '8,32' },
+      { input: 'HEA150.h', result: '140' },
+      { input: 'IPE200.A', result: '28,5' },
+      { input: 'HEB200.Ix', result: '5.700' },
+    ],
+    useCases: [
+      { input: 'IPN200.p * 6', result: '157,8' },
+      { input: 'HEA200.A * 2', result: '107' },
+      { input: 'HEB300.Wx * 235 / 1.05', result: '393.181' },
+    ],
+    notes: [
+      'Familias soportadas: IPN, IPE, HEA, HEB, HEM, UPN, L (angulares iguales), LD (desiguales), T, redondos (rd6, rd8…), cuadrados (c6, c8…) y rectangulares.',
+      'Propiedades disponibles: h (altura), b (ancho), e1/er (espesores), h1, u, A (área), Sx, Ix/Iy (inercia), Wx/Wy (módulo resistente), ix/iy (radio de giro), It, Ia, w, a, e2 y p (peso por metro en kg/m).',
+      'Los perfiles con punto en el nombre se acceden con guion bajo: «L40.4» → «L40_4», «r80.40.3» → «r80_40_3» (el rectangular 80×40 espesor 3).',
+      'Casos típicos: peso total de un perfil de longitud L → «IPN200.p * L»; comparativa de áreas → «HEA200.A / IPE200.A»; cortante resistido por un alma → «h * er * fyd».',
+    ],
+  },
+  {
     title: 'Variables',
     description:
       'Asigna un valor a un nombre con = y úsalo en líneas posteriores. La variable se recuerda mientras la hoja esté abierta.',

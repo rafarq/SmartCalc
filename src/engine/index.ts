@@ -9,6 +9,7 @@ import { tryUnitConversion } from './units';
 import { tryNaturalConversion } from './naturalConversions';
 import { tryDateExpression } from './dates';
 import { tryGeometry } from './geometry';
+import { PROFILES } from './profiles';
 
 export type EvalContext = {
   vars: Record<string, number>;
@@ -126,7 +127,10 @@ export function evaluate(line: string, ctx: EvalContext): Result {
       formatted: `${formatNumber(g.value)} ${g.unit}`,
     };
   try {
-    const value = math.evaluate(expr, { ...ctx.vars });
+    // Los perfiles geométricos (IPN100, HEA150, …) se inyectan como variables
+    // de scope. Acceso a propiedades vía `IPN100.h`, `HEA150.p`, etc. Las
+    // variables del usuario tienen prioridad sobre los perfiles.
+    const value = math.evaluate(expr, { ...PROFILES, ...ctx.vars });
     return { ok: true, value, formatted: formatNumber(value) };
   } catch (e) {
     return { ok: false, error: (e as Error).message };
