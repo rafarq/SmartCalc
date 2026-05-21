@@ -21,6 +21,20 @@ describe('regla de tres (forma "C son ?")', () => {
     expect(tryPercentages('si 1 m son 200 cm, 2.5 m son ?')?.value).toBeCloseTo(500));
 });
 
+describe('porcentajes con referencias entre líneas', () => {
+  it('"@{a} es qué % de @{b}" funciona como sus equivalentes literales', () => {
+    // expandRefs transforma @{...} en (valor) antes de tryPercentages, así
+    // que la frase real que recibe el detector es "(50) es qué % de (200)".
+    expect(tryPercentages('(50) es qué % de (200)')?.value).toBe(25);
+  });
+  it('"(50) + (10)% de impuestos" = 55', () => {
+    expect(tryPercentages('(50) + (10)% de impuestos')?.value).toBe(55);
+  });
+  it('"(20)% de (300)" = 60', () => {
+    expect(tryPercentages('(20)% de (300)')?.value).toBe(60);
+  });
+});
+
 describe('regla de tres (forma "cuánto es C")', () => {
   it('si 3 es 6, cuanto es 5 → 10', () =>
     expect(tryPercentages('si 3 es 6, cuanto es 5')?.value).toBeCloseTo(10));

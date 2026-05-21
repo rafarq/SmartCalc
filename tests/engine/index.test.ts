@@ -91,4 +91,24 @@ describe('evaluate with references', () => {
     expect(r.ok).toBe(true);
     if (r.ok) expect(r.value).toBe(5);
   });
+
+  it('"@{a} es qué % de @{b}" funciona con referencias', () => {
+    const r = evaluate('@{a} es qué % de @{b}', {
+      vars: {},
+      prev: [],
+      lineValues: { a: 50, b: 200 },
+    });
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value).toBe(25);
+  });
+
+  it('"@{a} + @{b}% de iva" funciona con referencias', () => {
+    const r = evaluate('@{a} + @{b}% de iva', {
+      vars: {},
+      prev: [],
+      lineValues: { a: 100, b: 21 },
+    });
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value).toBeCloseTo(121);
+  });
 });
