@@ -75,7 +75,8 @@ math.import(
 
 // Línea que empieza por un operador binario: si la línea anterior dio un
 // número, prepende su valor de forma transparente ("+50" tras 100 → 150).
-const IMPLICIT_OP_RE = /^([+\-*/^%])\s*(.+)$/;
+// El signo "-" inicial se deja a mathjs para tratarlo como número negativo.
+const IMPLICIT_OP_RE = /^([+*/^%])\s*(.+)$/;
 
 export function evaluate(line: string, ctx: EvalContext): Result {
   const trimmed = line.trim();

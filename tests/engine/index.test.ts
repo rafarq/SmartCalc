@@ -60,9 +60,16 @@ describe('evaluate — operador implícito', () => {
     if (r.ok) expect(r.value).toBe(25);
   });
 
-  it('sin línea previa numérica → -5 es un literal', () => {
-    const ctx = { vars: {}, prev: [] };
+  it('-5 después de 100 es un literal negativo', () => {
+    const ctx = { vars: {}, prev: [{ value: 100, formatted: '100' }] };
     const r = evaluate('-5', ctx);
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value).toBe(-5);
+  });
+
+  it('- 5 después de 100 es un literal negativo', () => {
+    const ctx = { vars: {}, prev: [{ value: 100, formatted: '100' }] };
+    const r = evaluate('- 5', ctx);
     expect(r.ok).toBe(true);
     if (r.ok) expect(r.value).toBe(-5);
   });
