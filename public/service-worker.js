@@ -1,8 +1,9 @@
-const CACHE_NAME = 'smartcalc-v1';
+const CACHE_NAME = 'smartcalc-v2';
 const APP_SHELL = [
   '/',
   '/index.html',
   '/manifest.webmanifest',
+  '/favicon.ico',
   '/icons/favicon-16.png',
   '/icons/favicon-32.png',
   '/icons/apple-touch-icon.png',
