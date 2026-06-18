@@ -85,6 +85,81 @@ export function extractText(el: HTMLElement): string {
   return out;
 }
 
+export function getCursorTextOffset(el: HTMLElement): number {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return extractText(el).length;
+
+  const range = sel.getRangeAt(0);
+  if (!el.contains(range.startContainer)) return extractText(el).length;
+
+  const beforeCursor = range.cloneRange();
+  beforeCursor.selectNodeContents(el);
+  beforeCursor.setEnd(range.startContainer, range.startOffset);
+
+  const container = document.createElement('div');
+  container.appendChild(beforeCursor.cloneContents());
+  return extractText(container).length;
+}
+
+function serializedNodeLength(node: ChildNode): number {
+  if (node.nodeType === Node.TEXT_NODE) return (node.textContent ?? '').length;
+  if (!(node instanceof HTMLElement)) return 0;
+
+  const ref = node.dataset.ref;
+  if (ref) return `@{${ref}}`.length;
+  if (node.tagName === 'BR') return 0;
+
+  let length = 0;
+  node.childNodes.forEach((child) => {
+    length += serializedNodeLength(child);
+  });
+  return length;
+}
+
+function setRangeStartAtTextOffset(range: Range, root: HTMLElement, offset: number): void {
+  let remaining = Math.max(0, offset);
+
+  for (const child of Array.from(root.childNodes)) {
+    const length = serializedNodeLength(child);
+    if (remaining <= length) {
+      if (child.nodeType === Node.TEXT_NODE) {
+        range.setStart(child, Math.min(remaining, (child.textContent ?? '').length));
+        return;
+      }
+
+      if (child instanceof HTMLElement) {
+        const ref = child.dataset.ref;
+        if (ref || child.tagName === 'BR') {
+          if (remaining <= 0) range.setStartBefore(child);
+          else range.setStartAfter(child);
+          return;
+        }
+
+        setRangeStartAtTextOffset(range, child, remaining);
+        return;
+      }
+
+      range.setStartAfter(child);
+      return;
+    }
+    remaining -= length;
+  }
+
+  range.selectNodeContents(root);
+  range.collapse(false);
+}
+
+export function placeCursorAtTextOffset(el: HTMLElement, offset: number): void {
+  const range = document.createRange();
+  setRangeStartAtTextOffset(range, el, offset);
+  range.collapse(true);
+  const sel = window.getSelection();
+  if (sel) {
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+}
+
 export function placeCursorAtEnd(el: HTMLElement): void {
   const range = document.createRange();
   range.selectNodeContents(el);

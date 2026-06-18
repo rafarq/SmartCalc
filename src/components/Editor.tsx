@@ -61,10 +61,12 @@ export function Editor({
   formattedById,
   varNames,
   focusedLineId,
+  focusedCursorOffset,
   setLineText,
   insertLineAfter,
   insertLineAtEnd,
   removeLine,
+  mergeLineIntoPrevious,
   focusLine,
   focusPrevLine,
   focusNextLine,
@@ -151,11 +153,19 @@ export function Editor({
             lineValues={formattedById}
             varNames={varNames}
             autoFocus={line.id === focusedLineId}
+            autoFocusCursorOffset={
+              line.id === focusedLineId && focusedCursorOffset !== null
+                ? focusedCursorOffset
+                : undefined
+            }
             resultClickable={hasValue && line.id !== focusedLineId}
             onChange={(t) => setLineText(line.id, t)}
-            onEnter={() => insertLineAfter(i)}
+            onEnter={(cursorOffset, currentText) =>
+              insertLineAfter(line.id, cursorOffset, currentText)
+            }
             onShiftEnter={() => insertLineAtEnd()}
             onBackspaceEmpty={() => removeLine(line.id)}
+            onBackspaceAtStart={(currentText) => mergeLineIntoPrevious(line.id, currentText)}
             onFocus={() => focusLine(line.id)}
             onArrowUp={() => focusPrevLine(line.id)}
             onArrowDown={() => focusNextLine(line.id)}

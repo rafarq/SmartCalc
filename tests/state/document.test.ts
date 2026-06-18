@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import {
   createEmptyDocument,
   addLine,
+  splitLine,
+  mergeLineWithPrevious,
   updateLine,
   setTitle,
   DEFAULT_TITLE,
@@ -27,6 +29,32 @@ describe('document model', () => {
     const { doc: updated, newId } = addLine(doc, 0);
     expect(updated.lines).toHaveLength(2);
     expect(updated.lines[1].id).toBe(newId);
+  });
+
+  it('splits a line at the cursor offset and moves the rest down', () => {
+    const doc = createEmptyDocument();
+    const id = doc.lines[0].id;
+    const withText = updateLine(doc, id, '12 + 34');
+    const split = splitLine(withText, id, 5);
+
+    expect(split).not.toBeNull();
+    expect(split?.doc.lines.map((line) => line.text)).toEqual(['12 + ', '34']);
+    expect(split?.doc.lines[1].id).toBe(split?.newId);
+  });
+
+  it('merges a line into the previous one and returns the join cursor offset', () => {
+    const doc = createEmptyDocument();
+    const firstId = doc.lines[0].id;
+    const withFirst = updateLine(doc, firstId, '12 + ');
+    const { doc: withSecond } = addLine(withFirst, 0);
+    const secondId = withSecond.lines[1].id;
+    const withText = updateLine(withSecond, secondId, '34');
+    const merged = mergeLineWithPrevious(withText, secondId);
+
+    expect(merged).not.toBeNull();
+    expect(merged?.doc.lines.map((line) => line.text)).toEqual(['12 + 34']);
+    expect(merged?.focusId).toBe(firstId);
+    expect(merged?.cursorOffset).toBe('12 + '.length);
   });
 
   it('updates the text of a line by id', () => {

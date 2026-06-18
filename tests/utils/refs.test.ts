@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { tokenize, renderTokensToHTML, expandRefs } from '../../src/utils/refs';
+import {
+  tokenize,
+  renderTokensToHTML,
+  expandRefs,
+  getCursorTextOffset,
+  placeCursorAtTextOffset,
+} from '../../src/utils/refs';
 
 describe('tokenize', () => {
   it('texto plano sin refs', () => {
@@ -42,5 +48,64 @@ describe('renderTokensToHTML', () => {
   it('escapa HTML peligroso en el texto', () => {
     const html = renderTokensToHTML('<script>', {});
     expect(html).toBe('&lt;script&gt;');
+  });
+});
+
+describe('getCursorTextOffset', () => {
+  it('returns the cursor offset in plain text', () => {
+    const el = document.createElement('div');
+    el.textContent = 'abcdef';
+    document.body.appendChild(el);
+
+    const range = document.createRange();
+    range.setStart(el.firstChild as Text, 3);
+    range.collapse(true);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+
+    expect(getCursorTextOffset(el)).toBe(3);
+    document.body.removeChild(el);
+  });
+
+  it('counts reference chips as their serialized token', () => {
+    const el = document.createElement('div');
+    el.innerHTML = renderTokensToHTML('@{abc} + 1', { abc: '2003' });
+    document.body.appendChild(el);
+
+    const textAfterChip = el.childNodes[1] as Text;
+    const range = document.createRange();
+    range.setStart(textAfterChip, 2);
+    range.collapse(true);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+
+    expect(getCursorTextOffset(el)).toBe('@{abc}'.length + 2);
+    document.body.removeChild(el);
+  });
+});
+
+describe('placeCursorAtTextOffset', () => {
+  it('places the cursor at the requested plain-text offset', () => {
+    const el = document.createElement('div');
+    el.textContent = 'abcdef';
+    document.body.appendChild(el);
+
+    placeCursorAtTextOffset(el, 2);
+
+    expect(getCursorTextOffset(el)).toBe(2);
+    document.body.removeChild(el);
+  });
+
+  it('places the cursor after serialized reference chips', () => {
+    const el = document.createElement('div');
+    el.innerHTML = renderTokensToHTML('@{abc} + 1', { abc: '2003' });
+    document.body.appendChild(el);
+
+    placeCursorAtTextOffset(el, '@{abc}'.length + 2);
+
+    expect(getCursorTextOffset(el)).toBe('@{abc}'.length + 2);
+    document.body.removeChild(el);
   });
 });

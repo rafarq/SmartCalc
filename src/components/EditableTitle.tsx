@@ -33,11 +33,17 @@ export function EditableTitle({ value, onChange }: Props) {
     setEditing(false);
   };
 
+  const startEditing = () => {
+    setDraft(value || DEFAULT_TITLE);
+    setEditing(true);
+  };
+
   if (editing) {
     return (
       <input
         ref={inputRef}
         className="doc-title doc-title-input"
+        aria-label="Título de la hoja"
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
         onBlur={commit}
@@ -56,20 +62,23 @@ export function EditableTitle({ value, onChange }: Props) {
   }
 
   return (
-    <span
+    <button
+      type="button"
       className="doc-title"
-      onClick={() => setEditing(true)}
+      onPointerDown={(e) => {
+        e.preventDefault();
+        startEditing();
+      }}
+      onClick={startEditing}
       title="Click para renombrar"
-      role="button"
-      tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          setEditing(true);
+          startEditing();
         }
       }}
     >
       {value || DEFAULT_TITLE}
-    </span>
+    </button>
   );
 }

@@ -1,5 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { extractText, placeCursorAtEnd, renderTokensToHTML } from '../utils/refs';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  extractText,
+  getCursorTextOffset,
+  placeCursorAtEnd,
+  placeCursorAtTextOffset,
+  renderTokensToHTML,
+} from '../utils/refs';
 import { useAutocomplete, type Suggestion } from '../hooks/useAutocomplete';
 import { Autocomplete } from './Autocomplete';
 import { CheckIcon, CopyIcon } from './icons';
@@ -12,11 +18,13 @@ type Props = {
   lineValues: Record<string, string>;
   varNames?: string[];
   autoFocus?: boolean;
+  autoFocusCursorOffset?: number;
   resultClickable?: boolean;
   onChange: (text: string) => void;
-  onEnter: () => void;
+  onEnter: (cursorOffset: number, currentText: string) => void;
   onShiftEnter?: () => void;
   onBackspaceEmpty?: () => void;
+  onBackspaceAtStart?: (currentText: string) => void;
   onFocus?: () => void;
   onArrowUp?: () => void;
   onArrowDown?: () => void;
@@ -31,11 +39,13 @@ export function LineRow({
   lineValues,
   varNames,
   autoFocus,
+  autoFocusCursorOffset,
   resultClickable,
   onChange,
   onEnter,
   onShiftEnter,
   onBackspaceEmpty,
+  onBackspaceAtStart,
   onFocus,
   onArrowUp,
   onArrowDown,
@@ -67,6 +77,14 @@ export function LineRow({
     }
   };
 
+  const placeAutoFocusCursor = useCallback((el: HTMLElement) => {
+    if (autoFocusCursorOffset !== undefined) {
+      placeCursorAtTextOffset(el, autoFocusCursorOffset);
+    } else {
+      placeCursorAtEnd(el);
+    }
+  }, [autoFocusCursorOffset]);
+
   useEffect(() => {
     const el = inputRef.current;
     if (!el) return;
@@ -83,8 +101,8 @@ export function LineRow({
       return;
     }
     el.innerHTML = renderTokensToHTML(value, lineValues, varNames ?? []);
-    if (focused || autoFocus) placeCursorAtEnd(el);
-  }, [value, lineValues, varNames, autoFocus, isFocused]);
+    if (focused || autoFocus) placeAutoFocusCursor(el);
+  }, [value, lineValues, varNames, autoFocus, isFocused, placeAutoFocusCursor]);
 
   useEffect(() => {
     const el = inputRef.current;
@@ -95,8 +113,8 @@ export function LineRow({
     // (Enter para crear línea, borrado, carga de documento…).
     if (document.activeElement === el) return;
     el.focus();
-    placeCursorAtEnd(el);
-  }, [autoFocus]);
+    placeAutoFocusCursor(el);
+  }, [autoFocus, placeAutoFocusCursor]);
 
   const handleInput = () => {
     const el = inputRef.current;
@@ -123,74 +141,97 @@ export function LineRow({
     >
       {lineNumber !== undefined && <span className="line-number">{lineNumber}</span>}
       <div className="line-input-wrap">
-      <div
-        ref={inputRef}
-        className="line-input"
-        contentEditable
-        suppressContentEditableWarning
-        role="textbox"
-        spellCheck={false}
-        onInput={handleInput}
-        onMouseDown={() => {
-          // Safety net: aseguramos que el documento conoce esta línea como activa
-          // aunque el evento focus nativo no se dispare en algún flujo (chips,
-          // selección previa en otra zona…).
-          onFocus?.();
-        }}
-        onFocus={() => {
-          setIsFocused(true);
-          onFocus?.();
-        }}
-        onBlur={() => setIsFocused(false)}
-        onKeyDown={(e) => {
-          // Mientras el autocompletado de geometría esté abierto, las flechas
-          // y Enter/Tab pertenecen al popup, no a la navegación entre líneas.
-          if (acVisible) {
-            if (e.key === 'ArrowDown') { e.preventDefault(); ac.moveDown(); return; }
-            if (e.key === 'ArrowUp') { e.preventDefault(); ac.moveUp(); return; }
-            if (e.key === 'Enter' || e.key === 'Tab') {
+        <div
+          ref={inputRef}
+          className="line-input"
+          contentEditable
+          suppressContentEditableWarning
+          role="textbox"
+          spellCheck={false}
+          onInput={handleInput}
+          onMouseDown={() => {
+            // Safety net: aseguramos que el documento conoce esta línea como activa
+            // aunque el evento focus nativo no se dispare en algún flujo (chips,
+            // selección previa en otra zona…).
+            onFocus?.();
+          }}
+          onFocus={() => {
+            setIsFocused(true);
+            onFocus?.();
+          }}
+          onBlur={() => setIsFocused(false)}
+          onKeyDown={(e) => {
+            // Mientras el autocompletado de geometría esté abierto, las flechas
+            // y Enter/Tab pertenecen al popup, no a la navegación entre líneas.
+            if (acVisible) {
+              if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                ac.moveDown();
+                return;
+              }
+              if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                ac.moveUp();
+                return;
+              }
+              if (e.key === 'Enter' || e.key === 'Tab') {
+                e.preventDefault();
+                pickSuggestion(ac.suggestions[ac.selectedIndex]);
+                return;
+              }
+              if (e.key === 'Escape') {
+                e.preventDefault();
+                ac.reset();
+                return;
+              }
+            }
+            if (e.key === 'Enter' && e.shiftKey && onShiftEnter) {
               e.preventDefault();
-              pickSuggestion(ac.suggestions[ac.selectedIndex]);
+              onShiftEnter();
               return;
             }
-            if (e.key === 'Escape') { e.preventDefault(); ac.reset(); return; }
-          }
-          if (e.key === 'Enter' && e.shiftKey && onShiftEnter) {
-            e.preventDefault();
-            onShiftEnter();
-            return;
-          }
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            onEnter();
-            return;
-          }
-          if (e.key === 'ArrowUp' && onArrowUp) {
-            e.preventDefault();
-            onArrowUp();
-            return;
-          }
-          if (e.key === 'ArrowDown' && onArrowDown) {
-            e.preventDefault();
-            onArrowDown();
-            return;
-          }
-          if (e.key === 'Backspace') {
-            const el = inputRef.current;
-            if (el && extractText(el) === '' && onBackspaceEmpty) {
+            if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
-              onBackspaceEmpty();
+              const el = inputRef.current;
+              const currentText = el ? extractText(el) : value;
+              const cursorOffset = el ? getCursorTextOffset(el) : currentText.length;
+              onEnter(cursorOffset, currentText);
+              return;
             }
-          }
-        }}
-      />
-      {acVisible && (
-        <Autocomplete
-          items={ac.suggestions}
-          selectedIndex={ac.selectedIndex}
-          onPick={pickSuggestion}
+            if (e.key === 'ArrowUp' && onArrowUp) {
+              e.preventDefault();
+              onArrowUp();
+              return;
+            }
+            if (e.key === 'ArrowDown' && onArrowDown) {
+              e.preventDefault();
+              onArrowDown();
+              return;
+            }
+            if (e.key === 'Backspace') {
+              const el = inputRef.current;
+              if (!el) return;
+              const currentText = extractText(el);
+              const cursorOffset = getCursorTextOffset(el);
+              if (cursorOffset === 0 && onBackspaceAtStart) {
+                e.preventDefault();
+                onBackspaceAtStart(currentText);
+                return;
+              }
+              if (currentText === '' && onBackspaceEmpty) {
+                e.preventDefault();
+                onBackspaceEmpty();
+              }
+            }
+          }}
         />
-      )}
+        {acVisible && (
+          <Autocomplete
+            items={ac.suggestions}
+            selectedIndex={ac.selectedIndex}
+            onPick={pickSuggestion}
+          />
+        )}
       </div>
       <div className="line-result-cell">
         {hasValue && (
@@ -209,7 +250,11 @@ export function LineRow({
           className={`line-result${resultClickable ? ' clickable' : ''}${resultError ? ' error' : ''}`}
           role={resultClickable ? 'button' : undefined}
           title={
-            resultError ? resultError : resultClickable ? 'Click para insertar referencia' : undefined
+            resultError
+              ? resultError
+              : resultClickable
+                ? 'Click para insertar referencia'
+                : undefined
           }
           onMouseDown={(e) => {
             if (!resultClickable) return;

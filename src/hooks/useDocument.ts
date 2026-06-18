@@ -3,6 +3,8 @@ import { evaluate, type Result } from '../engine';
 import {
   createEmptyDocument,
   addLine,
+  splitLine,
+  mergeLineWithPrevious,
   updateLine,
   setTitle as docSetTitle,
   type DocumentModel,
@@ -18,6 +20,7 @@ function initialDoc(): DocumentModel {
 export function useDocument() {
   const [doc, setDoc] = useState<DocumentModel>(initialDoc);
   const [focusedLineId, setFocusedLineId] = useState<string | null>(null);
+  const [focusedCursorOffset, setFocusedCursorOffset] = useState<number | null>(null);
   const focusedLineIdRef = useRef<string | null>(null);
   focusedLineIdRef.current = focusedLineId;
 
@@ -56,10 +59,21 @@ export function useDocument() {
     setDoc((d) => updateLine(d, id, text));
   }, []);
 
-  const insertLineAfter = useCallback((index: number) => {
+  const insertLineAfter = useCallback((id: string, cursorOffset?: number, currentText?: string) => {
     setDoc((d) => {
+      if (cursorOffset !== undefined) {
+        const split = splitLine(d, id, cursorOffset, currentText);
+        if (!split) return d;
+        setFocusedLineId(split.newId);
+        setFocusedCursorOffset(0);
+        return split.doc;
+      }
+
+      const index = d.lines.findIndex((line) => line.id === id);
+      if (index === -1) return d;
       const { doc: next, newId } = addLine(d, index);
       setFocusedLineId(newId);
+      setFocusedCursorOffset(0);
       return next;
     });
   }, []);
@@ -68,6 +82,7 @@ export function useDocument() {
     setDoc((d) => {
       const { doc: next, newId } = addLine(d, d.lines.length - 1);
       setFocusedLineId(newId);
+      setFocusedCursorOffset(0);
       return next;
     });
   }, []);
@@ -80,18 +95,23 @@ export function useDocument() {
       const newLines = d.lines.filter((l) => l.id !== id);
       const focusTargetId = idx === 0 ? newLines[0].id : d.lines[idx - 1].id;
       setFocusedLineId(focusTargetId);
+      setFocusedCursorOffset(null);
       return { ...d, lines: newLines };
     });
   }, []);
 
   const focusLine = useCallback((id: string) => {
     setFocusedLineId(id);
+    setFocusedCursorOffset(null);
   }, []);
 
   const focusPrevLine = useCallback((id: string) => {
     setDoc((d) => {
       const idx = d.lines.findIndex((l) => l.id === id);
-      if (idx > 0) setFocusedLineId(d.lines[idx - 1].id);
+      if (idx > 0) {
+        setFocusedLineId(d.lines[idx - 1].id);
+        setFocusedCursorOffset(null);
+      }
       return d;
     });
   }, []);
@@ -99,8 +119,21 @@ export function useDocument() {
   const focusNextLine = useCallback((id: string) => {
     setDoc((d) => {
       const idx = d.lines.findIndex((l) => l.id === id);
-      if (idx >= 0 && idx < d.lines.length - 1) setFocusedLineId(d.lines[idx + 1].id);
+      if (idx >= 0 && idx < d.lines.length - 1) {
+        setFocusedLineId(d.lines[idx + 1].id);
+        setFocusedCursorOffset(null);
+      }
       return d;
+    });
+  }, []);
+
+  const mergeLineIntoPrevious = useCallback((id: string, currentText?: string) => {
+    setDoc((d) => {
+      const merged = mergeLineWithPrevious(d, id, currentText);
+      if (!merged) return d;
+      setFocusedLineId(merged.focusId);
+      setFocusedCursorOffset(merged.cursorOffset);
+      return merged.doc;
     });
   }, []);
 
@@ -120,12 +153,14 @@ export function useDocument() {
     if (!next.lines || next.lines.length === 0) return;
     setDoc(next);
     setFocusedLineId(next.lines[0].id);
+    setFocusedCursorOffset(null);
   }, []);
 
   const clearDocument = useCallback(() => {
     const fresh = createEmptyDocument();
     setDoc(fresh);
     setFocusedLineId(fresh.lines[0].id);
+    setFocusedCursorOffset(0);
   }, []);
 
   const setTitle = useCallback((title: string) => {
@@ -139,10 +174,12 @@ export function useDocument() {
     formattedById,
     varNames,
     focusedLineId,
+    focusedCursorOffset,
     setLineText,
     insertLineAfter,
     insertLineAtEnd,
     removeLine,
+    mergeLineIntoPrevious,
     focusLine,
     focusPrevLine,
     focusNextLine,
