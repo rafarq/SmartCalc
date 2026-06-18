@@ -5,6 +5,16 @@ dist
 coverage
 .vite
 
+# Affinity design source and lock files
+*.af
+*.afdesign
+*.afphoto
+*.afpub
+*.af~lock~
+*.afdesign~lock~
+*.afphoto~lock~
+*.afpub~lock~
+
 # Script de despliegue con credenciales SFTP
 subir.sh
 .version
