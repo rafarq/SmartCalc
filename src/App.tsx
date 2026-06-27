@@ -36,15 +36,28 @@ export default function App() {
       />
       <Editor doc={doc} {...editorProps} />
       <footer className="app-footer">
-        Herramienta abierta creada por{' '}
-        <a
-          href="https://www.systemarquitectura.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          System Arquitectura
-        </a>
-        .
+        <div>
+          Herramienta abierta creada por{' '}
+          <a
+            href="https://www.systemarquitectura.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            System Arquitectura
+          </a>
+          .
+        </div>
+        <div>
+          Repositorio de codigo abierto en{' '}
+          <a
+            href="https://github.com/rafarq/SmartCalc"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            rafarq/SmartCalc
+          </a>
+          .
+        </div>
       </footer>
       {helpOpen && <HelpPage onClose={() => setHelpOpen(false)} />}
       {calendarOpen && <HolidaysCalendar onClose={() => setCalendarOpen(false)} />}
