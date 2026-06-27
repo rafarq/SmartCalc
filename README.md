@@ -189,3 +189,11 @@ Criterios recomendados:
 ## Licencia
 
 Este proyecto se distribuye bajo la licencia **GNU Affero General Public License v3.0 (AGPLv3)**.
+
+## Autor
+
+- LinkedIn: https://www.linkedin.com/in/rafaroa/
+- Blog: https://rafarq.com
+- Podcast: https://rafarq.com/podcast
+- X: https://x.com/rafaelroa
+- Instagram: https://www.instagram.com/r4f4r04/
