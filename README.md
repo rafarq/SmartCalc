@@ -1,118 +1,183 @@
 # SmartCalc
 
-Calculadora de notas inteligente, en español. Cada línea es una expresión y su
-resultado aparece a la derecha en tiempo real. Soporta operaciones aritméticas,
-funciones matemáticas, porcentajes naturales, conversiones de unidades, fechas y
-calendario laboral español, fórmulas geométricas, variables, referencias entre
-líneas y mucho más.
+SmartCalc es una calculadora de notas en español orientada a trabajar como se piensa y se escribe: una línea por cálculo, resultado inmediato a la derecha y soporte para expresiones naturales, fechas, unidades, variables y referencias entre líneas.
 
-## Arrancar en local
+## Qué hace SmartCalc
+
+SmartCalc mezcla el comportamiento de una calculadora y una hoja de trabajo ligera:
+
+- Evalúa operaciones matemáticas en tiempo real, línea a línea.
+- Entiende expresiones en español como porcentajes, reglas de tres o cálculos con fechas.
+- Permite construir cálculos reutilizables con variables y referencias entre líneas.
+- Guarda el documento automáticamente en `localStorage` y permite exportarlo/importarlo como `.syscalc`.
+
+## Capturas de Pantalla
+
+Actualmente el repositorio no incluye capturas funcionales de la interfaz listas para documentación. Esta sección queda preparada para añadirlas cuando exista material definitivo del producto.
+
+Imagen de marca actual:
+
+![SmartCalc](./pwa-logo.png)
+
+Sugerencia para futuras capturas:
+
+- Editor principal con una hoja de ejemplo cargada.
+- Vista de ayuda con ejemplos de sintaxis.
+- Calendario laboral por ciudad.
+
+## Demo Online
+
+No hay una demo pública desplegada en este momento.
+
+Para probarla localmente:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Abre `http://localhost:5173`.
+Después abre `http://localhost:5173`.
 
-Otros comandos útiles:
+## Instalación
+
+Requisitos:
+
+- Node.js 22 o superior recomendado.
+- npm.
+
+Pasos:
 
 ```bash
-npm run test          # tests en modo watch
-npm run test:run      # tests una sola pasada
-npm run build         # compila TypeScript y genera el bundle de producción
-npm run preview       # sirve la build local
+npm install
 ```
 
-## Qué reconoce
+Scripts disponibles:
 
-| Categoría | Ejemplo | Resultado |
-|-----------|---------|-----------|
-| Operaciones básicas | `2 + 3 * 4` | `14` |
-| Funciones matemáticas | `sqrt(16)`, `raiz(16)` | `4` |
-| Trigonometría en grados | `sin(90)`, `seno(90)` | `1` |
-| Logaritmos / exp | `log(1000)`, `ln(e)`, `exp(1)` | `3`, `1`, `2,718…` |
-| Estadística | `media(2, 4, 6)` | `4` |
-| Constantes | `pi`, `e`, `tau` | `3,14…` |
-| Abreviaturas | `100k`, `2.5M` | `100.000`, `2.500.000` |
-| Variables | `coche = 4`, `coche * 10` | `4`, `40` |
-| Operador implícito | `100`, `+50`, `*2` | `100`, `150`, `300` |
-| Porcentajes naturales | `50 + 10% de impuestos` | `55` |
-| Regla de tres | `si 3 es 6, cuánto es 5` | `10` |
-| Cálculo inverso | `121 tiene un 21% de aumento en qué` | `100` |
-| Conversión de unidades | `5 km a millas`, `1 m² a cm²` | `3,11 millas`, `10.000 cm²` |
-| Conversiones naturales | `12 horas en minutos`, `días en febrero de 2020` | `720`, `29` |
-| Fechas y calendario | `hoy + 3 semanas`, `días laborables entre 1/1/2026 y 1/2/2026 en madrid` | `03/06/2026`, `21 d. laborables` |
-| Geometría con autocompletado | `area.circulo.radio. 5mm` | `78,54 mm²` |
-| Referencias entre líneas | Click sobre un resultado de otra línea | inserta un chip `[valor]` en la línea actual |
-
-La ayuda completa (icono `?` en la cabecera) lleva un índice flotante con todas
-las categorías, ejemplos y notas.
-
-## Atajos de teclado
-
-- **Enter** — nueva línea debajo del cursor.
-- **Shift + Enter** — nueva línea al final del documento.
-- **↑ / ↓** — saltar a la línea anterior / siguiente.
-- **Backspace** en línea vacía — borra la línea y vuelve a la anterior.
-- **Click** en cualquier punto de una fila — enfoca esa línea.
-- Dentro del autocompletado de geometría: **↑/↓** elige, **Enter/Tab** acepta,
-  **Esc** cierra.
-
-## Documento
-
-- **Autoguardado en localStorage** — recargas y la hoja sigue ahí.
-- **Título editable** en la cabecera (click).
-- **Guardar / Cargar** un archivo `.syscalc` (JSON serializado).
-- **Limpiar** la hoja para empezar de cero (pide confirmación si hay contenido).
-- **Calendario laboral** por capital de provincia, coloreado por ámbito
-  (nacional / autonómico / local) con leyenda.
-- **Control de decimales** en la cabecera del editor (0–10), persistente.
-- **Resumen** al final con suma / media / mediana / cantidad y botón de copiar.
-
-## Limitaciones conocidas
-
-- **Festivos locales municipales**: la cobertura está basada en una lista
-  reducida de patronales fijas bien conocidas (San Isidro, Mercè, San Fermín…)
-  más lo que aporte `date-holidays`. **No es un calendario oficial**: los
-  ayuntamientos cambian sus dos festivos locales cada año. Para uso oficial,
-  consulta el BOE y el BOP de tu provincia.
-- **Cálculos laborables muy largos** (> 50 años) devuelven vacío para evitar
-  bloquear el navegador iterando día a día.
-- **Fechas en formato `dd/mm`** requieren año explícito (2 o 4 dígitos): así
-  `1/3` se trata como la división `1÷3` y no como una fecha.
-
-## Stack
-
-- **Vite + React 19 + TypeScript**.
-- **Vitest** + **Testing Library** para los tests.
-- **mathjs** para el motor de cálculo y conversión de unidades.
-- **date-fns** y **date-fns/locale/es** para fechas y formateo.
-- **date-holidays** para los festivos nacionales y autonómicos de España.
-- Sin frameworks de estilos: CSS plano en `src/styles/app.css`.
-
-## Estructura
-
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run test
+npm run test:run
+npm run test:coverage
+npm run lint
+npm run typecheck
+npm run format
+npm run format:check
 ```
+
+## Uso
+
+Cada línea es una expresión independiente y su resultado aparece a la derecha. Puedes encadenar cálculos, definir variables o reutilizar resultados previos.
+
+Ejemplos rápidos:
+
+```txt
+2 + 3 * 4
+precio = 1200
+iva = 0.21
+precio + precio * iva
+50 + 10% de impuestos
+5 km a millas
+15/5/2026 + 3 días laborables
+area.circulo.radio. 5mm
+```
+
+Atajos principales:
+
+- `Enter`: crea una línea debajo.
+- `Shift + Enter`: crea una línea al final.
+- `↑ / ↓`: navega entre líneas.
+- `Backspace` en línea vacía: elimina la línea actual.
+
+## Características
+
+- Operaciones básicas, potencias, módulo y constantes.
+- Funciones matemáticas en inglés y español: `sqrt`, `raiz`, `round`, `redondear`, etc.
+- Trigonometría en grados.
+- Logaritmos, exponenciales y funciones estadísticas.
+- Variables persistentes dentro del documento.
+- Operador implícito para encadenar cálculos: `100`, `+50`, `*2`.
+- Porcentajes naturales, regla de tres y cálculo inverso.
+- Conversión de unidades y conversiones naturales de tiempo/meses.
+- Cálculos con fechas en español.
+- Días laborables y calendario laboral español por ciudad.
+- Geometría con autocompletado por plantilla.
+- Perfiles estructurales (`IPN`, `IPE`, `HEA`, `HEB`, etc.).
+- Referencias entre líneas mediante chips reutilizables.
+- Importación y exportación de archivos `.syscalc`.
+- Resumen final con suma, media, mediana y cantidad.
+
+## Tecnologías
+
+- Vite
+- React
+- TypeScript
+- mathjs
+- date-fns
+- date-holidays
+- Vitest
+- Testing Library
+- ESLint
+- Prettier
+
+## Estructura del Proyecto
+
+```txt
 src/
-├── App.tsx, main.tsx             # punto de entrada y orquestación
-├── components/                   # UI (Editor, LineRow, Header, HelpPage, …)
-├── engine/                       # motor de cálculo (módulo por categoría)
-│   ├── index.ts                  # orquestador de evaluate()
-│   ├── percentages.ts, units.ts, dates.ts, geometry.ts, …
-│   ├── holidays.ts, regionMap.ts, localHolidays.ts
-│   └── variables.ts, preprocess.ts, inverse.ts, …
-├── hooks/                        # useDocument, useAutocomplete, useIsMobile
-├── state/                        # document model, storage (localStorage + .syscalc)
-├── styles/                       # CSS plano
-└── utils/                        # numberFormat, refs (chips)
+├── components/   # UI principal: editor, cabecera, ayuda, calendario
+├── engine/       # motor de cálculo por dominios
+├── hooks/        # estado y comportamiento de UI/documento
+├── state/        # modelo de documento + persistencia
+├── styles/       # estilos globales y de aplicación
+└── utils/        # utilidades de formato y referencias
 
 tests/
-├── engine/                       # cobertura por módulo de motor
-├── hooks/                        # tests de hooks
-└── utils/                        # formato numérico, etc.
+├── components/
+├── engine/
+├── hooks/
+├── state/
+└── utils/
 ```
+
+## Cómo Contribuir
+
+1. Haz un fork del repositorio.
+2. Crea una rama para tu cambio: `git checkout -b feat/mi-cambio`.
+3. Instala dependencias con `npm install`.
+4. Ejecuta validaciones antes de abrir PR:
+
+```bash
+npm run typecheck
+npm run lint
+npm run format:check
+npm run test -- --run
+npm run build
+```
+
+5. Abre un pull request describiendo el problema, la solución y cualquier impacto funcional.
+
+Criterios recomendados:
+
+- Mantener la sintaxis en español consistente con el motor existente.
+- Añadir tests cuando cambie el comportamiento del evaluador.
+- No mezclar refactors amplios con cambios funcionales pequeños.
+
+## Roadmap
+
+- Añadir una demo pública desplegada.
+- Incorporar capturas reales de la interfaz al README.
+- Mejorar cobertura y precisión de festivos locales.
+- Ampliar expresiones naturales y autocompletado.
+- Añadir más ejemplos `.syscalc` listos para importar.
+- Mejorar experiencia móvil y accesibilidad del editor.
+
+## Limitaciones Conocidas
+
+- Los festivos locales son una aproximación; no sustituyen fuentes oficiales.
+- Los cálculos laborables de intervalos extremadamente largos se limitan para no bloquear el navegador.
+- Las fechas en formato `dd/mm` requieren año explícito para no confundirse con divisiones.
 
 ## Licencia
 
-Privado, sin licencia abierta por defecto.
+Este proyecto se distribuye bajo la licencia **GNU Affero General Public License v3.0 (AGPLv3)**.
