@@ -2,6 +2,12 @@
 
 SmartCalc es una calculadora de notas en español orientada a trabajar como se piensa y se escribe: una línea por cálculo, resultado inmediato a la derecha y soporte para expresiones naturales, fechas, unidades, variables y referencias entre líneas.
 
+## Creado por
+
+SmartCalc es una herramienta creada por [System Arquitectura](https://systemarquitectura.com), empresa con sede en Málaga especializada en proyectos de arquitectura industrial, logística, corporativa y residencial.
+
+Su enfoque combina diseño, tecnología y sostenibilidad desde las fases tempranas del proyecto, con una visión técnica y estratégica orientada a mejorar el rendimiento de las organizaciones y su relación con el entorno.
+
 ## Qué hace SmartCalc
 
 SmartCalc mezcla el comportamiento de una calculadora y una hoja de trabajo ligera:
