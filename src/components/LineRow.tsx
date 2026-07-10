@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   extractText,
   getCursorTextOffset,
+  getSelectionTextOffsets,
   placeCursorAtEnd,
   placeCursorAtTextOffset,
   renderTokensToHTML,
@@ -52,6 +53,7 @@ export function LineRow({
   onResultClick,
 }: Props) {
   const inputRef = useRef<HTMLDivElement>(null);
+  const pendingCursorOffsetRef = useRef<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [copied, setCopied] = useState(false);
   const ac = useAutocomplete(value);
@@ -77,13 +79,16 @@ export function LineRow({
     }
   };
 
-  const placeAutoFocusCursor = useCallback((el: HTMLElement) => {
-    if (autoFocusCursorOffset !== undefined) {
-      placeCursorAtTextOffset(el, autoFocusCursorOffset);
-    } else {
-      placeCursorAtEnd(el);
-    }
-  }, [autoFocusCursorOffset]);
+  const placeAutoFocusCursor = useCallback(
+    (el: HTMLElement) => {
+      if (autoFocusCursorOffset !== undefined) {
+        placeCursorAtTextOffset(el, autoFocusCursorOffset);
+      } else {
+        placeCursorAtEnd(el);
+      }
+    },
+    [autoFocusCursorOffset],
+  );
 
   useEffect(() => {
     const el = inputRef.current;
@@ -98,10 +103,19 @@ export function LineRow({
         const display = lineValues[id] ?? '?';
         if (chip.textContent !== display) chip.textContent = display;
       });
+      if (pendingCursorOffsetRef.current !== null) {
+        placeCursorAtTextOffset(el, pendingCursorOffsetRef.current);
+        pendingCursorOffsetRef.current = null;
+      }
       return;
     }
     el.innerHTML = renderTokensToHTML(value, lineValues, varNames ?? []);
-    if (focused || autoFocus) placeAutoFocusCursor(el);
+    if (focused && pendingCursorOffsetRef.current !== null) {
+      placeCursorAtTextOffset(el, pendingCursorOffsetRef.current);
+      pendingCursorOffsetRef.current = null;
+    } else if (focused || autoFocus) {
+      placeAutoFocusCursor(el);
+    }
   }, [value, lineValues, varNames, autoFocus, isFocused, placeAutoFocusCursor]);
 
   useEffect(() => {
@@ -212,6 +226,13 @@ export function LineRow({
               const el = inputRef.current;
               if (!el) return;
               const currentText = extractText(el);
+              const selection = getSelectionTextOffsets(el);
+              if (selection && selection.start !== selection.end) {
+                e.preventDefault();
+                pendingCursorOffsetRef.current = selection.start;
+                onChange(currentText.slice(0, selection.start) + currentText.slice(selection.end));
+                return;
+              }
               const cursorOffset = getCursorTextOffset(el);
               if (cursorOffset === 0 && onBackspaceAtStart) {
                 e.preventDefault();
@@ -222,6 +243,16 @@ export function LineRow({
                 e.preventDefault();
                 onBackspaceEmpty();
               }
+            }
+            if (e.key === 'Delete') {
+              const el = inputRef.current;
+              if (!el) return;
+              const selection = getSelectionTextOffsets(el);
+              if (!selection || selection.start === selection.end) return;
+              e.preventDefault();
+              const currentText = extractText(el);
+              pendingCursorOffsetRef.current = selection.start;
+              onChange(currentText.slice(0, selection.start) + currentText.slice(selection.end));
             }
           }}
         />

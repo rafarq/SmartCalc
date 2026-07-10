@@ -1,7 +1,32 @@
 import { describe, it, expect, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useState } from 'react';
 import { LineRow } from '../../src/components/LineRow';
+
+function ControlledLineRow({
+  onChange,
+  onBackspaceAtStart,
+}: {
+  onChange: (value: string) => void;
+  onBackspaceAtStart: (value: string) => void;
+}) {
+  const [value, setValue] = useState('abcdef');
+
+  return (
+    <LineRow
+      value={value}
+      result=""
+      lineValues={{}}
+      onChange={(nextValue) => {
+        onChange(nextValue);
+        setValue(nextValue);
+      }}
+      onEnter={() => {}}
+      onBackspaceAtStart={onBackspaceAtStart}
+    />
+  );
+}
 
 describe('LineRow', () => {
   it('renders the value as text content', () => {
@@ -98,5 +123,30 @@ describe('LineRow', () => {
     fireEvent.keyDown(textbox, { key: 'Backspace', code: 'Backspace' });
 
     expect(onBackspaceAtStart).toHaveBeenCalledWith('abcdef');
+  });
+
+  it.each([
+    ['Backspace', 'Backspace'],
+    ['Delete', 'Delete'],
+  ])('deletes selected text with %s', (key, code) => {
+    const onChange = vi.fn();
+    const onBackspaceAtStart = vi.fn();
+    render(<ControlledLineRow onChange={onChange} onBackspaceAtStart={onBackspaceAtStart} />);
+
+    const textbox = screen.getByRole('textbox');
+    textbox.focus();
+    const range = document.createRange();
+    range.setStart(textbox.firstChild as Text, 0);
+    range.setEnd(textbox.firstChild as Text, 3);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+
+    fireEvent.keyDown(textbox, { key, code });
+
+    expect(onChange).toHaveBeenCalledWith('def');
+    expect(onBackspaceAtStart).not.toHaveBeenCalled();
+    expect(textbox).toHaveTextContent('def');
+    expect(sel?.isCollapsed).toBe(true);
   });
 });

@@ -86,19 +86,30 @@ export function extractText(el: HTMLElement): string {
 }
 
 export function getCursorTextOffset(el: HTMLElement): number {
+  return getSelectionTextOffsets(el)?.start ?? extractText(el).length;
+}
+
+export function getSelectionTextOffsets(el: HTMLElement): { start: number; end: number } | null {
   const sel = window.getSelection();
-  if (!sel || sel.rangeCount === 0) return extractText(el).length;
+  if (!sel || sel.rangeCount === 0) return null;
 
   const range = sel.getRangeAt(0);
-  if (!el.contains(range.startContainer)) return extractText(el).length;
+  if (!el.contains(range.startContainer) || !el.contains(range.endContainer)) return null;
 
-  const beforeCursor = range.cloneRange();
-  beforeCursor.selectNodeContents(el);
-  beforeCursor.setEnd(range.startContainer, range.startOffset);
+  const offsetTo = (container: Node, offset: number) => {
+    const before = range.cloneRange();
+    before.selectNodeContents(el);
+    before.setEnd(container, offset);
 
-  const container = document.createElement('div');
-  container.appendChild(beforeCursor.cloneContents());
-  return extractText(container).length;
+    const fragment = document.createElement('div');
+    fragment.appendChild(before.cloneContents());
+    return extractText(fragment).length;
+  };
+
+  return {
+    start: offsetTo(range.startContainer, range.startOffset),
+    end: offsetTo(range.endContainer, range.endOffset),
+  };
 }
 
 function serializedNodeLength(node: ChildNode): number {

@@ -4,6 +4,7 @@ import {
   renderTokensToHTML,
   expandRefs,
   getCursorTextOffset,
+  getSelectionTextOffsets,
   placeCursorAtTextOffset,
 } from '../../src/utils/refs';
 
@@ -82,6 +83,29 @@ describe('getCursorTextOffset', () => {
     sel?.addRange(range);
 
     expect(getCursorTextOffset(el)).toBe('@{abc}'.length + 2);
+    document.body.removeChild(el);
+  });
+});
+
+describe('getSelectionTextOffsets', () => {
+  it('returns the serialized limits of a text selection', () => {
+    const el = document.createElement('div');
+    el.innerHTML = renderTokensToHTML('a @{abc} xyz', { abc: '2003' });
+    document.body.appendChild(el);
+
+    const firstText = el.childNodes[0] as Text;
+    const lastText = el.childNodes[2] as Text;
+    const range = document.createRange();
+    range.setStart(firstText, 1);
+    range.setEnd(lastText, 2);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+
+    expect(getSelectionTextOffsets(el)).toEqual({
+      start: 1,
+      end: 'a @{abc}'.length + 2,
+    });
     document.body.removeChild(el);
   });
 });
