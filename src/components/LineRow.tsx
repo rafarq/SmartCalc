@@ -12,6 +12,7 @@ import { Autocomplete } from './Autocomplete';
 import { CheckIcon, CopyIcon } from './icons';
 
 type Props = {
+  lineId?: string;
   value: string;
   result: string;
   resultError?: string;
@@ -33,6 +34,7 @@ type Props = {
 };
 
 export function LineRow({
+  lineId,
   value,
   result,
   resultError,
@@ -161,6 +163,7 @@ export function LineRow({
           contentEditable
           suppressContentEditableWarning
           role="textbox"
+          data-line-id={lineId}
           spellCheck={false}
           onInput={handleInput}
           onMouseDown={() => {

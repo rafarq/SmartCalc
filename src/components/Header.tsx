@@ -11,6 +11,8 @@ import {
   SaveIcon,
   SunIcon,
   TrashIcon,
+  UndoIcon,
+  RedoIcon,
 } from './icons';
 
 type Props = {
@@ -21,9 +23,25 @@ type Props = {
   onClear: () => void;
   onHelp: () => void;
   onCalendar: () => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 };
 
-export function Header({ title, onTitleChange, onSave, onLoad, onClear, onHelp, onCalendar }: Props) {
+export function Header({
+  title,
+  onTitleChange,
+  onSave,
+  onLoad,
+  onClear,
+  onHelp,
+  onCalendar,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
+}: Props) {
   const { theme, toggle } = useTheme();
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -41,7 +59,31 @@ export function Header({ title, onTitleChange, onSave, onLoad, onClear, onHelp, 
 
   return (
     <header className="header">
-      <img className="header-brand-logo" src="/SmartCalc-logo.png" alt="SmartCalc" />
+      <div className="header-brand-controls">
+        <img className="header-brand-logo" src="/SmartCalc-logo.png" alt="SmartCalc" />
+        <div className="history-actions" role="group" aria-label="Historial de cambios">
+          <button
+            type="button"
+            className="icon-btn"
+            onClick={onUndo}
+            disabled={!canUndo}
+            title="Deshacer (Ctrl/Cmd+Z)"
+            aria-label="Deshacer"
+          >
+            <UndoIcon />
+          </button>
+          <button
+            type="button"
+            className="icon-btn"
+            onClick={onRedo}
+            disabled={!canRedo}
+            title="Rehacer (Ctrl/Cmd+Y)"
+            aria-label="Rehacer"
+          >
+            <RedoIcon />
+          </button>
+        </div>
+      </div>
       <EditableTitle value={title} onChange={onTitleChange} />
       <input
         ref={fileRef}

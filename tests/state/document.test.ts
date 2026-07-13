@@ -4,6 +4,7 @@ import {
   addLine,
   splitLine,
   mergeLineWithPrevious,
+  deleteTextRange,
   updateLine,
   setTitle,
   DEFAULT_TITLE,
@@ -62,5 +63,32 @@ describe('document model', () => {
     const id = doc.lines[0].id;
     const updated = updateLine(doc, id, '2 + 2');
     expect(updated.lines[0].text).toBe('2 + 2');
+  });
+
+  it('deletes a partial selection spanning several lines', () => {
+    const doc = createEmptyDocument();
+    const firstId = doc.lines[0].id;
+    const first = updateLine(doc, firstId, 'abcde');
+    const { doc: second, newId: secondId } = addLine(first, 0);
+    const withSecond = updateLine(second, secondId, '12345');
+    const { doc: third, newId: thirdId } = addLine(withSecond, 1);
+    const complete = updateLine(third, thirdId, 'XYZ');
+
+    const updated = deleteTextRange(complete, firstId, 2, thirdId, 1);
+
+    expect(updated.lines.map((line) => line.text)).toEqual(['abYZ']);
+    expect(updated.lines[0].id).toBe(firstId);
+  });
+
+  it('deletes complete selected lines but keeps one editable line', () => {
+    const doc = createEmptyDocument();
+    const firstId = doc.lines[0].id;
+    const first = updateLine(doc, firstId, 'uno');
+    const { doc: second, newId: secondId } = addLine(first, 0);
+    const complete = updateLine(second, secondId, 'dos');
+
+    const updated = deleteTextRange(complete, firstId, 0, secondId, 3);
+
+    expect(updated.lines.map((line) => line.text)).toEqual(['']);
   });
 });

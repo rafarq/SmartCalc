@@ -23,6 +23,18 @@
   display: block;
   user-select: none;
 }
+.header-brand-controls,
+.history-actions {
+  display: flex;
+  align-items: center;
+}
+.header-brand-controls {
+  justify-self: start;
+  gap: 8px;
+}
+.history-actions {
+  gap: 0;
+}
 .doc-title {
   appearance: none;
   font-size: 15px;
@@ -87,6 +99,11 @@
 }
 .icon-btn:active {
   background: #e5e5e5;
+}
+.icon-btn:disabled {
+  color: #c8c8c8;
+  cursor: default;
+  background: transparent;
 }
 .editor {
   flex: 1;
@@ -882,8 +899,14 @@
     padding: 8px 12px;
     row-gap: 6px;
   }
-  .header-brand-logo {
+  .header-brand-controls {
     grid-area: logo;
+  }
+  .header-brand-logo {
+    height: 18px;
+  }
+  .header .icon-btn {
+    width: 25px;
   }
   .header-actions {
     grid-area: actions;
@@ -934,6 +957,10 @@
   .icon-btn:hover {
     background: var(--hover-bg);
     color: var(--text);
+  }
+  .icon-btn:disabled {
+    color: var(--text-muted);
+    background: transparent;
   }
 
   .line-input:focus {

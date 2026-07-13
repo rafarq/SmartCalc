@@ -65,6 +65,36 @@ export const updateLine = (doc: DocumentModel, id: string, text: string): Docume
   lines: doc.lines.map((l) => (l.id === id ? { ...l, text } : l)),
 });
 
+export const deleteTextRange = (
+  doc: DocumentModel,
+  startId: string,
+  startOffset: number,
+  endId: string,
+  endOffset: number,
+): DocumentModel => {
+  const startIndex = doc.lines.findIndex((line) => line.id === startId);
+  const endIndex = doc.lines.findIndex((line) => line.id === endId);
+  if (startIndex === -1 || endIndex === -1 || startIndex > endIndex) return doc;
+
+  const startLine = doc.lines[startIndex];
+  const endLine = doc.lines[endIndex];
+  const from = Math.max(0, Math.min(startOffset, startLine.text.length));
+  const to = Math.max(0, Math.min(endOffset, endLine.text.length));
+
+  if (startIndex === endIndex) {
+    if (from >= to) return doc;
+    return updateLine(doc, startId, startLine.text.slice(0, from) + startLine.text.slice(to));
+  }
+
+  const mergedText = startLine.text.slice(0, from) + endLine.text.slice(to);
+  const lines = [
+    ...doc.lines.slice(0, startIndex),
+    { ...startLine, text: mergedText },
+    ...doc.lines.slice(endIndex + 1),
+  ];
+  return { ...doc, lines };
+};
+
 export const setTitle = (doc: DocumentModel, title: string): DocumentModel => ({
   ...doc,
   title,

@@ -6,6 +6,7 @@ import {
   getCursorTextOffset,
   getSelectionTextOffsets,
   placeCursorAtTextOffset,
+  getSelectionAcrossLines,
 } from '../../src/utils/refs';
 
 describe('tokenize', () => {
@@ -107,6 +108,69 @@ describe('getSelectionTextOffsets', () => {
       end: 'a @{abc}'.length + 2,
     });
     document.body.removeChild(el);
+  });
+});
+
+describe('getSelectionAcrossLines', () => {
+  it('returns serialized offsets for a selection spanning line inputs', () => {
+    const first = document.createElement('div');
+    first.className = 'line-input';
+    first.dataset.lineId = 'first';
+    first.innerHTML = renderTokensToHTML('ab @{ref}', { ref: '10' });
+    const second = document.createElement('div');
+    second.className = 'line-input';
+    second.dataset.lineId = 'second';
+    second.textContent = 'xyz';
+    document.body.append(first, second);
+
+    const range = document.createRange();
+    range.setStart(first.firstChild as Text, 1);
+    range.setEnd(second.firstChild as Text, 2);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+
+    expect(getSelectionAcrossLines()).toEqual({
+      startLineId: 'first',
+      startOffset: 1,
+      endLineId: 'second',
+      endOffset: 2,
+    });
+    first.remove();
+    second.remove();
+  });
+
+  it('detects complete lines when the selection endpoints are outside the inputs', () => {
+    const editor = document.createElement('div');
+    const firstRow = document.createElement('div');
+    const first = document.createElement('div');
+    first.className = 'line-input';
+    first.dataset.lineId = 'first';
+    first.textContent = 'abc';
+    firstRow.appendChild(first);
+    const secondRow = document.createElement('div');
+    const second = document.createElement('div');
+    second.className = 'line-input';
+    second.dataset.lineId = 'second';
+    second.textContent = 'xyz';
+    secondRow.appendChild(second);
+    editor.append(firstRow, secondRow);
+    document.body.appendChild(editor);
+
+    const range = document.createRange();
+    range.setStart(editor, 0);
+    range.setEnd(editor, 2);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+
+    expect(getSelectionAcrossLines(editor)).toEqual({
+      startLineId: 'first',
+      startOffset: 0,
+      endLineId: 'second',
+      endOffset: 3,
+    });
+    editor.remove();
   });
 });
 

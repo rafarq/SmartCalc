@@ -112,6 +112,58 @@ export function getSelectionTextOffsets(el: HTMLElement): { start: number; end: 
   };
 }
 
+export type MultiLineTextSelection = {
+  startLineId: string;
+  startOffset: number;
+  endLineId: string;
+  endOffset: number;
+};
+
+function lineInputForNode(node: Node): HTMLElement | null {
+  const element = node instanceof HTMLElement ? node : node.parentElement;
+  return element?.closest<HTMLElement>('.line-input[data-line-id]') ?? null;
+}
+
+function serializedOffsetTo(root: HTMLElement, container: Node, offset: number): number {
+  const before = document.createRange();
+  before.selectNodeContents(root);
+  before.setEnd(container, offset);
+  const fragment = document.createElement('div');
+  fragment.appendChild(before.cloneContents());
+  return extractText(fragment).length;
+}
+
+export function getSelectionAcrossLines(root: ParentNode = document): MultiLineTextSelection | null {
+  const selection = window.getSelection();
+  if (!selection || selection.rangeCount === 0 || selection.isCollapsed) return null;
+
+  const range = selection.getRangeAt(0);
+  const directStartInput = lineInputForNode(range.startContainer);
+  const directEndInput = lineInputForNode(range.endContainer);
+  const intersectedInputs = Array.from(
+    root.querySelectorAll<HTMLElement>('.line-input[data-line-id]'),
+  ).filter((input) => range.intersectsNode(input));
+
+  const startInput = intersectedInputs[0];
+  const endInput = intersectedInputs.at(-1);
+  const startLineId = startInput?.dataset.lineId;
+  const endLineId = endInput?.dataset.lineId;
+  if (!startInput || !endInput || !startLineId || !endLineId || startInput === endInput) return null;
+
+  return {
+    startLineId,
+    startOffset:
+      directStartInput === startInput
+        ? serializedOffsetTo(startInput, range.startContainer, range.startOffset)
+        : 0,
+    endLineId,
+    endOffset:
+      directEndInput === endInput
+        ? serializedOffsetTo(endInput, range.endContainer, range.endOffset)
+        : extractText(endInput).length,
+  };
+}
+
 function serializedNodeLength(node: ChildNode): number {
   if (node.nodeType === Node.TEXT_NODE) return (node.textContent ?? '').length;
   if (!(node instanceof HTMLElement)) return 0;

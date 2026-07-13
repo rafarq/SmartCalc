@@ -6,6 +6,7 @@ import {
   splitLine,
   mergeLineWithPrevious,
   updateLine,
+  deleteTextRange,
   setTitle as docSetTitle,
   type DocumentModel,
 } from '../state/document';
@@ -19,10 +20,64 @@ function initialDoc(): DocumentModel {
 
 export function useDocument() {
   const [doc, setDoc] = useState<DocumentModel>(initialDoc);
+  const docRef = useRef(doc);
+  const undoStackRef = useRef<DocumentModel[]>([]);
+  const redoStackRef = useRef<DocumentModel[]>([]);
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
   const [focusedLineId, setFocusedLineId] = useState<string | null>(null);
   const [focusedCursorOffset, setFocusedCursorOffset] = useState<number | null>(null);
   const focusedLineIdRef = useRef<string | null>(null);
   focusedLineIdRef.current = focusedLineId;
+
+  const updateDocument = useCallback(
+    (updater: (current: DocumentModel) => DocumentModel) => {
+      const current = docRef.current;
+      const next = updater(current);
+      if (next === current) return;
+      undoStackRef.current.push(current);
+      redoStackRef.current = [];
+      docRef.current = next;
+      setCanUndo(true);
+      setCanRedo(false);
+      setDoc(next);
+    },
+    [],
+  );
+
+  const undo = useCallback(() => {
+    const current = docRef.current;
+    const previous = undoStackRef.current.pop();
+    if (!previous) return;
+    redoStackRef.current.push(current);
+    docRef.current = previous;
+    setCanUndo(undoStackRef.current.length > 0);
+    setCanRedo(true);
+    if (!previous.lines.some((line) => line.id === focusedLineIdRef.current)) {
+      const currentIndex = current.lines.findIndex((line) => line.id === focusedLineIdRef.current);
+      const fallbackIndex = Math.min(Math.max(currentIndex, 0), previous.lines.length - 1);
+      setFocusedLineId(previous.lines[fallbackIndex].id);
+    }
+    setDoc(previous);
+    setFocusedCursorOffset(null);
+  }, []);
+
+  const redo = useCallback(() => {
+    const current = docRef.current;
+    const next = redoStackRef.current.pop();
+    if (!next) return;
+    undoStackRef.current.push(current);
+    docRef.current = next;
+    setCanUndo(true);
+    setCanRedo(redoStackRef.current.length > 0);
+    if (!next.lines.some((line) => line.id === focusedLineIdRef.current)) {
+      const currentIndex = current.lines.findIndex((line) => line.id === focusedLineIdRef.current);
+      const fallbackIndex = Math.min(Math.max(currentIndex, 0), next.lines.length - 1);
+      setFocusedLineId(next.lines[fallbackIndex].id);
+    }
+    setDoc(next);
+    setFocusedCursorOffset(null);
+  }, []);
 
   // Autoguardado en localStorage cada vez que cambia el documento.
   useEffect(() => {
@@ -56,11 +111,11 @@ export function useDocument() {
   const varNames = useMemo(() => varNamesRaw.slice().sort(), [varNamesKey]);
 
   const setLineText = useCallback((id: string, text: string) => {
-    setDoc((d) => updateLine(d, id, text));
-  }, []);
+    updateDocument((d) => updateLine(d, id, text));
+  }, [updateDocument]);
 
   const insertLineAfter = useCallback((id: string, cursorOffset?: number, currentText?: string) => {
-    setDoc((d) => {
+    updateDocument((d) => {
       if (cursorOffset !== undefined) {
         const split = splitLine(d, id, cursorOffset, currentText);
         if (!split) return d;
@@ -76,19 +131,19 @@ export function useDocument() {
       setFocusedCursorOffset(0);
       return next;
     });
-  }, []);
+  }, [updateDocument]);
 
   const insertLineAtEnd = useCallback(() => {
-    setDoc((d) => {
+    updateDocument((d) => {
       const { doc: next, newId } = addLine(d, d.lines.length - 1);
       setFocusedLineId(newId);
       setFocusedCursorOffset(0);
       return next;
     });
-  }, []);
+  }, [updateDocument]);
 
   const removeLine = useCallback((id: string) => {
-    setDoc((d) => {
+    updateDocument((d) => {
       if (d.lines.length <= 1) return d;
       const idx = d.lines.findIndex((l) => l.id === id);
       if (idx === -1) return d;
@@ -98,7 +153,7 @@ export function useDocument() {
       setFocusedCursorOffset(null);
       return { ...d, lines: newLines };
     });
-  }, []);
+  }, [updateDocument]);
 
   const focusLine = useCallback((id: string) => {
     setFocusedLineId(id);
@@ -128,44 +183,53 @@ export function useDocument() {
   }, []);
 
   const mergeLineIntoPrevious = useCallback((id: string, currentText?: string) => {
-    setDoc((d) => {
+    updateDocument((d) => {
       const merged = mergeLineWithPrevious(d, id, currentText);
       if (!merged) return d;
       setFocusedLineId(merged.focusId);
       setFocusedCursorOffset(merged.cursorOffset);
       return merged.doc;
     });
-  }, []);
+  }, [updateDocument]);
+
+  const deleteSelectionAcrossLines = useCallback(
+    (startId: string, startOffset: number, endId: string, endOffset: number) => {
+      updateDocument((d) => deleteTextRange(d, startId, startOffset, endId, endOffset));
+      setFocusedLineId(startId);
+      setFocusedCursorOffset(startOffset);
+    },
+    [updateDocument],
+  );
 
   const appendRefToFocused = useCallback((targetId: string) => {
     const focusedId = focusedLineIdRef.current;
     if (!focusedId || focusedId === targetId) return;
-    setDoc((d) => {
+    updateDocument((d) => {
       const line = d.lines.find((l) => l.id === focusedId);
       if (!line) return d;
       const sep = line.text.length > 0 && !line.text.endsWith(' ') ? ' ' : '';
       const newText = `${line.text}${sep}@{${targetId}} `;
       return updateLine(d, focusedId, newText);
     });
-  }, []);
+  }, [updateDocument]);
 
   const replaceDocument = useCallback((next: DocumentModel) => {
     if (!next.lines || next.lines.length === 0) return;
-    setDoc(next);
+    updateDocument(() => next);
     setFocusedLineId(next.lines[0].id);
     setFocusedCursorOffset(null);
-  }, []);
+  }, [updateDocument]);
 
   const clearDocument = useCallback(() => {
     const fresh = createEmptyDocument();
-    setDoc(fresh);
+    updateDocument(() => fresh);
     setFocusedLineId(fresh.lines[0].id);
     setFocusedCursorOffset(0);
-  }, []);
+  }, [updateDocument]);
 
   const setTitle = useCallback((title: string) => {
-    setDoc((d) => docSetTitle(d, title));
-  }, []);
+    updateDocument((d) => docSetTitle(d, title));
+  }, [updateDocument]);
 
   return {
     doc,
@@ -180,6 +244,7 @@ export function useDocument() {
     insertLineAtEnd,
     removeLine,
     mergeLineIntoPrevious,
+    deleteSelectionAcrossLines,
     focusLine,
     focusPrevLine,
     focusNextLine,
@@ -187,5 +252,9 @@ export function useDocument() {
     replaceDocument,
     clearDocument,
     setTitle,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
   };
 }
